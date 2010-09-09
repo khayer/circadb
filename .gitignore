@@ -1,0 +1,13 @@
+.DS_Store
+.Thumbs
+log/**/*
+tmp/**/*
+*~
+.#*
+*.sqlite
+*.sqlite3
+*.db
+gems/**/*
+config/database.yml
+seed_data/*
+source_data/*
