@@ -1,0 +1,27 @@
+!!! XML
+!!!
+%html
+  %head
+    %meta{:name => "author" , :content=> "Angel Pizarro"}
+    %meta{:name => "description" , :content => "CIRCA: Circadian gene expression profiles."}
+    %meta{:name => "keywords", :content => "circadian gene experession, transcript profiles, circadian, gene expression, microarray, transcription, Cosopt, mus musculus, mouse, mouse gene expression"}
+    = stylesheet_link_tag :screen
+    /[if IE]
+      = stylesheet_link_tag :ie
+    = stylesheet_link_tag "jquery-ui-1.7.1.custom.css"
+    = stylesheet_link_tag "biogps"
+    = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"
+  %body.showgrid.span-5.last
+    .header.ui-corner-all.span-5.last
+      .span-2 CIRCA
+      .span-2= link_to @unigene_id, request.url()
+      .span-1.whitebox
+        = @num_results
+    .results.span-5.last
+      = yield
+    .footer.span-5.last
+      = link_to "CIRCA: Main Site", "http://bioinf.itmat.upenn.edu/circa"
+      |
+      = link_to "John Hogenesch Lab", "http://bioinf.itmat.upenn.edu/hogeneschlab"
+      |
+      =link_to "ITMAT Bioinformatics Facility", "http://bioinf.itmat.upenn.edu/"

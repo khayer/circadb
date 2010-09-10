@@ -1,0 +1,42 @@
+.body{
+	background-color: #fff;
+	color: #000;
+}
+
+.whitebox {
+  color: #366598;
+  font-weight: bold;
+  font-size: 14px;
+  border: 1px solid #333;
+}
+
+.results {
+	color: #000;
+	font-size: 11px;
+  border: 1px solid #DDD;
+}
+
+table {
+  border: 1px solid #DDD;
+  padding: 1px; 
+  margin: 1px;
+}
+
+.footer {
+	font-size: 10px;
+	background-color: #6998cb;
+	border-top: 3px solid #333;
+	color: #FFF;
+	font-weight: bold;
+}
+.footer a {
+	color: #FFF;
+	font-weight: bold;
+  text-decoration: none;
+}
+.header{
+	background-color: #6998cb;
+	color: #fff;
+	font-weight: bold;
+	font-size: 14px;
+}

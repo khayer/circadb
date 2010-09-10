@@ -1,0 +1,5 @@
+.qbox textarea {
+  height: 36px;
+  width: 450px;
+  border: 2px groove #333333;
+}

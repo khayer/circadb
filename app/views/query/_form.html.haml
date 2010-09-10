@@ -1,0 +1,12 @@
+- form_tag :controller => "query", :action => "index" do
+  .qbox.span-10.last
+    = text_area_tag :query_string, params[:query_string]
+  .span-10.last
+    = label_tag :cosopt_q_value, "Max Cosopt Q-Value"
+    = text_field_tag :cosopt_q_value, (params[:cosopt_q_value] || "1.00"),:size => 5
+  .span-12.last
+    = label_tag :assay, :value => "Tissue"
+    - assay_select = [["All", 0] ] + (Assay.all.map {|e| [e.name, e.id] } )
+    = select_tag( :assay, options_for_select(assay_select, (params[:assay].to_i || 0)))
+  .span-1.last= submit_tag("Query")
+

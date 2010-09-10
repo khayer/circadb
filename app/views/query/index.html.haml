@@ -1,0 +1,56 @@
+.form.span-12.last{:style => "border: 2px double #DDD; padding: 10px;" }
+  = render :partial => "form"
+.params.span-10.last
+  %b Search Parameters:
+  - show_params.each do |p|
+    -if params.has_key?(p) &&  params[p]
+      %br== <em>#{p.to_s.titlecase}:</em> "#{params[p]}"
+.results.span-13.last
+  %table
+    -for @probeset_stat in @probeset_stats do
+      - @probeset_data = @probeset_stat.probeset_data
+      - @probeset = @probeset_stat.probeset
+      %tr
+        %td
+          %table
+            %tr
+              %td{:colspan=>3}
+                -if @probeset_data
+                  =image_tag(@probeset_data.chart_url, :alt => "#{@probeset_data.probeset_name} Data")
+                -else
+                  NO IMAGE
+              %td{:colspan=>2}
+                %br== <b>Tissue       </b> #{@probeset_stat.assay_name}
+                %br== <b>Probeset       </b> #{@probeset.probeset_name}
+                %br== <b>Symbol         </b> #{@probeset.gene_symbol_url }
+                %br== <b>Unigene        </b> #{@probeset.unigene_url}
+                %br== <b>RefSeq Protein </b> #{@probeset.refseq_protein_url}
+                %br== <b>RefSeq DNA     </b> #{@probeset.refseq_transcript_url}
+                %br== <b>Description    </b> #{@probeset.gene_title}
+            %tr
+              %td &nbsp;
+              %th p-Value
+              %th q-Value
+              %th period
+              %th phase
+            %tr
+              %th COSOPT
+              %td= @probeset_stat.cosopt_p_value
+              %td= @probeset_stat.cosopt_q_value
+              %td= @probeset_stat.cosopt_period_length
+              %td= @probeset_stat.cosopt_phase
+            %tr
+              %th Fisher G
+              %td= @probeset_stat.fisherg_p_value
+              %td= @probeset_stat.fisherg_q_value
+              %td= @probeset_stat.fisherg_period_length
+              %td <i>NA</i>
+            %tr
+              %th JTK
+              %td= @probeset_stat.jtk_p_value
+              %td= @probeset_stat.jtk_q_value
+              %td= @probeset_stat.jtk_period_length
+              %td= @probeset_stat.jtk_lag
+.span-13.last
+  #pages
+    = will_paginate @probeset_stats, :class => "digg_pagination", :params => params

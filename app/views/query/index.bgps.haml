@@ -1,0 +1,64 @@
+.span-10.last
+  %table
+    -for @probeset_stat in @probeset_stats do
+      - @probeset_data = @probeset_stat.probeset_data
+      - @probeset = @probeset_stat.probeset
+      %tr
+        %td
+          %table{:style => "border: 1px solid #FFF; margin: 2px;"}
+            %tr
+              %td.span-4{:style => "border: 1px solid #FFF; padding: 2px; "}
+                =link_to(image_tag(@probeset_data.chart_url(150,150), :alt => "#{@probeset_data.probeset_name} Data"), root_path, :params => params) 
+              %td{:style => "border: 1px solid #FFF; padding: 2px;"}
+                %table{:style => "border: 1px solid #FFF; padding: 2px;"}
+                  %tr
+                    %th.span-2 Assay Tissue
+                    %td=@probeset_data.assay_name
+                  %tr
+                    %th Probeset
+                    %td=@probeset.probeset_name
+                  %tr
+                    %th Symbol         
+                    %td=@probeset.gene_symbol_url
+                  %tr
+                    %th Unigene        
+                    %td=@probeset.unigene_url
+                  %tr
+                    %th RefSeq Protein 
+                    %td=@probeset.refseq_protein_url
+                  %tr
+                    %th RefSeq DNA     
+                    %td=@probeset.refseq_transcript_url
+                  %tr
+                    %th Description    
+                    %td=@probeset.gene_title
+            %tr
+              %td{:colspan=>2}
+              %table
+                %tr
+                  %th &nbsp;
+                  %th p-Value
+                  %th q-Value
+                  %th period
+                  %th phase
+                %tr
+                  %th Cosopt
+                  %td= @probeset_stat.cosopt_p_value
+                  %td= @probeset_stat.cosopt_q_value
+                  %td= @probeset_stat.cosopt_period_length
+                  %td= @probeset_stat.cosopt_phase
+                %tr
+                  %th Fisher G
+                  %td= @probeset_stat.fisherg_p_value
+                  %td= @probeset_stat.fisherg_q_value
+                  %td= @probeset_stat.fisherg_period_length
+                  %td <i>NA</i>
+                %tr
+                  %th JTK
+                  %td= @probeset_stat.jtk_p_value
+                  %td= @probeset_stat.jtk_q_value
+                  %td= @probeset_stat.jtk_period_length
+                  %td= @probeset_stat.jtk_lag
+.push-1.span-9.last
+  .paginate
+    = will_paginate @probeset_stats
