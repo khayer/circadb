@@ -1,4 +1,22 @@
-desc "Seed data import"
+desc "Bootstrap a site from the web" 
+namespace :bootstrap do 
+  desc "Resets the database" 
+  task :resetdb => ["db:drop", "db:create", "db:migrate"]
+
+  desc "Download and insert the DB data from AWS"
+  task :download_and_insert_data => :environment do 
+    require 'curb'
+    Curl::Easy.download("http://s3.amazonaws.com/itmat.circadb/circadb.mysql.dmp.gz", "#{Rails.root}/circadb.mysql.dmp.gz")
+    system("gunzip circadb.mysql.dmp.gz")
+    cfg = ActiveRecord::Base.configurations[Rails.env]
+    system("mysql -u #{cfg["username"]} #{ cfg["password"] ? "-p" + cfg["password"] : "" } #{cfg["database"]} < circadb.mysql.dmp")
+  end
+  desc "Build the sphinx index"
+  task :sphinx_build => ["ts:stop", "ts:config", "ts:rebuild", "ts:start"]
+  
+end
+
+desc "Seed database using raw data"
 namespace :seed do
   require "ar-extensions"
   require "fastercsv"

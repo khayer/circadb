@@ -7,9 +7,12 @@ gem 'haml', "3.0.18"
 gem "jrails"
 gem "mysql"
 gem "riddle"
+gem "thinking-sphinx", :require => "thinking_sphinx"
+
+# These gems are needed for bootstrapping a site
+gem "curb"
 gem "ar-extensions"
 gem "fastercsv"
-gem "thinking-sphinx", :require => "thinking_sphinx"
 
 group :development do 
   gem "rails-footnotes"

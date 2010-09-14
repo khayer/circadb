@@ -7,7 +7,7 @@ tmp/*
 *.sqlite
 *.sqlite3
 *.db
-db/*mysql.dmp
+db/*mysql.dmp*
 db/sphinx/**/*
 gems/**/*
 config/database.yml

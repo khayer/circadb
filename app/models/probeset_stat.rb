@@ -2,8 +2,6 @@ class ProbesetStat < ActiveRecord::Base
   cattr_reader :per_page
   @@per_page = 25
 
-  default_scope :order => "probeset_stats.cosopt_q_value ASC"
-
   belongs_to :assay
   belongs_to :probeset
   belongs_to :probeset_data

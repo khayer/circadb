@@ -12,7 +12,7 @@ class QueryController < ApplicationController
     if  (params[:assay].to_i > 0)
       cnd[:assay_id] = params[:assay].to_i
     end
-    @probeset_stats = ProbesetStat.search(qs, :with => cnd, :page => page, :per_page => @@per_page, :include => [:probeset])
+    @probeset_stats = ProbesetStat.search(qs, :with => cnd, :page => page, :per_page => @@per_page, :include => [:probeset], :order => "fisherg_p_value ASC")
     respond_to do |format|
       format.html 
       format.bgps { render :action => "index" , :layout => "biogps" }
