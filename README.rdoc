@@ -1,9 +1,31 @@
-== CIRCA: Circadian Gene Expression Profiles
+= CIRCA: Circadian Gene Expression Profiles
 
 Welcome to the CIRCA project. This is a data set of time course series data, highlighting circadian gene expression cycles through the use of the Cosopt algorithm for determining rhythmicity. 
 
-It is  a Ruby on Rails application with a single controller and large data pre-set data set. Notable aspects include full-text search capability of gene annotation data via the Sphinx search engine, and data graphs dynamically produced by the Google Chart API.
+It is  a Ruby on Rails application with a single controller and large data pre-set data set. Notable aspects include full-text search capability of gene annotation data via the Sphinx search engine, and data graphs dynamically produced by the Google Chart API. 
 
 If you have any questions contact the Hogenesch Lab at the University of Pennsylvania
 
 http://bioinf.itmat.upenn.edu/hogeneschlab
+
+= Installing
+
+== Prerequisites
+
+Install Ruby (http://www.ruby-lang.org/en/), RubyGems (http://rubygems.org/) and the bundler gem (http://gembundler.com/).
+Install MySQL (version >= 5.0) or have one you can connect to and create a database
+Install the Sphinx full text search engine (http://freelancing-god.github.com/ts/en/installing_sphinx.html)
+
+
+== Install
+
+If you are only interested in reviewing the site and running a local instance, then:
+
+1. Configure the <code> config/database.yml </code> file from the example <code> config/database.yml.example </code> to connect to your MySQL database.
+2. Use the provided rake tasks to create the database
+
+  rake bootstrap:all
+  
+If you are interested in loading your own data, then you will need to load the array annotation information, add a Assay object for your experiment, then add the raw and statistic data from your experiment. See the <code> lib/tasks/seed.rake </code> for an example of our routines that manipulate and load data from source data files.
+
+
