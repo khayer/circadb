@@ -3,17 +3,30 @@ namespace :bootstrap do
   desc "Resets the database" 
   task :resetdb => ["db:drop", "db:create", "db:migrate"]
 
-  desc "Download and insert the DB data from AWS"
-  task :download_and_insert_data => :environment do 
-    require 'curb'
-    Curl::Easy.download("http://s3.amazonaws.com/itmat.circadb/circadb.mysql.dmp.gz", "#{Rails.root}/circadb.mysql.dmp.gz")
-    system("gunzip circadb.mysql.dmp.gz")
-    cfg = ActiveRecord::Base.configurations[Rails.env]
-    system("mysql -u #{cfg["username"]} #{ cfg["password"] ? "-p" + cfg["password"] : "" } #{cfg["database"]} < circadb.mysql.dmp")
+  desc "Download DB data from AWS"
+  task :download_db => :environment do 
+    unless File.exists? "#{Rails.root}/circadb.mysql.dmp"
+      require 'curb'
+      Curl::Easy.download("http://s3.amazonaws.com/itmat.circadb/circadb.mysql.dmp.gz", "#{Rails.root}/circadb.mysql.dmp.gz")
+      system("gunzip circadb.mysql.dmp.gz")
+    end
   end
-  desc "Build the sphinx index"
-  task :sphinx_build => ["ts:stop", "ts:config", "ts:rebuild", "ts:start"]
+  desc "insert DB data from downloaded MySQL dump"
+  task :insert_data => :environment do 
+    unless File.exists? "#{Rails.root}/circadb.mysql.dmp"
+      puts "Need to download data first, use \"rake bootstrap:download_db\" task"
+      exit(0)
+    end
+    cfg = ActiveRecord::Base.configurations[Rails.env]
+    system("mysql -u #{cfg["username"]} #{ cfg["password"] ? "-p" + cfg["password"] : "" } " + 
+           " #{ "-h " + cfg["host"] if cfg["host"] } #{cfg["database"]} < circadb.mysql.dmp")
+  end
   
+  desc "Build the sphinx index"
+  task :build_sphinx => ["ts:stop", "ts:config", "ts:rebuild", "ts:start"]
+  
+  desc "Bootstrap the system"
+  task :all => [:resetdb, :download_db, :insert_data, :build_sphinx]
 end
 
 desc "Seed database using raw data"
