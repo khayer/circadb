@@ -7,10 +7,11 @@ tmp/*
 *.sqlite
 *.sqlite3
 *.db
-db/*mysql.dmp*
-db/sphinx/**/*
+*mysql.dmp*
+db/sphinx
 gems/**/*
 config/database.yml
+config/*sphinx.conf
 seed_data/*
 source_data/*
 Gemfile.lock

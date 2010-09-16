@@ -1,0 +1,10 @@
+development:
+  port: 9313
+  searchd_file_path: "db/sphinx"
+test:
+  port: 9313
+  searchd_file_path: "db/sphinx"
+production:
+  port: 9313
+  searchd_file_path: "db/sphinx"
+  
