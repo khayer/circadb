@@ -25,7 +25,8 @@ table {
 .footer {
 	font-size: 10px;
 	background-color: #6998cb;
-	border-top: 3px solid #333;
+	border-bottom: 2px solid #666;
+	border-top: 2px solid #666;
 	color: #FFF;
 	font-weight: bold;
 }
@@ -35,8 +36,7 @@ table {
   text-decoration: none;
 }
 .header{
-	background-color: #6998cb;
-	color: #fff;
 	font-weight: bold;
 	font-size: 14px;
+	border-bottom: 2px solid #666;
 }

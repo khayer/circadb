@@ -1,18 +1,18 @@
 - form_tag :controller => "query", :action => "index" do
-  .qbox.span-10.last
+  .qbox.span-18.last
     = text_area_tag :query_string, params[:query_string]
-  .span-12.last
+  .span-18.last
     .span-12
       = label_tag :filter, "Choose probability filter"
       = select_tag(:filter, options_for_select(ProbesetStat.pval_filters, params[:filter]))
       %br
       = label_tag :filter_value, "Probabily cut-off value"
       = text_field_tag :filter_value, (params[:filter_value] || "1.00"),:size => 5
-  .span-12.last
+  .span-18.last
     .label
       = label_tag :assay, "Choose which experiments to view"
       = image_tag("questionmark.png")
       %br
-      = select_tag(:assay, options_for_select(Assay.all.collect {|e| {e.name =>  e.id} }, params[:assay]), {:multiple => true})
+      = select_tag(:assay, options_for_select(Assay.all.collect {|e| [e.name ,  e.id] }, params[:assay]), {:multiple => true})
   .span-1.last= submit_tag("Search")
 

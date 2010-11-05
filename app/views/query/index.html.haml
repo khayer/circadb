@@ -1,10 +1,17 @@
-.form.span-12.last{:style => "border: 2px double #DDD; padding: 10px;" }
+.form.span-15.last{:style => "border: 2px double #DDD; padding: 10px;" }
   = render :partial => "form"
-.params.span-10.last
+.params.span-14.last
   %b Search Parameters:
-  - show_params.each do |p|
-    -if params.has_key?(p) &&  params[p]
-      %br== <em>#{p.to_s.titlecase}:</em> "#{params[p]}"
+  - params.keys.sort.each do |p|
+    %br== <em>#{p.to_s.titlecase}:</em> "#{params[p]}"
+#pagesTop.span-14.last
+  .count
+    %b
+      %br==Per page #{@probeset_stats.per_page}
+      %br==Current Page #{@probeset_stats.current_page}
+      %br==Total hits #{@probeset_stats.total_entries}
+      %br==Total pages #{@probeset_stats.total_pages}
+  = will_paginate @probeset_stats, :class => "digg_pagination", :params => params
 .results.span-13.last
   %table
     -for @probeset_stat in @probeset_stats do
@@ -51,6 +58,5 @@
               %td= @probeset_stat.jtk_q_value
               %td= @probeset_stat.jtk_period_length
               %td= @probeset_stat.jtk_lag
-.span-13.last
-  #pages
-    = will_paginate @probeset_stats, :class => "digg_pagination", :params => params
+#pagesBottom.span-14.last
+  = will_paginate @probeset_stats, :class => "digg_pagination", :params => params

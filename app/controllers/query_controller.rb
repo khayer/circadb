@@ -1,27 +1,35 @@
 class QueryController < ApplicationController
-  @@per_page = 25
+  @@per_page = 30
+  DEFUALT_PARAMS = {:filter => "jtk_p_value", 
+    :filter_value => "1.00", 
+    :page => "1", 
+    :query_string => ""
+    }
   def index
+    # condition hash
     cnd = {}
-    page = params[:page].to_i > 0 ? params[:page].to_i : 1
-    qs = params[:query_string].to_s
-
+    # page to fetch
+    current_page = params[:page].to_i > 0 ? params[:page].to_i : 1
     # q_value filter
-    if params[:filter_value].to_f > 0.0
-      cnd[params[:filter].to_sym] = (0.0)..(params[:filter_value].to_f)
-    end
+    params[:filter]||= "jtk_p_value"
+    fv = params[:filter_value].to_f > 0.0 ? params[:filter_value].to_f : 1.0
+    cnd[params[:filter].to_sym] = (0.0)..(fv)
 
     # tissue
-    if  (params[:assay] && params[:assay].length > 0)
+    if  (params[:assay])
       cnd[:assay_id] = params[:assay]
     end
-
-    @probeset_stats = ProbesetStat.search(qs, :with => cnd, :page => page, :per_page => @@per_page, :include => [:probeset, :probeset_data], :order => "#{params[:filter]} ASC", :match_mode => :any)
+    @probeset_stats = ProbesetStat.search(params[:query_string] || "", :page => current_page,:per_page => @@per_page, :with => cnd, :order => "#{params[:filter]} ASC", :match_mode => :any, :include => [:probeset_data, :probeset])
+    
     puts "@probeset_stats = #{@probeset_stats.length}"
     respond_to do |format|
       format.html 
-      format.bgps { render :action => "index" , :layout => "biogps" }
-      format.js {  render  :json => @probesets.to_json}
-      format.xml { render :xml => @probesets.to_xml}
+      format.bgps do 
+        @unigene_id = params[:query_string]
+        render :action => "index" , :layout => "biogps" 
+      end
+      format.js {  render  :json => @probeset_stats.to_json}
+      format.xml { render :xml => @probeset_stats.to_xml}
     end
   end
 end
