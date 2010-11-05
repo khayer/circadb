@@ -1,7 +1,12 @@
 class ProbesetStat < ActiveRecord::Base
   cattr_reader :per_page
   @@per_page = 25
-
+  cattr_reader :pval_filters
+  @@pval_filters = []
+  %w{ jtk fisher_g cosopt }.each do |n|
+    @@pval_filters += ["#{n}_p_value","#{n}_q_value"]
+  end
+  
   belongs_to :assay
   belongs_to :probeset
   belongs_to :probeset_data

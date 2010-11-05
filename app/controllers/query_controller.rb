@@ -6,17 +6,17 @@ class QueryController < ApplicationController
     qs = params[:query_string].to_s
 
     # q_value filter
-    if params[:cosopt_q_value].to_f > 0.0
-      cnd[:cosopt_q_value] = (0.0)..(params[:cosopt_q_value].to_f)
+    if params[:filter_value].to_f > 0.0
+      cnd[params[:filter].to_sym] = (0.0)..(params[:filter_value].to_f)
     end
 
     # tissue
-    if  (params[:assay].to_i > 0)
-      cnd[:assay_id] = params[:assay].to_i
+    if  (params[:assay] && params[:assay].length > 0)
+      cnd[:assay_id] = params[:assay]
     end
 
-    @probeset_stats = ProbesetStat.search(qs, :with => cnd, :page => page, :per_page => @@per_page, :include => [:probeset, :probeset_data], :order => "jtk_q_value ASC", :match_mode => :any)
-
+    @probeset_stats = ProbesetStat.search(qs, :with => cnd, :page => page, :per_page => @@per_page, :include => [:probeset, :probeset_data], :order => "#{params[:filter]} ASC", :match_mode => :any)
+    puts "@probeset_stats = #{@probeset_stats.length}"
     respond_to do |format|
       format.html 
       format.bgps { render :action => "index" , :layout => "biogps" }

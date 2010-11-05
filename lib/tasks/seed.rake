@@ -90,7 +90,7 @@ namespace :seed do
 
   task :assays => :environment do 
     f = %w{ slug name }
-    v = [["liver", "Mouse Liver Circadian Expression"], ["pituitary", "Mouse Pituitary Circadian Expression"], ["3t3", "NIH 3T3 Immortilized Cell Line Circadian Expression"], ["Clockmut_liver", "Clock Mutant Liver Circadian Expression"], ["Clockmut_muscle", "Clock Mutant Muscle Circadian Expression"], ["Clockmut_scn", "Clock Mutant SCN Circadian Expression"], ["WT_liver", "WT Liver Circadian Expression"], ["WT_muscle", "WT Muscle Circadian Expression"], ["WT_scn", "WT SCN Circadian Expression"] ]
+    v = [["liver", "Mouse Liver 48 hour"], ["pituitary", "Mouse Pituitary 48 hour"], ["3t3", "NIH 3T3 Immortilized Cell Line 48 hour"], ["wt_clockmut_liver", "WT + Clock Mutant Liver GNF microarray"], ["wt_clockmut_muscle", "WT + Clock Mutant Muscle GNF microarray"], ["wt_clockmut_scn", "WT + Clock Mutant SCN GNF microarray"]]
     Assay.import(f,v)
     puts "=== 9 Assay inserted ==="
 
@@ -156,7 +156,7 @@ namespace :seed do
         dp_clockmut_s = R.scaleData(dp_clockmut,max).map {|e| e.to_i }
         dp_wt_s = R.scaleData(dp_wt,max).map {|e| e.to_i }
         # construct the google chart URL base
-        cubase = "http://chart.apis.google.com/chart?chs=%sx%s&cht=lxy&chxt=x,y&chxl=0:|18||||||||24||||||||30||||||||36||||||||42||||||||48||||||||54||||||||60|||62|1:|#{min}|#{mid}|#{max}&chxp=1,2,50,97&chxr=0,18,62&chls=2,1,0|2,1,0&chf=c,ls,0,CCCCCC,0.136363636,FFFFFF,0.27272727,CCCCCC,0.27272727,FFFFFF,0.27272727,CCCCCC,0.0454545455&chd=t:9.09,18.18,27.27,36.36,45.45,54.54,63.63|#{dp_clockmut_s.join(",")}|-1|#{dp_wt_s.join(",")}&chm=d,FF0000,0,-1,8|d,0000FF,1,-1,8&chco=FF0000,0000FF&chdl=Clock_mutant|WT&chdlp=rs"
+        cubase = "http://chart.apis.google.com/chart?chs=%sx%s&cht=lxy&chxt=x,y&chxl=0:|18||||||||24||||||||30||||||||36||||||||42||||||||48||||||||54||||||||60|||62|1:|#{min}|#{mid}|#{max}&chxp=1,2,50,97&chxr=0,18,62&chls=2,1,0|2,1,0&chf=c,ls,0,CCCCCC,0.136363636,FFFFFF,0.27272727,CCCCCC,0.27272727,FFFFFF,0.27272727,CCCCCC,0.0454545455&chd=t:9.09,18.18,27.27,36.36,45.45,54.54,63.63|#{dp_clockmut_s.join(",")}|-1|#{dp_wt_s.join(",")}&chm=d,FF0000,0,-1,8|d,0000FF,1,-1,8&chco=FF9900,008000&chdl=Clock_mutant|WT&chdlp=rs"
         psid = probesets[wt[1]]
         buffer << [a_clockmut.id, a_clockmut.slug, psid, cm[1], tp_clockmut.to_json, dp_clockmut.to_json, cubase]
         buffer << [a_wt.id, a_wt.slug, psid, wt[1], tp_wt.to_json, dp_wt.to_json, cubase]
