@@ -90,7 +90,8 @@ namespace :seed do
 
   task :assays => :environment do 
     f = %w{ slug name }
-    v = [["liver", "Mouse Liver 48 hour"], ["pituitary", "Mouse Pituitary 48 hour"], ["3t3", "NIH 3T3 Immortilized Cell Line 48 hour"], ["wt_clockmut_liver", "WT + Clock Mutant Liver GNF microarray"], ["wt_clockmut_muscle", "WT + Clock Mutant Muscle GNF microarray"], ["wt_clockmut_scn", "WT + Clock Mutant SCN GNF microarray"]]
+    v = [["liver_affy","Mouse Liver 48 hour (Affymetrix)"],["pituitary_affy","Mouse Pituitary 48 hour (Affymetrix)"],["3t3_affy","NIH 3T3 Immortilized Cell Line 48 hour (Affymetrix)"],["liver_gnf","Wild Type + Clock Mutant Liver (GNF microarray)"],["muscle_gnf","Wild Type + Clock Mutant Muscle (GNF microarray)"],["scn_gnf","Wild Type + Clock Mutant SCN (GNF microarray)"]]
+
     Assay.import(f,v)
     puts "=== 9 Assay inserted ==="
 

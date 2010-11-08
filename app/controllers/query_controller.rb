@@ -16,8 +16,8 @@ class QueryController < ApplicationController
     cnd[params[:filter].to_sym] = (0.0)..(fv)
 
     # tissue
-    if  (params[:assay])
-      cnd[:assay_id] = params[:assay]
+    if  (params[:assays])
+      cnd[:assay_id] = params[:assays]
     end
     @probeset_stats = ProbesetStat.search(params[:query_string] || "", :page => current_page,:per_page => @@per_page, :with => cnd, :order => "#{params[:filter]} ASC", :match_mode => :any, :include => [:probeset_data, :probeset])
     

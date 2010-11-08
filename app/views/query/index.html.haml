@@ -1,9 +1,5 @@
 .form.span-15.last{:style => "border: 2px double #DDD; padding: 10px;" }
   = render :partial => "form"
-.params.span-14.last
-  %b Search Parameters:
-  - params.keys.sort.each do |p|
-    %br== <em>#{p.to_s.titlecase}:</em> "#{params[p]}"
 #pagesTop.span-14.last
   .count
     %b
