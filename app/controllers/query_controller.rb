@@ -1,10 +1,6 @@
 class QueryController < ApplicationController
-  @@per_page = 30
-  DEFUALT_PARAMS = {:filter => "jtk_p_value", 
-    :filter_value => "1.00", 
-    :page => "1", 
-    :query_string => ""
-    }
+  @@per_page = 25
+
   def index
     # condition hash
     cnd = {}
