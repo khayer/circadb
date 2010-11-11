@@ -9,14 +9,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100819183627) do
+ActiveRecord::Schema.define(:version => 20101111205706) do
 
   create_table "assays", :force => true do |t|
-    t.string "slug"
-    t.string "name"
-    t.string "description"
+    t.string  "slug"
+    t.string  "name"
+    t.string  "description"
+    t.integer "gene_chip_id"
   end
 
+  add_index "assays", ["gene_chip_id"], :name => "index_assays_on_gene_chip_id"
   add_index "assays", ["slug"], :name => "index_assays_on_slug", :unique => true
 
   create_table "gene_chips", :force => true do |t|

@@ -2,11 +2,7 @@
   = render :partial => "form"
 #pagesTop.span-14.last
   .count
-    %b
-      %br==Per page #{@probeset_stats.per_page}
-      %br==Current Page #{@probeset_stats.current_page}
-      %br==Total hits #{@probeset_stats.total_entries}
-      %br==Total pages #{@probeset_stats.total_pages}
+    %b==Total hits #{@probeset_stats.total_entries}
   = will_paginate @probeset_stats, :class => "digg_pagination", :params => params
 .results.span-13.last
   %table
@@ -55,4 +51,6 @@
               %td= @probeset_stat.jtk_period_length
               %td= @probeset_stat.jtk_lag
 #pagesBottom.span-14.last
+  .count
+    %b==Total hits #{@probeset_stats.total_entries}
   = will_paginate @probeset_stats, :class => "digg_pagination", :params => params

@@ -89,8 +89,15 @@ namespace :seed do
 
 
   task :assays => :environment do 
-    f = %w{ slug name }
-    v = [["liver_affy","Mouse Liver 48 hour (Affymetrix)"],["pituitary_affy","Mouse Pituitary 48 hour (Affymetrix)"],["3t3_affy","NIH 3T3 Immortilized Cell Line 48 hour (Affymetrix)"],["liver_gnf","Wild Type + Clock Mutant Liver (GNF microarray)"],["muscle_gnf","Wild Type + Clock Mutant Muscle (GNF microarray)"],["scn_gnf","Wild Type + Clock Mutant SCN (GNF microarray)"]]
+    f = %w{ slug name gene_chip_id }
+    affy_id = GeneChip.find("Mouse430_2").id
+    gnf_id = GeneChip.find("gnf1m").id
+    v = [["liver_affy","Mouse Liver 48 hour (Affymetrix)",affy_id],
+         ["pituitary_affy","Mouse Pituitary 48 hour (Affymetrix)",affy_id],
+         ["3t3_affy","NIH 3T3 Immortilized Cell Line 48 hour (Affymetrix)",affy_id],
+         ["liver_gnf","Wild Type + Clock Mutant Liver (GNF microarray)", gnf_id],
+         ["muscle_gnf","Wild Type + Clock Mutant Muscle (GNF microarray)", gnf_id],
+         ["scn_gnf","Wild Type + Clock Mutant SCN (GNF microarray)", gnf_id]]
 
     Assay.import(f,v)
     puts "=== 9 Assay inserted ==="
