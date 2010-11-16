@@ -12,19 +12,19 @@
     = stylesheet_link_tag "pagination"
     = stylesheet_link_tag "circa"
     %title CIRCA: Circadian gene expression profiles.
-  %body.span-18.last
-    .header.push-2.span-6.last
+  %body.container.span-16.last
+    .header.span-16.last
       %h2= link_to( image_tag('circa-logo.png', :alt=> "CIRCA"), root_path())
-    .content.push-2.span-18.last
+    .content.span-16.last
       = yield
-    .footer.push-2.span-13
+    .footer.span-15.last
       %hr
-      .push-3.span-6
+      .span-15
         =link_to("Hogenesch Lab", "http://bioinf.itmat.upenn.edu/hogeneschlab")
         | 
         =link_to("Panda Lab", "http://www.salk.edu/faculty/faculty_details.php?id=65")      
       %hr
-      .push-2.span-8
+      .span-15
         Penn Medicine | ITMAT Bioninformatics Facility
     .js
       = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"

@@ -1,6 +1,6 @@
 .form.span-15.last{:style => "border: 2px double #DDD; padding: 10px;" }
   = render :partial => "form"
-#pagesTop.span-14.last
+#pagesTop.span-15.last
   .count
     %b==Total hits #{@probeset_stats.total_entries}
   = will_paginate @probeset_stats, :class => "digg_pagination", :params => params
@@ -50,7 +50,7 @@
               %td= @probeset_stat.jtk_q_value
               %td= @probeset_stat.jtk_period_length
               %td= @probeset_stat.jtk_lag
-#pagesBottom.span-14.last
+#pagesBottom.span-15.last
   .count
     %b==Total hits #{@probeset_stats.total_entries}
   = will_paginate @probeset_stats, :class => "digg_pagination", :params => params
