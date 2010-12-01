@@ -3,77 +3,50 @@ namespace :seed do
   require "ar-extensions"
   require "fastercsv"
 
+  desc "insert microarray and probeset annotations"
   task :genechips => :environment do 
-    g  = GeneChip.new(:slug => "Mouse430_2", :name => "Mouse Genome 430 2.0 (Affymetrix)")
-    g.save
-    g  = GeneChip.new(:slug => "gnf1m", :name => "Mouse GNF1M (GNF)")
-    g.save
-  end
-
-  desc "Seed probeset annotations"
-  task :mouse430_probesets => :environment do 
-    # probes
-    fields = %w{ gene_chip_id probeset_name genechip_name species annotation_date sequence_type sequence_source transcript_id target_description representative_public_id archival_unigene_cluster unigene_id genome_version alignments gene_title gene_symbol chromosomal_location unigene_cluster_type ensembl entrez_gene swissprot ec omim refseq_protein_id refseq_transcript_id flybase agi wormbase mgi_name rgd_name sgd_accession_number go_biological_process go_cellular_component go_molecular_function pathway interpro trans_membrane qtl annotation_description annotation_transcript_cluster transcript_assignments annotation_notes }
-    g  = GeneChip.find(:first, :conditions => ["slug like ?","Mouse430_2"])
-    count = 0
-    buffer = []
-    puts "=== Begin Probeset insert ==="
-    FasterCSV.foreach("#{RAILS_ROOT}/seed_data/Mouse430_2.na28.annot.csv", :headers=> true ) do |ps|
-      count += 1
-      buffer << [g.id] + ps.values_at
-      if count % 1000 == 0
-        Probeset.import(fields,buffer)
-        buffer = []
-        puts count
+    chips = [["Mouse430_2","Mouse Genome 430 2.0 (Affymetrix)","Mouse430_2.na30.annot.csv"],
+     ["Mouse430A_2", "Mouse Genome 430A 2.0 (Affymetrix)","Mouse430_2.na28.annot.csv"],
+     ["gnf1m","Mouse GNF1M (GNF)" ,"gnf1m.annot2007.csv"]]
+    chips.each do |c| 
+      puts "=== Start array #{c[0]} === "
+      g  = GeneChip.new(:slug => c[0], :name => c[1])
+      g.save
+      annot_fields = %w{ gene_chip_id probeset_name genechip_name species annotation_date sequence_type sequence_source transcript_id target_description representative_public_id archival_unigene_cluster unigene_id genome_version alignments gene_title gene_symbol chromosomal_location unigene_cluster_type ensembl entrez_gene swissprot ec omim refseq_protein_id refseq_transcript_id flybase agi wormbase mgi_name rgd_name sgd_accession_number go_biological_process go_cellular_component go_molecular_function pathway interpro trans_membrane qtl annotation_description annotation_transcript_cluster transcript_assignments annotation_notes }
+      puts "=== Begin Probeset insert ==="
+      FasterCSV.foreach("#{RAILS_ROOT}/seed_data/#{c[2]}", :headers=> true ) do |ps|
+        count += 1
+        buffer << [g.id] + ps.values_at
+        if count % 1000 == 0
+          Probeset.import(fields,buffer)
+          buffer = []
+          puts count
+        end
       end
+      # get the last few imported
+      Probeset.import(fields,buffer)
+      puts count
+      puts "=== End array #{c[0]} === "
     end
-    Probeset.import(fields,buffer)
-    puts count
-    puts "=== End Probeset insert ==="
-
   end
 
-  desc "Seed gnf annotations"
-  task :gnf1m_probesets => :environment do 
-    # probes
-    fields = %w{ gene_chip_id probeset_name genechip_name species annotation_date sequence_type sequence_source transcript_id target_description representative_public_id archival_unigene_cluster unigene_id genome_version alignments gene_title gene_symbol chromosomal_location unigene_cluster_type ensembl entrez_gene swissprot ec omim refseq_protein_id refseq_transcript_id flybase agi wormbase mgi_name rgd_name sgd_accession_number go_biological_process go_cellular_component go_molecular_function pathway interpro trans_membrane qtl annotation_description annotation_transcript_cluster transcript_assignments annotation_notes }
-    g  = GeneChip.find(:first, :conditions => ["slug like ?", "gnf1m"])
-    count = 0
-    buffer = []
-    puts "=== Begin Probeset insert ==="
-    FasterCSV.foreach("#{RAILS_ROOT}/seed_data/gnf1m.annot2007.csv", :headers=> true ) do |ps|
-      count += 1
-      buffer << [g.id] + ps.values_at
-      if count % 1000 == 0
-        Probeset.import(fields,buffer)
-        buffer = []
-        puts count
-      end
-    end
-    Probeset.import(fields,buffer)
-    puts count
-    puts "=== End Probeset insert ==="
-
-  end
-
-
+  desc "insert experimental assays"
   task :assays => :environment do 
+    puts "=== Inserting assays === "
     f = %w{ slug name gene_chip_id }
     affy_id = GeneChip.find("Mouse430_2").id
     gnf_id = GeneChip.find("gnf1m").id
-    v = [["liver_affy","Mouse Liver 48 hour (Affymetrix)",affy_id],
-         ["pituitary_affy","Mouse Pituitary 48 hour (Affymetrix)",affy_id],
-         ["3t3_affy","NIH 3T3 Immortilized Cell Line 48 hour (Affymetrix)",affy_id],
-         ["liver_gnf","Wild Type + Clock Mutant Liver (GNF microarray)", gnf_id],
-         ["muscle_gnf","Wild Type + Clock Mutant Muscle (GNF microarray)", gnf_id],
-         ["scn_gnf","Wild Type + Clock Mutant SCN (GNF microarray)", gnf_id]]
-
+    v = [["affy_liver","Mouse Liver 48 hour (Affymetrix)",affy_id],
+         ["affy_pituitary","Mouse Pituitary 48 hour (Affymetrix)",affy_id],
+         ["affy_3t3","NIH 3T3 Immortilized Cell Line 48 hour (Affymetrix)",affy_id],
+         ["gnf_liver","Wild Type + Clock Mutant Liver (GNF microarray)", gnf_id],
+         ["gnf_muscle","Wild Type + Clock Mutant Muscle (GNF microarray)", gnf_id],
+         ["gnf_scn","Wild Type + Clock Mutant SCN (GNF microarray)", gnf_id]]
     Assay.import(f,v)
-    puts "=== 9 Assay inserted ==="
-
   end
 
-  desc "Seed raw data"
+  
+  desc "insert data points for an assay"
   task :datas => :environment do
     require 'rsruby'
     ## set up R instance and custom functions
@@ -90,30 +63,29 @@ namespace :seed do
     }")
 
     ## OK start the imports
-    puts "=== Raw Data insert starting ==="
-    # fields = %w{ assay_id assay_name probeset_name time_points data_points chart_url_base }
-    fields = %w{ assay_id assay_name probeset_id probeset_name time_points data_points chart_url_base }
-
-    # Clockmut_liver and wt_liver cells
-    #  x-axis => 0:|18||||||||24||||||||30||||||||36||||||||42||||||||48||||||||54||||||||60|||62|
-    #  background fill => chf=c,ls,0,CCCCCC,0.136363636,FFFFFF,0.27272727,CCCCCC,0.27272727,FFFFFF,0.27272727,CCCCCC,0.0454545455
-
-    # build a hash of probeset ids for this genechip for gnf1m
+    puts "=== Data insert starting (gnf) ==="
     g  = GeneChip.find(:first, :conditions => ["slug like ?","gnf1m"])
     probesets = {}
     g.probesets.each do |p|
       probesets[p.probeset_name]= p.id
     end
+    # fields = %w{ assay_id assay_name probeset_name time_points data_points chart_url_base }
+    fields = %w{ assay_id  probeset_id time_points data_points chart_url_base
+ cosopt_p_value cosopt_q_value cosopt_period_length cosopt_phase fisherg_p_value fisherg_q_value fisherg_period_length jtk_p_value jtk_q_value jtk_period_length jtk_lag jtk_amp }
 
-    %w{ liver scn muscle }.each do |etype|
+    # clockmut_liver and wt_liver cells
+    #  x-axis => 0:|18||||||||24||||||||30||||||||36||||||||42||||||||48||||||||54||||||||60|||62|
+    #  background fill => chf=c,ls,0,CCCCCC,0.136363636,FFFFFF,0.27272727,CCCCCC,0.27272727,FFFFFF,0.27272727,CCCCCC,0.0454545455
+
+    # build a hash of probeset ids for this genechip for gnf1m
+    %w{ liver scn muscle }.each do |tissue|
+      assay = Assay.find("gnf1m_#{tissue}")
+      %w{ clockmut wt}.each do |factor|
+      cm_data = FasterCSV.open("#{RAILS_ROOT}/seed_data/gnf1m_clockmut_#{etype}_data.csv")
+      wt_data = FasterCSV.open("#{RAILS_ROOT}/seed_data/gnf1m_wt_#{etype}_data.csv")
+      wt_stat = FasterCSV.open("#{RAILS_ROOT}/seed_data/gnf1m_wt_#{etype}_stats.csv")
       count = 0
       buffer = []
-      a_clockmut = Assay.find(:first, :conditions => ["slug = ?", "Clockmut_#{etype}"])
-      a_wt = Assay.find(:first, :conditions => ["slug = ?", "WT_#{etype}"])
-
-      puts "=== Raw Data Clockmut_#{etype} and WT_#{etype} cells insert starting ==="
-      cmf = FasterCSV.open("#{RAILS_ROOT}/seed_data/Clockmut_#{etype}_data.csv")
-      wtf = FasterCSV.open("#{RAILS_ROOT}/seed_data/WT_#{etype}_data.csv")
 
       cmf.each do |cm|
         wt = wtf.readline

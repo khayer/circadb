@@ -1,10 +1,12 @@
 development:
   port: 9313
   searchd_file_path: "db/sphinx"
+  ignore_chars: "., U+002E"
 test:
   port: 9313
   searchd_file_path: "db/sphinx"
+  ignore_chars: "., U+002E"
 production:
   port: 9313
   searchd_file_path: "db/sphinx"
-  
+  ignore_chars: "., U+002E"
