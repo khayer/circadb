@@ -1,6 +1,6 @@
 = CIRCA: Circadian Gene Expression Profiles
 
-Welcome to the CIRCA project. This is a data set of time course series data, highlighting circadian gene expression cycles through the use of the Cosopt algorithm for determining rhythmicity. 
+Welcome to the CIRCA project branch. This is a data set of time course series data, highlighting circadian gene expression cycles through the use of the Cosopt algorithm for determining rhythmicity. 
 
 It is  a Ruby on Rails application with a single controller and large data pre-set data set. Notable aspects include full-text search capability of gene annotation data via the Sphinx search engine, and data graphs dynamically produced by the Google Chart API. 
 
