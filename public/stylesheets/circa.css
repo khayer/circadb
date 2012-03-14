@@ -3,7 +3,7 @@
   width: 550px;
   border: 2px groove #333333;
 }
-                                                       
+
 .header {
   border-bottom:  2px solid #CCC;
   margin-bottom: 10px;
@@ -16,5 +16,5 @@
 }
 
 .help {
-  color: #666;
+  color: #AAA;
 }

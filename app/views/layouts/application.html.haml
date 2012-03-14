@@ -7,7 +7,7 @@
     %meta{:name => "keywords", :content => "circadian gene experession, transcript profiles, circadian, gene expression, microarray, transcription, Cosopt, mus musculus, mouse, mouse gene expression"}
     = stylesheet_link_tag "screen"
     /[if IE]
-      = stylesheet_link_tag "ie"
+    = stylesheet_link_tag "ie"
     = stylesheet_link_tag "print", :media => "print"
     = stylesheet_link_tag "pagination"
     = stylesheet_link_tag "circa"
@@ -15,14 +15,14 @@
   %body.container.span-16.last
     .header.span-16.last
       %h2= link_to( image_tag('circa-logo.png', :alt=> "CIRCA"), root_path())
-    .content.span-16.last
+    .content.span-14.last
       = yield
     .footer.span-15.last
       %hr
       .span-15
         =link_to("Hogenesch Lab", "http://bioinf.itmat.upenn.edu/hogeneschlab")
-        | 
-        =link_to("Panda Lab", "http://www.salk.edu/faculty/faculty_details.php?id=65")      
+        |
+        =link_to("Panda Lab", "http://www.salk.edu/faculty/faculty_details.php?id=65")
       %hr
       .span-15
         Penn Medicine | ITMAT Bioninformatics Facility

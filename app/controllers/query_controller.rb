@@ -16,13 +16,13 @@ class QueryController < ApplicationController
       cnd[:assay_id] = params[:assays]
     end
     @probeset_stats = ProbesetStat.search(params[:query_string] || "", :page => current_page,:per_page => @@per_page, :with => cnd, :order => "#{params[:filter]} ASC", :match_mode => :any, :include => [:probeset_data, :probeset])
-    
+
     puts "@probeset_stats = #{@probeset_stats.length}"
     respond_to do |format|
-      format.html 
-      format.bgps do 
+      format.html
+      format.bgps do
         @unigene_id = params[:query_string]
-        render :action => "index" , :layout => "biogps" 
+        render :action => "index" , :layout => "biogps"
       end
       format.js {  render  :json => @probeset_stats.to_json}
       format.xml { render :xml => @probeset_stats.to_xml}

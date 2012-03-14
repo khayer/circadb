@@ -13,12 +13,13 @@ gem "thinking-sphinx", :require => "thinking_sphinx"
 gem "curb"
 gem "ar-extensions"
 gem "fastercsv"
+gem "rsruby", :require => "rubygems"
 
-group :development do 
+group :development do
   gem "rails-footnotes"
   gem "wirble"
   gem "annotate"
 end
 
-group :test do 
+group :test do
 end
