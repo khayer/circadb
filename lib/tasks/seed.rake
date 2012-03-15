@@ -1,10 +1,10 @@
-desc "Bootstrap a site from the web" 
-namespace :bootstrap do 
-  desc "Resets the database" 
+desc "Bootstrap a site from the web"
+namespace :bootstrap do
+  desc "Resets the database"
   task :resetdb => ["db:drop", "db:create", "db:migrate"]
 
   desc "Download DB data from AWS"
-  task :download_db => :environment do 
+  task :download_db => :environment do
     unless File.exists? "#{Rails.root}/circadb.mysql.dmp"
       require 'curb'
       Curl::Easy.download("http://s3.amazonaws.com/itmat.circadb/circadb.mysql.dmp.gz", "#{Rails.root}/circadb.mysql.dmp.gz")
@@ -12,19 +12,19 @@ namespace :bootstrap do
     end
   end
   desc "insert DB data from downloaded MySQL dump"
-  task :insert_data => :environment do 
+  task :insert_data => :environment do
     unless File.exists? "#{Rails.root}/circadb.mysql.dmp"
       puts "Need to download data first, use \"rake bootstrap:download_db\" task"
       exit(0)
     end
     cfg = ActiveRecord::Base.configurations[Rails.env]
-    system("mysql -u #{cfg["username"]} #{ cfg["password"] ? "-p" + cfg["password"] : "" } " + 
+    system("mysql -u #{cfg["username"]} #{ cfg["password"] ? "-p" + cfg["password"] : "" } " +
            " #{ "-h " + cfg["host"] if cfg["host"] } #{cfg["database"]} < circadb.mysql.dmp")
   end
-  
+
   desc "Build the sphinx index"
   task :build_sphinx => ["ts:stop", "ts:config", "ts:rebuild", "ts:start"]
-  
+
   desc "Bootstrap the system"
   task :all => [:resetdb, :download_db, :insert_data, :build_sphinx]
 end
@@ -34,7 +34,7 @@ namespace :seed do
   require "ar-extensions"
   require "fastercsv"
 
-  task :genechips => :environment do 
+  task :genechips => :environment do
     g  = GeneChip.new(:slug => "Mouse430_2", :name => "Mouse Genome 430 2.0 (Affymetrix)")
     g.save
     g  = GeneChip.new(:slug => "gnf1m", :name => "Mouse GNF1M (GNF)")
@@ -42,7 +42,7 @@ namespace :seed do
   end
 
   desc "Seed probeset annotations"
-  task :mouse430_probesets => :environment do 
+  task :mouse430_probesets => :environment do
     # probes
     fields = %w{ gene_chip_id probeset_name genechip_name species annotation_date sequence_type sequence_source transcript_id target_description representative_public_id archival_unigene_cluster unigene_id genome_version alignments gene_title gene_symbol chromosomal_location unigene_cluster_type ensembl entrez_gene swissprot ec omim refseq_protein_id refseq_transcript_id flybase agi wormbase mgi_name rgd_name sgd_accession_number go_biological_process go_cellular_component go_molecular_function pathway interpro trans_membrane qtl annotation_description annotation_transcript_cluster transcript_assignments annotation_notes }
     g  = GeneChip.find(:first, :conditions => ["slug like ?","Mouse430_2"])
@@ -65,7 +65,7 @@ namespace :seed do
   end
 
   desc "Seed gnf annotations"
-  task :gnf1m_probesets => :environment do 
+  task :gnf1m_probesets => :environment do
     # probes
     fields = %w{ gene_chip_id probeset_name genechip_name species annotation_date sequence_type sequence_source transcript_id target_description representative_public_id archival_unigene_cluster unigene_id genome_version alignments gene_title gene_symbol chromosomal_location unigene_cluster_type ensembl entrez_gene swissprot ec omim refseq_protein_id refseq_transcript_id flybase agi wormbase mgi_name rgd_name sgd_accession_number go_biological_process go_cellular_component go_molecular_function pathway interpro trans_membrane qtl annotation_description annotation_transcript_cluster transcript_assignments annotation_notes }
     g  = GeneChip.find(:first, :conditions => ["slug like ?", "gnf1m"])
@@ -88,7 +88,7 @@ namespace :seed do
   end
 
 
-  task :assays => :environment do 
+  task :assays => :environment do
     f = %w{ slug name gene_chip_id }
     affy_id = GeneChip.find("Mouse430_2").id
     gnf_id = GeneChip.find("gnf1m").id
@@ -148,16 +148,28 @@ namespace :seed do
 
       cmf.each do |cm|
         wt = wtf.readline
-        if (wt[1] != cm[1])
+        puts cm
+        puts "______________"
+        next if cm.include?("Probe set")
+        #puts wt[0]
+        #puts cm[0]
+        #exit(1)
+        if (wt[0] != cm[0])
           STDERR.puts "WARNING!!!!! The probesets between Clock mutant & WT #{etype} do not match!"
           STDERR.puts "WARNING!!!!! Clock mutant = #{cm[1]} & WT = #{wt[1]} (line #{cm.lineno}) "
-          exit(1) 
+          exit(1)
         end
-        
+
         tp_clockmut = cm[2].split(/\|/).map {|e| e.to_i }
+        puts cm[2]
+        puts tp_clockmut
         tp_wt = wt[2].split(/\|/).map {|e| e.to_i }
+        puts tp_wt
         dp_clockmut = cm[3].split(/,/).map {|e| e.to_f }
+        puts dp_clockmut
         dp_wt = wt[3].split(/,/).map {|e| e.to_f }
+        puts dp_wt
+        exit
         max = R.max(dp_clockmut, dp_wt).to_i
         min = R.min(dp_clockmut, dp_wt).to_i
         mid = (min + max) / 2
@@ -181,7 +193,7 @@ namespace :seed do
     end
 
 
-    # LIVER + PITUATARY 
+    # LIVER + PITUATARY
     #  x-axis label => 0:|18||||||24||||||30||||||36||||||42||||||48||||||54||||||60|||||65||
     # x-axis range => chxr=0,18,66
     #  background fill => chf=c,ls,0,CCCCCC,0.125,FFFFFF,0.25,CCCCCC,0.25,FFFFFF,0.25,CCCCCC,0.125
@@ -211,7 +223,7 @@ namespace :seed do
         psid = probesets[psd[1]]
         buffer << [a.id(), a.slug, psid, psd[1], tp.to_json, dp.to_json,cubase]
 
-        if count % 1000 == 0 
+        if count % 1000 == 0
           ProbesetData.import(fields,buffer)
           puts count
           buffer = []
@@ -222,7 +234,7 @@ namespace :seed do
     end
     # 3T3 cells
     #  x-axis => 0:|20||||24||||||30||||||36||||||42||||||48||||||54||||||60|||||||67||
-    #  background fill => chf=c,ls,0,CCCCCC,0.084,FFFFFF,0.25,CCCCCC,0.25,FFFFFF,0.25,CCCCCC,0.165 
+    #  background fill => chf=c,ls,0,CCCCCC,0.084,FFFFFF,0.25,CCCCCC,0.25,FFFFFF,0.25,CCCCCC,0.165
     count = 0
     buffer = []
     a = Assay.find(:first, :conditions => ["slug = ?", '3t3'])
@@ -239,7 +251,7 @@ namespace :seed do
       cubase = "http://chart.apis.google.com/chart?chs=%sx%s&cht=lc&chxt=x,y&chxl=0:|20||||24||||||30||||||36||||||42||||||48||||||54||||||60|||||||67||1:|#{dp_min}|#{dp_mid}|#{dp_max}|&chxp=1,2,50,97&chxr=0,18,66&chls=0,0,0|2,1,0&chf=c,ls,0,CCCCCC,0.084,FFFFFF,0.25,CCCCCC,0.25,FFFFFF,0.25,CCCCCC,0.165&chd=t:#{dp_s.join(",")}|#{dp_a.join(",")}&chm=o,555555,0,-1,5"
       psid = probesets[psd[1]]
       buffer << [a.id(), a.slug, psid, psd[1], tp.to_json, dp.to_json,cubase]
-      if count % 1000 == 0 
+      if count % 1000 == 0
         ProbesetData.import(fields,buffer)
         puts count
         buffer = []
@@ -252,11 +264,11 @@ namespace :seed do
   end
 
   desc "Seed stats data"
-  task :stats => :environment do 
+  task :stats => :environment do
     puts "=== Stat Data insert starting ==="
 
     fields = %w{  assay_id assay_name probeset_id probeset_name cosopt_p_value cosopt_q_value cosopt_period_length cosopt_phase fisherg_p_value fisherg_q_value fisherg_period_length jtk_p_value jtk_q_value jtk_period_length jtk_lag jtk_amp}
-    # liver and pituitary 
+    # liver and pituitary
 
     g  = GeneChip.find(:first, :conditions => ["slug like ?","Mouse430_2"])
     probesets = {}
@@ -264,7 +276,7 @@ namespace :seed do
       probesets[p.probeset_name]= p.id
     end
     %w{ liver pituitary 3t3 }.each do |etype|
-      #liver 
+      #liver
       count = 0
       buffer = []
       a = Assay.find(:first, :conditions => ["slug = ?", etype])
@@ -274,22 +286,22 @@ namespace :seed do
         count += 1
         aslug, psname = r.slice!(0,2)
         psid = probesets[psname]
-        buffer << [a.id, a.slug,psid, psname] + r.to_a 
+        buffer << [a.id, a.slug,psid, psname] + r.to_a
 
-        if count % 1000 == 0 
+        if count % 1000 == 0
           ProbesetStat.import(fields,buffer)
           buffer = []
           puts count
         end
       end
       ProbesetStat.import(fields,buffer)
-      puts "=== Stat Data #{etype} end (count = #{count}) ==="    
+      puts "=== Stat Data #{etype} end (count = #{count}) ==="
     end
     puts "=== Stat Data END ==="
   end
 
   desc "Seed Clock + WT gnf stats data"
-  task :clock_mutant_stats => :environment do 
+  task :clock_mutant_stats => :environment do
     puts "=== Stat Clock Mutant + WT START ==="
 
     fields = %w{  assay_id assay_name probeset_id probeset_name cosopt_p_value cosopt_q_value cosopt_period_length cosopt_phase fisherg_p_value fisherg_q_value fisherg_period_length jtk_p_value jtk_q_value jtk_period_length jtk_lag jtk_amp}
@@ -300,7 +312,7 @@ namespace :seed do
       probesets[p.probeset_name]= p.id
     end
 
-    %w{ Clockmut WT }.each do |stype| 
+    %w{ Clockmut WT }.each do |stype|
       %w{ liver muscle scn }.each do |tissue|
         etype = "#{stype}_#{tissue}"
         count = 0
@@ -312,8 +324,8 @@ namespace :seed do
           count += 1
           aslug, psname = r.slice!(0,2)
           psid = probesets[psname]
-          buffer << [a.id, a.slug,psid, psname] + r.to_a 
-          if count % 1000 == 0 
+          buffer << [a.id, a.slug,psid, psname] + r.to_a
+          if count % 1000 == 0
             ProbesetStat.import(fields,buffer)
             buffer = []
             puts count
@@ -329,23 +341,23 @@ namespace :seed do
   desc "Backfills in references for FKs to probeset_stats to probeset_datas."
   task :refbackfill =>  :environment do
     puts "=== Back filling FK probeset_stats.probset_data_id  ==="
-    c = ActiveRecord::Base.connection 
+    c = ActiveRecord::Base.connection
     c.execute "update probeset_stats s set s.probeset_data_id = (select d.id from probeset_datas d where d.probeset_id = s.probeset_id and d.assay_id = s.assay_id limit 1)"
   end
 
   desc "Loads all seed data into the DB"
-  task :all => [:genechips, :mouse430_probesets, :gnf1m_probesets, :assays, 
-                :datas, :stats, :clock_mutant_stats, :refbackfill] do 
+  task :all => [:genechips, :mouse430_probesets, :gnf1m_probesets, :assays,
+                :datas, :stats, :clock_mutant_stats, :refbackfill] do
   end
 
-  task :delete_from_data => :environment do 
-    c = ActiveRecord::Base.connection 
+  task :delete_from_data => :environment do
+    c = ActiveRecord::Base.connection
     c.execute "delete from probeset_stats"
     c.execute "delete from probeset_datas"
   end
 
   desc "Reset the source data and stats"
-  task :reset_data => [:delete_from_data, :datas, :stats, :refbackfill] do 
+  task :reset_data => [:delete_from_data, :datas, :stats, :refbackfill] do
   end
 
 end
