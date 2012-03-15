@@ -17,4 +17,5 @@ source_data/*
 Gemfile.lock
 .bundle
 ._*
+.Rhistory
 
