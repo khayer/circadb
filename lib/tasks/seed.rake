@@ -37,8 +37,9 @@ namespace :seed do
   task :genechips => :environment do
     g  = GeneChip.new(:slug => "Mouse430_2", :name => "Mouse Genome 430 2.0 (Affymetrix)")
     g.save
-    g  = GeneChip.new(:slug => "gnf1m", :name => "Mouse GNF1M (GNF)")
+    g  = GeneChip.new(:slug => "GNF1M", :name => "Mouse GNF1M (GNF)")
     g.save
+    g  = GeneChip.new(:slug => "U74Av1", :name => "Affymetrix GeneChip Mouse Genome U74A-B-C_2 (Affymetrix)")
   end
 
   desc "Seed probeset annotations"
@@ -542,6 +543,7 @@ namespace :seed do
     c.execute "delete from probesets"
     c.execute "delete from probeset_stats"
     c.execute "delete from probeset_datas"
+    puts "=== delete_from_all done!"
   end
 
   desc "Reset the source data and stats"
