@@ -525,12 +525,21 @@ namespace :seed do
   end
 
   desc "Loads all seed data into the DB"
-  task :all => [:genechips, :mouse430_probesets, :gnf1m_probesets, :assays,
+  task :all => [:delete_from_all, :genechips, :mouse430_probesets, :gnf1m_probesets, :assays,
                 :datas, :stats, :clock_mutant_stats, :refbackfill] do
   end
 
   task :delete_from_data => :environment do
     c = ActiveRecord::Base.connection
+    c.execute "delete from probeset_stats"
+    c.execute "delete from probeset_datas"
+  end
+
+  task :delete_from_all => :environment do
+    c = ActiveRecord::Base.connection
+    c.execute "delete from gene_chips"
+    c.execute "delete from assays"
+    c.execute "delete from probesets"
     c.execute "delete from probeset_stats"
     c.execute "delete from probeset_datas"
   end
