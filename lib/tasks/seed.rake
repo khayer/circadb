@@ -501,7 +501,7 @@ namespace :seed do
       a = Assay.find(:first, :conditions => ["slug = ?", etype])
       puts "=== Stat Data #{etype} start ==="
 
-      File.open("#{RAILS_ROOT}/seed_data/hughes_#{etype}_data","r" ).each do |line|
+      FasterCSV.foreach("#{RAILS_ROOT}/seed_data/test","r" ).each do |row|
         count += 1
         line = line.split("@")
         aslug, psname = 0,line[0]
@@ -585,6 +585,9 @@ namespace :seed do
     c.execute "delete from probeset_datas"
     puts "=== delete_from_all done!"
   end
+
+  task :test => [:delete_from_all, :genechips, :mouse430_probesets,
+    :assays, :datas2, :stats2, :refbackfill]
 
   desc "Reset the source data and stats"
   task :reset_data => [:delete_from_data, :datas2, :stats2, :refbackfill] do
