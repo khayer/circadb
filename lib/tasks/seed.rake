@@ -29,18 +29,52 @@ namespace :bootstrap do
   task :all => [:resetdb, :download_db, :insert_data, :build_sphinx]
 end
 
+
+
+######
+     #
+######
+
+
 desc "Seed database using raw data"
 namespace :seed do
   require "ar-extensions"
   require "fastercsv"
 
   task :genechips => :environment do
+    c = ActiveRecord::Base.connection
+    c.execute "delete from gene_chips"
+
     g  = GeneChip.new(:slug => "Mouse430_2", :name => "Mouse Genome 430 2.0 (Affymetrix)")
     g.save
     g  = GeneChip.new(:slug => "GNF1M", :name => "Mouse GNF1M (GNF)")
     g.save
     g  = GeneChip.new(:slug => "U74Av1", :name => "Affymetrix GeneChip Mouse Genome U74A-B-C_2 (Affymetrix)")
+    g.save
   end
+
+  desc "Seed probeset annotations"
+  task :u74av1_probesets => :environment do
+    # probes
+    fields = %w{ gene_chip_id probeset_name genechip_name species annotation_date sequence_type sequence_source transcript_id target_description representative_public_id archival_unigene_cluster unigene_id genome_version alignments gene_title gene_symbol chromosomal_location unigene_cluster_type ensembl entrez_gene swissprot ec omim refseq_protein_id refseq_transcript_id flybase agi wormbase mgi_name rgd_name sgd_accession_number go_biological_process go_cellular_component go_molecular_function pathway interpro trans_membrane qtl annotation_description annotation_transcript_cluster transcript_assignments annotation_notes }
+    g  = GeneChip.find(:first, :conditions => ["slug like ?","U74Av1"])
+    count = 0
+    buffer = []
+    puts "=== Begin Probeset insert ==="
+    FasterCSV.foreach("#{RAILS_ROOT}/seed_data/prepared_MG_U74Av2.na31.annot.csv", :headers=> true ) do |ps|
+      count += 1
+      buffer << [g.id] + ps.values_at
+      if count % 1000 == 0
+        Probeset.import(fields,buffer)
+        buffer = []
+        puts count
+      end
+    end
+    Probeset.import(fields,buffer)
+    puts count
+    puts "=== End Probeset insert ==="
+  end
+
 
   desc "Seed probeset annotations"
   task :mouse430_probesets => :environment do
@@ -50,7 +84,7 @@ namespace :seed do
     count = 0
     buffer = []
     puts "=== Begin Probeset insert ==="
-    FasterCSV.foreach("#{RAILS_ROOT}/seed_data/Mouse430_2.na28.annot.csv", :headers=> true ) do |ps|
+    FasterCSV.foreach("#{RAILS_ROOT}/seed_data/prepared_Mouse430_2.na28.annot.csv", :headers=> true ) do |ps|
       count += 1
       buffer << [g.id] + ps.values_at
       if count % 1000 == 0
@@ -62,18 +96,17 @@ namespace :seed do
     Probeset.import(fields,buffer)
     puts count
     puts "=== End Probeset insert ==="
-
   end
 
   desc "Seed gnf annotations"
   task :gnf1m_probesets => :environment do
     # probes
     fields = %w{ gene_chip_id probeset_name genechip_name species annotation_date sequence_type sequence_source transcript_id target_description representative_public_id archival_unigene_cluster unigene_id genome_version alignments gene_title gene_symbol chromosomal_location unigene_cluster_type ensembl entrez_gene swissprot ec omim refseq_protein_id refseq_transcript_id flybase agi wormbase mgi_name rgd_name sgd_accession_number go_biological_process go_cellular_component go_molecular_function pathway interpro trans_membrane qtl annotation_description annotation_transcript_cluster transcript_assignments annotation_notes }
-    g  = GeneChip.find(:first, :conditions => ["slug like ?", "gnf1m"])
+    g  = GeneChip.find(:first, :conditions => ["slug like ?", "GNF1M"])
     count = 0
     buffer = []
     puts "=== Begin Probeset insert ==="
-    FasterCSV.foreach("#{RAILS_ROOT}/seed_data/gnf1m.annot2007.csv", :headers=> true ) do |ps|
+    FasterCSV.foreach("#{RAILS_ROOT}/seed_data/prepared_gnf1m.annot2007.csv", :headers=> true ) do |ps|
       count += 1
       buffer << [g.id] + ps.values_at
       if count % 1000 == 0
@@ -85,21 +118,28 @@ namespace :seed do
     Probeset.import(fields,buffer)
     puts count
     puts "=== End Probeset insert ==="
-
   end
 
-
+  desc "Seed assays"
   task :assays => :environment do
-    f = %w{ slug name gene_chip_id }
-    affy_id = GeneChip.find("Mouse430_2").id
-    gnf_id = GeneChip.find("gnf1m").id
-    v = [["liver_affy","Mouse Liver 48 hour (Affymetrix)",affy_id],
+    c = ActiveRecord::Base.connection
+    c.execute "delete from assays"
+    f = %w{ slug name description}
+    affy_id = GeneChip.find(:first,:conditions => ["slug like ?","Mouse430_2"]).id
+    gnf_id = GeneChip.find(:first, :conditions => ["slug like ?","GNF1M"]).id
+    u74av1_id = GeneChip.find(:first, :conditions => ["slug like ?","U74Av1"]).id
+
+    v = [["liver_affy","Mouse Liver 48 hour (Affymetrix)", affy_id],
          ["pituitary_affy","Mouse Pituitary 48 hour (Affymetrix)",affy_id],
          ["3t3_affy","NIH 3T3 Immortilized Cell Line 48 hour (Affymetrix)",affy_id],
          ["liver_gnf","Wild Type + Clock Mutant Liver (GNF microarray)", gnf_id],
-         ["muscle_gnf","Wild Type + Clock Mutant Muscle (GNF microarray)", gnf_id],
-         ["scn_gnf","Wild Type + Clock Mutant SCN (GNF microarray)", gnf_id]]
+         ["muscle_gnf","Wild Type + Clock Mutant Muscle (GNF microarray)",gnf_id],
+         ["scn_gnf","Wild Type + Clock Mutant SCN (GNF microarray)", gnf_id],
+         ["liver_u74av1","Liver Panda 2002 (Affymetrix)", u74av1_id],
+         ["muscle_u74av1","SCN MAS4 Panda 2002 (Affymetrix)", u74av1_id],
+         ["scn_u74av1","SCN gcrma Panda 2002 (Affymetrix)", u74av1_id]]
 
+    #v = []
     Assay.import(f,v)
     puts "=== 9 Assay inserted ==="
 
@@ -350,7 +390,7 @@ namespace :seed do
       probesets[p.probeset_name]= p.id
     end
 
-    %w{ liver }.each do |etype|
+    %w{ liver_affy }.each do |etype|
       count = 0
       buffer = []
       a = Assay.find(:first, :conditions => ["slug = ?", etype])
@@ -454,7 +494,7 @@ namespace :seed do
     g.probesets.each do |p|
       probesets[p.probeset_name]= p.id
     end
-    %w{ liver }.each do |etype|
+    %w{ liver_affy }.each do |etype|
       #liver
       count = 0
       buffer = []
@@ -526,8 +566,8 @@ namespace :seed do
   end
 
   desc "Loads all seed data into the DB"
-  task :all => [:delete_from_all, :genechips, :mouse430_probesets, :gnf1m_probesets, :assays,
-                :datas, :stats, :clock_mutant_stats, :refbackfill] do
+  task :all => [:delete_from_all, :genechips, :mouse430_probesets, :gnf1m_probesets, :u74av1_probesets,
+    :assays, :datas, :stats, :clock_mutant_stats, :refbackfill] do
   end
 
   task :delete_from_data => :environment do
