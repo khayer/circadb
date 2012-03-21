@@ -33,23 +33,23 @@
               %th period
               %th phase
             %tr
-              %th COSOPT
-              %td= @probeset_stat.cosopt_p_value
-              %td= @probeset_stat.cosopt_q_value
-              %td= @probeset_stat.cosopt_period_length
-              %td= @probeset_stat.cosopt_phase
-            %tr
-              %th Fisher G
-              %td= @probeset_stat.fisherg_p_value
-              %td= @probeset_stat.fisherg_q_value
-              %td= @probeset_stat.fisherg_period_length
-              %td <i>NA</i>
-            %tr
               %th JTK
               %td= @probeset_stat.jtk_p_value
               %td= @probeset_stat.jtk_q_value
               %td= @probeset_stat.jtk_period_length
               %td= @probeset_stat.jtk_lag
+            %tr
+              %th Lomb Scargle
+              %td= @probeset_stat.cosopt_p_value
+              %td= @probeset_stat.cosopt_q_value
+              %td= @probeset_stat.cosopt_period_length
+              %td= @probeset_stat.cosopt_phase
+            %tr
+              %th DeLichtenberg
+              %td= @probeset_stat.fisherg_p_value
+              %td= @probeset_stat.fisherg_q_value
+              %td= @probeset_stat.fisherg_period_length
+              %td <i>NA</i>
 #pagesBottom.span-15.last
   .count
     %b==Total hits #{@probeset_stats.total_entries}

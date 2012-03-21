@@ -84,9 +84,10 @@ namespace :seed do
     count = 0
     buffer = []
     puts "=== Begin Probeset insert ==="
-    FasterCSV.foreach("#{RAILS_ROOT}/seed_data/prepared_Mouse430_2.na28.annot.csv", :headers=> true ) do |ps|
+    FasterCSV.foreach("#{RAILS_ROOT}/seed_data/prepared_Mouse430_2.na28.annot.csv" ) do |ps|
       count += 1
-      buffer << [g.id] + ps.values_at
+      buffer << [g.id] + ps[0..-1]
+
       if count % 1000 == 0
         Probeset.import(fields,buffer)
         buffer = []
@@ -124,7 +125,7 @@ namespace :seed do
   task :assays => :environment do
     c = ActiveRecord::Base.connection
     c.execute "delete from assays"
-    f = %w{ slug name description}
+    f = %w{ slug name description }
     affy_id = GeneChip.find(:first,:conditions => ["slug like ?","Mouse430_2"]).id
     gnf_id = GeneChip.find(:first, :conditions => ["slug like ?","GNF1M"]).id
     u74av1_id = GeneChip.find(:first, :conditions => ["slug like ?","U74Av1"]).id
@@ -135,7 +136,7 @@ namespace :seed do
          ["liver_gnf","Wild Type + Clock Mutant Liver (GNF microarray)", gnf_id],
          ["muscle_gnf","Wild Type + Clock Mutant Muscle (GNF microarray)",gnf_id],
          ["scn_gnf","Wild Type + Clock Mutant SCN (GNF microarray)", gnf_id],
-         ["liver_u74av1","Liver Panda 2002 (Affymetrix)", u74av1_id],
+         ["liver_u74av1","Liver Panda 2002 (Affymetrix)",u74av1_id],
          ["muscle_u74av1","SCN MAS4 Panda 2002 (Affymetrix)", u74av1_id],
          ["scn_u74av1","SCN gcrma Panda 2002 (Affymetrix)", u74av1_id]]
 
@@ -390,6 +391,7 @@ namespace :seed do
       probesets[p.probeset_name]= p.id
     end
 
+
     %w{ liver_affy }.each do |etype|
       count = 0
       buffer = []
@@ -486,14 +488,17 @@ namespace :seed do
   task :stats2 => :environment do
     puts "=== Stat Data insert starting ==="
 
-    fields = %w{  assay_id assay_name probeset_id probeset_name cosopt_p_value cosopt_q_value cosopt_period_length cosopt_phase fisherg_p_value fisherg_q_value fisherg_period_length jtk_p_value jtk_q_value jtk_period_length jtk_lag jtk_amp}
+    fields = %w{  assay_id assay_name probeset_id probeset_data_id probeset_name cosopt_p_value cosopt_q_value cosopt_period_length cosopt_phase fisherg_p_value fisherg_q_value fisherg_period_length jtk_p_value jtk_q_value jtk_period_length jtk_lag jtk_amp}
     # liver and pituitary
 
     g  = GeneChip.find(:first, :conditions => ["slug like ?","Mouse430_2"])
     probesets = {}
+
     g.probesets.each do |p|
+      p.probeset_name
       probesets[p.probeset_name]= p.id
     end
+
     %w{ liver_affy }.each do |etype|
       #liver
       count = 0
@@ -501,13 +506,11 @@ namespace :seed do
       a = Assay.find(:first, :conditions => ["slug = ?", etype])
       puts "=== Stat Data #{etype} start ==="
 
-      FasterCSV.foreach("#{RAILS_ROOT}/seed_data/test","r" ).each do |row|
+      FasterCSV.foreach("#{RAILS_ROOT}/seed_data/hughes_liver_stats") do |row|
         count += 1
-        line = line.split("@")
-        aslug, psname = 0,line[0]
-        psid = probesets[line[0]]
-        buffer << [a.id, a.slug,psid, psname] + "cosopt_p_value cosopt_q_value cosopt_period_length cosopt_phase fisherg_p_value fisherg_q_value fisherg_period_length jtk_p_value jtk_q_value jtk_period_length jtk_lag jtk_amp".split(" ")
-
+        aslug, psname = 0,row[0].to_i
+        psid = probesets[row[0]]
+        buffer << [a.id, a.slug,psid, psid, psname] + row[1..-1].to_a
         if count % 1000 == 0
           ProbesetStat.import(fields,buffer)
           buffer = []
@@ -586,8 +589,11 @@ namespace :seed do
     puts "=== delete_from_all done!"
   end
 
+  desc "Build the sphinx index"
+  task :build_sphinx => ["ts:stop", "ts:config", "ts:rebuild", "ts:start"]
+
   task :test => [:delete_from_all, :genechips, :mouse430_probesets,
-    :assays, :datas2, :stats2, :refbackfill]
+    :assays, :datas2, :stats2, :refbackfill, :build_sphinx]
 
   desc "Reset the source data and stats"
   task :reset_data => [:delete_from_data, :datas2, :stats2, :refbackfill] do

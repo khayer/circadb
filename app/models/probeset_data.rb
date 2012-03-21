@@ -3,11 +3,11 @@ class ProbesetData < ActiveRecord::Base
   belongs_to :assay
   belongs_to :probeset
   has_one :probeset_stat
-  
+
   def chart_url(chart_width=330,chart_height=180)
     return chart_url_base % [chart_width,chart_height]
   end
-  
+
 end
 
 

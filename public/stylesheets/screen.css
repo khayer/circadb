@@ -21,7 +21,7 @@ blockquote, q {quotes:"" "";}
 a img {border:none;}
 
 /* typography.css */
-body {font-size:75%;color:#222;background:#fff;font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;}
+body {font-size:75%;color:#222;background:#FFF;font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;}
 h1, h2, h3, h4, h5, h6 {font-weight:normal;color:#111;}
 h1 {font-size:3em;line-height:1;margin-bottom:0.5em;}
 h2 {font-size:2em;margin-bottom:0.75em;}
@@ -53,7 +53,7 @@ dl {margin:0 0 1.5em 0;}
 dl dt {font-weight:bold;}
 dd {margin-left:1.5em;}
 table {margin-bottom:1.4em;width:100%;}
-th {font-weight:bold;background:#C3D9FF;}
+th {font-weight:bold;background:#FFB400;}
 th, td {padding:4px 10px 4px 5px;}
 tr.even td {background:#E5ECF9;}
 tfoot {font-style:italic;}
