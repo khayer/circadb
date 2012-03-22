@@ -1,3 +1,4 @@
+
 .qbox textarea {
   height: 36px;
   width: 550px;
@@ -12,6 +13,7 @@
 }
 
 .footer {
+  margin-bottom: 30px;
   text-align: center ;
 }
 

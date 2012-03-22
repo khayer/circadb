@@ -1,3 +1,4 @@
+/*
 .body{
 	background-color: #fff;
 	color: #000;
@@ -17,7 +18,7 @@
 }
 
 table {
-  border: 1px solid #8B7D6B;
+  border: 1px solid #DDD;
   padding: 1px;
   margin: 1px;
 }

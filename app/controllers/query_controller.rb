@@ -1,5 +1,5 @@
 class QueryController < ApplicationController
-  @@per_page = 25
+  @@per_page = 5
 
   def index
     # condition hash
@@ -8,7 +8,7 @@ class QueryController < ApplicationController
     current_page = params[:page].to_i > 0 ? params[:page].to_i : 1
     # q_value filter
     params[:filter]||= "jtk_p_value"
-    fv = params[:filter_value].to_f > 0.0 ? params[:filter_value].to_f : 1.0
+    fv = params[:filter_value].to_f > 0.0 ? params[:filter_value].to_f : 0.05
     cnd[params[:filter].to_sym] = (0.0)..(fv)
 
     # tissue

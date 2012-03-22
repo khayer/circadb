@@ -1,10 +1,11 @@
-.form.span-15.last{:style => "border: 2px double #DDD; padding: 10px;" }
+.form.span-15.last.push-1{:style => "border: 2px double #DDD; padding: 10px;" }
   = render :partial => "form"
-#pagesTop.span-15.last
+#pagesTop.span-16.last.push-1
   .count
-    %b==Total hits #{@probeset_stats.total_entries}
-  = will_paginate @probeset_stats, :class => "digg_pagination", :params => params
-.results.span-13.last
+    -if @probeset_stats.total_entries != 0
+      %b==Total hits #{@probeset_stats.total_entries}
+      = will_paginate @probeset_stats , :class => "digg_pagination", :params => params
+.results.span-15.last.push-1
   %table
     -for @probeset_stat in @probeset_stats do
       - @probeset_data = @probeset_stat.probeset_data
@@ -50,7 +51,8 @@
               %td= @probeset_stat.fisherg_q_value
               %td= @probeset_stat.fisherg_period_length
               %td <i>NA</i>
-#pagesBottom.span-15.last
+#pagesBottom.span-16.last.push-1
   .count
+  -if @probeset_stats.total_entries != 0
     %b==Total hits #{@probeset_stats.total_entries}
-  = will_paginate @probeset_stats, :class => "digg_pagination", :params => params
+    = will_paginate @probeset_stats, :class => "digg_pagination", :params => params

@@ -1,4 +1,4 @@
-.params.span-14.last
+.params.span-18.last
 - form_tag :controller => "query", :action => "index" do
   .span-18.last
     = label_tag :example, "Enter a search word "
@@ -6,7 +6,7 @@
   .qbox.span-18.last
     = text_area_tag :query_string, params[:query_string]
   .span-18.last
-    .span-12
+    .span-18
       = label_tag :filter, "Choose probability filter"
       = select_tag(:filter, options_for_select(ProbesetStat.pval_filters, params[:filter]))
       /= image_tag("questionmark.png")

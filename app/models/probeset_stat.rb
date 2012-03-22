@@ -3,27 +3,27 @@ class ProbesetStat < ActiveRecord::Base
   @@per_page = 25
   cattr_reader :pval_filters
   @@pval_filters = []
-  ["jtk", "JTK", "fisher_g", "Fisher's G-test" ].each_slice(2) do |id,txt|
+  ["jtk", "JTK", "cosopt", "Lomb Scarcle", "fisherg", "DeLichtenberg" ].each_slice(2) do |id,txt|
     @@pval_filters += [["#{txt} P-value","#{id}_p_value"],
                        ["#{txt} Q-value","#{id}_q_value"] ]
   end
-  
+
   belongs_to :assay
   belongs_to :probeset
   belongs_to :probeset_data
 
   # full text index using sphinx
-  define_index do 
-    %w{probeset_name 
+  define_index do
+    %w{probeset_name
       transcript_id
-      representative_public_id 
-      unigene_id 
-      gene_symbol 
-      gene_title 
-      entrez_gene 
-      swissprot 
-      refseq_protein_id 
-      refseq_transcript_id 
+      representative_public_id
+      unigene_id
+      gene_symbol
+      gene_title
+      entrez_gene
+      swissprot
+      refseq_protein_id
+      refseq_transcript_id
       target_description}.map do |m|
         eval <<-EOF
         indexes probeset.#{m}, :as => :#{m}
