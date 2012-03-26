@@ -20,3 +20,34 @@
 .help {
   color: #AAA;
 }
+
+#nav{
+  /*border:1px solid #ccc; */
+  border-width:1px 0;
+  list-style:none;
+  margin:0;
+  padding:4;
+  text-align:center;
+  text-decoration:none;
+  background:#C8DFFE;
+
+}
+
+#nav li{
+  display:inline;
+  text-decoration:none;
+}
+#nav a{
+  text-decoration:none;
+  display:inline-block;
+  padding:30px;
+  color:#416BA5;
+  /*font-weight:bold;*/
+  font-size:1.3em;
+  padding-top: 0px ;
+  padding-bottom: 0px ;
+  /*background:#DDD;*/
+
+}
+
+#nav a:focus, #nav a:hover {color:#111;}

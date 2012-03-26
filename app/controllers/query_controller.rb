@@ -1,5 +1,5 @@
 class QueryController < ApplicationController
-  @@per_page = 5
+  @@per_page = 10
 
   def index
     # condition hash
@@ -8,7 +8,7 @@ class QueryController < ApplicationController
     current_page = params[:page].to_i > 0 ? params[:page].to_i : 1
     # q_value filter
     params[:filter]||= "jtk_p_value"
-    fv = params[:filter_value].to_f > 0.0 ? params[:filter_value].to_f : 0.05
+    fv = params[:filter_value].to_f > 0.0 ? params[:filter_value].to_f : 1.0
     cnd[params[:filter].to_sym] = (0.0)..(fv)
 
     # tissue
@@ -27,5 +27,11 @@ class QueryController < ApplicationController
       format.js {  render  :json => @probeset_stats.to_json}
       format.xml { render :xml => @probeset_stats.to_xml}
     end
+  end
+
+  def help
+  end
+
+  def about
   end
 end
