@@ -1,33 +1,39 @@
-.span-16.last
-%h2== CIRCA Help
+.span-18.last
+  %h2== CIRCA Help
 %p
-  Welcome on the CIRCA help page. Here we list a few examples that show how you can use CIRCA application.
+  Welcome on the CIRCA help page. Here we give you an example that shows the usage of the CIRCA application.
   %br
   %br
-  %b Example 1 - Searching for a specific Gen
+  %b Example
   %br
-  dskjksdfkjdjkdhkj
-  %br
-  %br
-  %b Example 2 - Searching for samples with a significant JTK-value
-  %br
-  jkjdlfjd
-  %br
-  %br
-  %b Example 3 - Picking a specific tissue
-  %br
-  kdjgkfjgfk
+  In this example we want to find out if
+  %em== Per3
+  is cyclic. The first step is to enter the gene name into the search
+  box. Next we can adjust the probability filter. The default is set on
+  the JTK P-value. Together with the probability cut-off value this
+  filter looks for JTK P-values beneath the cut-off. If we are only
+  interested in significant JTK P-values of 0.01 and lower we can
+  set the probability cut-off value on 0.01. With the last filter
+  method a specific tissue can be chosen. Once the sheet is filled
+  out the search can be begin.
   %br
   %br
   %b Understanding the plot
   %br
-  jdsjfihidhidhg
+  As result we will see a plot, where the X-axis is the time in
+  hours and the Y-axis reflects the expression levels measured
+  on the individual gene chips.
   %br
   %br
   %b Understanding the values
   %br
-  klfjkcnbjkvnb dgduf hguf gh
+  There are three different algorithm to statistically test if a dataset
+  is cyclic or not. More information about these algorithm can be found
+  in the "About" tab. The lower the p/q-values the more likely we can speak
+  of a cyclic behavior for a specific probe. The period value gives
+  information about the time for one cycle in hours.
   %br
+
 
 
 

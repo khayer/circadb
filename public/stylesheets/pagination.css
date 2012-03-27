@@ -1,6 +1,7 @@
 
 .digg_pagination {
   background: white;
+  text-align:center;
   /* self-clearing method: */ }
   .digg_pagination a, .digg_pagination span {
     padding: .2em .5em;
@@ -12,18 +13,18 @@
     border: 1px solid #DDD; }
   .digg_pagination span.current {
     font-weight: bold;
-    background: #3D9AD1;
+    background: #416BA5;
     color: white;
-    border: 1px solid #3D9AD1; }
+    border: 1px solid #416BA5; }
   .digg_pagination a {
     text-decoration: none;
-    color: #3D9AD1;
-    border: 1px solid #3D9AD1; }
+    color: #416BA5;
+    border: 1px solid #416BA5; }
     .digg_pagination a:hover, .digg_pagination a:focus {
       color: #003;
       border-color: #003; }
   .digg_pagination .page_info {
-    background: #3D9AD1;
+    background: #416BA5;
     color: white;
     padding: .4em .6em;
     width: 22em;
@@ -49,9 +50,9 @@
   border: 1px solid #E5E5E5;
   text-align: center;
   padding: 1em; }
-  .apple_pagination a, .apple_pagination span {
+.apple_pagination a, .apple_pagination span {
     padding: .2em .3em; }
-  .apple_pagination span.disabled {
+.apple_pagination span.disabled {
     color: #AAA; }
   .apple_pagination span.current {
     font-weight: bold;
@@ -89,3 +90,4 @@
     margin-right: 1em; }
   .flickr_pagination .next_page {
     margin-left: 1em; }
+

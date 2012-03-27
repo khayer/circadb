@@ -16,6 +16,7 @@
     .header.span-18
       %h1= link_to( image_tag('circa_2.png', :alt=> "CIRCA"), root_path())
       %ul#nav.last
+        %span
         %li
           %a{:href => "/"} Home
         %li
@@ -26,13 +27,10 @@
           %a{:href => "http://bioinf.itmat.upenn.edu/hogeneschlab"} Hogenesch Lab
         %li
           %a{:href => "http://www.salk.edu/faculty/faculty_details.php?id=65"} Panda Lab
-    .content.span-18.last
+    .content.span-17.last
       = yield
     .footer.span-18.last
       %ul#nav
         %li
           Penn Medicine | ITMAT Bioninformatics Facility
-    .js
-      = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"
-      = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.0/jquery-ui.min.js"
 

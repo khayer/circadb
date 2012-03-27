@@ -6,15 +6,18 @@
 }
 
 .header {
+  text-align: center ;
   border-bottom:  2px solid #CCC;
   margin-bottom: 10px;
   padding-top: 10px ;
   padding-bottom: 10px ;
+
 }
 
 .footer {
   margin-bottom: 30px;
   text-align: center ;
+  background:#ddd;
 }
 
 .help {
@@ -29,7 +32,7 @@
   padding:4;
   text-align:center;
   text-decoration:none;
-  background:#C8DFFE;
+  background:#ddd;
 
 }
 
@@ -50,4 +53,28 @@
 
 }
 
+
 #nav a:focus, #nav a:hover {color:#111;}
+
+
+
+#link{
+
+}
+#link a{
+  text-decoration:none;
+  /*display:inline-block; */
+  padding:0px;
+  color:#416BA5;
+  /*font-weight:bold;*/
+  font-size:1.2em;
+  padding-top: 0px ;
+  padding-bottom: 0px ;
+  /*background:#DDD;*/
+
+}
+
+#link a:focus, #link a:hover {color:#111;}
+
+
+
