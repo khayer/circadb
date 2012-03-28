@@ -1,6 +1,6 @@
-.form.span-15.last.push-1{:style => "border: 2px double #DDD; padding: 10px;" }
+.form.span-15.last.push-1{:style => "border-left: 2px double #E5ECF9; padding: 10px;" }
   = render :partial => "form"
-.footer.span-18.last
+.footer.span-15.last.push-1
   .count
     -if @probeset_stats.total_entries != 0
       Total hits #{@probeset_stats.total_entries}
@@ -51,8 +51,8 @@
               %td= @probeset_stat.fisherg_q_value
               %td= @probeset_stat.fisherg_period_length
               %td <i>NA</i>
-.footer.span-18.last
+.footer.span-17.last.push-1
   .count
   -if @probeset_stats.total_entries != 0
-    %b==Total hits #{@probeset_stats.total_entries}
+    Total hits #{@probeset_stats.total_entries}
     = will_paginate @probeset_stats, :class => "apple_pagination", :params => params

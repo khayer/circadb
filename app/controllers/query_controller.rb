@@ -14,8 +14,8 @@ class QueryController < ApplicationController
     # tissue
     cnd[:assay_id] = params[:assays] if params[:assays]
 
-    @probeset_stats = ProbesetStat.search(params[:query_string] || "",
-      :page => current_page,:per_page => @@per_page, :with => cnd,
+    @probeset_stats = ProbesetStat.search(params[:query_string] || "1",
+      :page => current_page, :per_page => @@per_page, :with => cnd,
       :order => "#{params[:filter]} ASC", :match_mode => :any,
       :include => [:probeset_data, :probeset])
 
@@ -26,8 +26,8 @@ class QueryController < ApplicationController
         @unigene_id = params[:query_string]
         render :action => "index", :layout => "biogps"
       end
-      #format.js { render :json => @probeset_stats.to_json }
-      #format.xml { render :xml => @probeset_stats.to_xml }
+      format.js { render :json => @probeset_stats.to_json }
+      format.xml { render :xml => @probeset_stats.to_xml }
     end
   end
 
