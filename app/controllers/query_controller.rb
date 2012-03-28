@@ -13,6 +13,7 @@ class QueryController < ApplicationController
 
     # tissue
     cnd[:assay_id] = params[:assays] if params[:assays]
+    params[:query_string] = nil if params[:query_string] == ""
 
     @probeset_stats = ProbesetStat.search(params[:query_string] || "1",
       :page => current_page, :per_page => @@per_page, :with => cnd,

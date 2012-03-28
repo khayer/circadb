@@ -13,8 +13,15 @@
     = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"
   %body.container.span-8.last
     .header.span-10.last
-      .span-6=image_tag("circa-logo-small.png")
-      .span-3= link_to @unigene_id, request.url()
+      %table{:style => "border: 1px solid #FFF; margin: 2px;"}
+        %tr
+          %td.span-6= image_tag("circa_small.png")
+          %td.span-4= link_to @unigene_id, request.url(), :style => "text-decoration:none;text-align:center"
+    .header.span-10.last
+      .span-6= image_tag("circa_small.png", :style => "text-decoration:none;display:inline-block;")
+      %link
+        %a{:href => request.url(),:style => "text-decoration:none;display:inline-block;"} #{@unigene_id}
+      .span-4= link_to @unigene_id, request.url()
     .results.span-10.last
       = yield
     .footer.span-10.last

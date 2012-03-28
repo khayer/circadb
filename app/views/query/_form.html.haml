@@ -19,7 +19,7 @@
       = label_tag :assays, "Choose which experiments to view"
       %br
       = select_tag(:assays, options_for_select(Assay.all.collect {|e| [e.name ,  e.id.to_s] }, params[:assays]), {:multiple => true})
-  .span-2.hov= submit_tag "Search"
+  .span-15.hov= submit_tag "Search"
 
 
 
