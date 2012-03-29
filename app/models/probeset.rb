@@ -4,12 +4,12 @@ class Probeset < ActiveRecord::Base
   belongs_to :gene_chip
   has_many :probeset_stats
   has_many :probeset_datas
-  
+
 
   ## URL helpers
   # unigene_urls
   def unigene_url
-    return '<i>None</i>' if (unigene_id == '---' || unigene_id.nil?)
+    return '<i>None</i>' if unigene_id == '---' || unigene_id.nil?
     template = '<a href="http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?ORG=%s&CID=%s">%s</a>'
     org, uid = unigene_id.split('.')
     return sprintf(template,org,uid,unigene_id)
@@ -27,7 +27,7 @@ class Probeset < ActiveRecord::Base
     end
     return links.join(" &nbsp; ")
   end
-  
+
   def refseq_transcript_url
     # could be multiple
     return '<i>None</i>' if refseq_transcript_id == '---' || refseq_transcript_id.nil?
@@ -41,7 +41,7 @@ class Probeset < ActiveRecord::Base
 
   def refseq_protein_url
     return '<i>None</i>' if refseq_protein_id == '---' || refseq_protein_id.nil?
-    # could be multiple 
+    # could be multiple
     template = "<a href='http://www.ncbi.nlm.nih.gov/coreutils/dispatch.cgi?db=1&term=ACC'>ACC</a>"
     links = []
     refseq_transcript_id.split(/\s+\/\/\/\s+/).each do |a|
