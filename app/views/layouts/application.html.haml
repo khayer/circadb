@@ -20,11 +20,11 @@
       %ul#nav.last
         %span
         %li
-          %a{:href => "/"} Home
+          %a=link_to("Home", root_path)
         %li
-          %a{:href => "/help/"} Help
+          %a=link_to("Help", help_path)
         %li
-          %a{:href => "/about/"} About
+          %a=link_to("About", about_path)
         %li
           %a{:href => "http://bioinf.itmat.upenn.edu/hogeneschlab"} Hogenesch Lab
     .content.span-18.last
