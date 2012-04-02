@@ -3,7 +3,7 @@ class ProbesetStat < ActiveRecord::Base
   @@per_page = 25
   cattr_reader :pval_filters
   @@pval_filters = []
-  ["jtk", "JTK", "cosopt", "Lomb Scarcle", "fisherg", "DeLichtenberg" ].each_slice(2) do |id,txt|
+  ["jtk", "JTK", "cosopt", "Lomb Scargle", "fisherg", "DeLichtenberg" ].each_slice(2) do |id,txt|
     @@pval_filters += [["#{txt} P-value","#{id}_p_value"],
                        ["#{txt} Q-value","#{id}_q_value"] ]
   end
