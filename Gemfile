@@ -13,7 +13,6 @@ gem "thinking-sphinx", :require => "thinking_sphinx"
 gem "curb"
 gem "ar-extensions"
 gem "fastercsv"
-gem "rsruby", :require => "rubygems"
 
 group :development do
   gem "rails-footnotes"
