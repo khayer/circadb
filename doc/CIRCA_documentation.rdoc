@@ -1,8 +1,8 @@
 = CIRCA documentation
 
-This documentation will give you a quick overview on how you can include your own datasets. It will also describe some of the main features provided by this application.
+This documentation will give you a quick overview on how you can include your own datasets.
 
-== Adding your own dataset
+== Visualize your own dataset
 
 Example prepare script can be found in _/doc/prepare_data_scripts.
 
@@ -26,9 +26,8 @@ Example prepare script can be found in _/doc/prepare_data_scripts.
       period_lichtenberg BH_Q_jtk ADJ_P_jtk
       PER_jtk LAG_jtk AMP_jtk}.join(",")
 
-4.  Move your prepared datasets into _/seed_data_
-
-4.  Before the dataset can be added with _rake seed:add_data_ , we will need to take a look at _/lib/tasks/seed.rake_.
+4.  Place your prepared datasets into _/seed_data_ folder.
+5.  Before the dataset can be added with _rake seed:fill_ , we will need to take a look at _/lib/tasks/seed.rake_. It is important to comment out the pre-existing datasets that are not required for your own database.
 
       task :genechips => :environment do
         c = ActiveRecord::Base.connection
@@ -103,7 +102,28 @@ Example prepare script can be found in _/doc/prepare_data_scripts.
       ProbesetData.import(fields,buffer)
       puts "=== Raw Data #{etype} end (count= #{count}) ==="
       ...
+      ### Add your stats
+      %w{ YOUR_PREPARED_DATA_SET }.each do |etype|
 
+        count = 0
+        buffer = []
+        a = Assay.find(:first, :conditions => ["slug = ?", etype])
+        puts "=== Stat Data #{etype} start ==="
 
-
-
+        FasterCSV.foreach("#{RAILS_ROOT}/seed_data/hughes_#{etype}_stats") do |row|
+          count += 1
+          aslug, psname = 0,row[0].to_i
+          psid = probesets[row[0]]
+          buffer << [a.id, a.slug,psid, psid, psname] + row[1..-1].to_a
+          if count % 1000 == 0
+            ProbesetStat.import(fields,buffer)
+            buffer = []
+            puts count
+          end
+        end
+        ProbesetStat.import(fields,buffer)
+        puts "=== Stat Data #{etype} end (count = #{count}) ==="
+      end
+      ...
+6.  Run:
+      rake seed:fill
