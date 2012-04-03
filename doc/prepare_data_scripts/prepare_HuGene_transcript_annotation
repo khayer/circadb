@@ -1,0 +1,75 @@
+#!/usr/bin/env ruby
+require 'csv'
+require 'rsruby'
+
+usage =<<EOF
+      #{$0} affy_annot.csv prepared_affy_annot.csv
+EOF
+
+if ARGV.length != 2
+  puts usage
+  exit
+end
+
+# %w{ gene_chip_id probeset_name genechip_name species annotation_date sequence_type
+# sequence_source transcript_id target_description representative_public_id
+# archival_unigene_cluster unigene_id genome_version alignments gene_title gene_symbol
+# chromosomal_location unigene_cluster_type ensembl entrez_gene swissprot ec omim
+# refseq_protein_id refseq_transcript_id flybase agi wormbase mgi_name rgd_name
+# sgd_accession_number go_biological_process go_cellular_component go_molecular_function
+# pathway interpro trans_membrane qtl annotation_description annotation_transcript_cluster
+# transcript_assignments annotation_notes }
+CSV.open(ARGV[1], "wb") do |csv|
+  CSV.foreach(ARGV[0],  {:headers => :first_row}) do |row|
+    probeset_name = row["probese_id"]
+    genechip_name = "HuGene-1_0-st-v1"
+    species = "Homo Sapiens"
+    annotation_date = "2011-06-22"
+    sequence_type = "-"
+    sequence_source = "-"
+    transcript_id = row["transcript_cluster_id"]
+    dummy = row["gene_assignment"].split(" // ")
+    target_description = dummy[2]
+    representative_public_id = "-"
+    archival_unigene_cluster = "-"
+    unigene_id = row["unigene"]
+    genome_version = "-"
+    alignments = "-"
+    gene_title = "-"
+    gene_symbol = "-"
+    chromosomal_location = "-"
+    unigene_cluster_type = "-"
+    ensembl = "-"
+    entrez_gene = "-"
+    swissprot = row["swissprot"]
+    ec = "-"
+    omim = "-"
+    refseq_protein_id = "-"
+    refseq_transcript_id = dummy[1]
+    flybase = "-"
+    agi = "-"
+    wormbase = "-"
+    mgi_name = "-"
+    rgd_name = "-"
+    sgd_accession_number = "-"
+    go_biological_process = "-"
+    go_cellular_component = "-"
+    go_molecular_function = "-"
+    pathway = "-"
+    interpro = "-"
+    trans_membrane = "-"
+    qtl = "-"
+    annotation_description = "-"
+    annotation_transcript_cluster = "-"
+    transcript_assignments = "-"
+    annotation_notes = "-"
+    csv << [probeset_name, genechip_name, species, annotation_date, sequence_type,
+      sequence_source, transcript_id, target_description, representative_public_id,
+      archival_unigene_cluster, unigene_id, genome_version, alignments, gene_title, gene_symbol,
+      chromosomal_location, unigene_cluster_type, ensembl, entrez_gene, swissprot, ec, omim,
+      refseq_protein_id, refseq_transcript_id, flybase, agi, wormbase, mgi_name, rgd_name,
+      sgd_accession_number, go_biological_process, go_cellular_component, go_molecular_function,
+      pathway, interpro, trans_membrane, qtl, annotation_description, annotation_transcript_cluster,
+      transcript_assignments, annotation_notes]
+  end
+end

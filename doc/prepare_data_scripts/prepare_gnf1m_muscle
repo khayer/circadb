@@ -1,0 +1,73 @@
+#!/usr/bin/env ruby
+require 'csv'
+require 'rsruby'
+
+usage =<<EOF
+      #{$0} WT_gnf1m.csv Clockmut.csv prepared_gnf1m.csv
+EOF
+
+if ARGV.length != 3
+  puts usage
+  exit
+end
+
+# functions
+####################################################
+R = RSRuby.instance()
+R.eval_R("scaleData <- function(x) {
+  k = (x-min(x))/(max(x)-min(x))*100
+  k/100 * 90 + 5
+}")
+
+R.eval_R("avgData <- function(d) {
+  dd <- filter(d,rep(0.33,3))
+  dd[1] <- d[1]
+  dd[length(dd)] <- d[length(d)]
+  dd
+}")
+####################################################
+
+out = File.new(ARGV[2],"w")
+clockmut = CSV.open(ARGV[1],{:headers => :first_row})
+
+CSV.foreach(ARGV[0],  {:headers => :first_row}) do |row|
+
+  numbers = []
+  time_points = []
+
+  %w{18 22 26 30 34 38 42 46 50 54 58 62}.each do |i|
+    number = (row["ct#{i}rep1"].to_f + row["ct#{i}rep2"].to_f) / 2
+    numbers << number
+    time_points << i
+  end
+
+  row2 = clockmut.readline()
+  numbers2 = []
+  time_points2 = []
+
+  %w{22 26 30 34 38 42 46}.each do |i|
+    number2 = (row2["ct#{i}_clock_rep1"].to_f + row2["ct#{i}_clock_rep2"].to_f) / 2
+    numbers2 << number2
+    time_points2 << i
+  end
+
+  # elements must be different; error otherwise
+  test = numbers2.uniq
+  next if test.length == 1
+
+  max = R.max(numbers,numbers2).to_i
+  min = R.min(numbers,numbers2).to_i
+  mid1 = R.mean(numbers)
+  mid2 = R.mean(numbers2)
+  mid = R.mean(mid1,mid2).to_i
+
+  scaled = R.scaleData(numbers).map {|e| e.to_i }
+  averaged = R.avgData(scaled).map {|e| e.to_i }
+
+  scaled2 = R.scaleData(numbers2).map {|e| e.to_i  }
+  averaged2 = R.avgData(scaled2).map {|e| e.to_i }
+
+  cubase = "http://chart.apis.google.com/chart?chs=%sx%s&cht=lxy&chxt=x,y&chxl=0:|18||||||24||||||30||||||36||||||42||||||48||||||54||||||60|||1:|#{min}|#{mid}|#{max}&chxp=1,2,50,97&chxr=0,18,62&chls=2,1,0|2,1,0&chf=c,ls,0,CCCCCC,0.136363636,FFFFFF,0.27272727,CCCCCC,0.27272727,FFFFFF,0.27272727,CCCCCC,0.0454545455&chd=t:9.09,18.18,27.27,36.36,45.45,54.54,63.63|#{averaged2.join(",")}|-1|#{averaged.join(",")}&chm=d,3164A6,0,-1,8|d,FDB33A,1,-1,8&chco=3164A6,FDB33A&chdl=Clock_mutant|WT&chdlp=rs"
+  out.puts row["Probe Set"] +"@"+time_points.join(",")+"@"+numbers.join(",")+"@"+cubase
+
+end

@@ -1,0 +1,78 @@
+#!/usr/bin/env ruby
+require 'csv'
+require 'rsruby'
+
+usage =<<EOF
+      #{$0} jtk_out.csv dominant.csv delichtenberg stats.csv
+EOF
+
+if ARGV.length != 4
+  puts usage
+  exit
+end
+
+# functions
+####################################################
+R = RSRuby.instance()
+R.eval_R("getQvalue <- function(p_values) {
+  library(qvalue)
+  qobj <- qvalue(p_values)
+  qobj$qvalues
+}")
+
+R.eval_R("scaleData <- function(x) {
+  k = (x-min(x))/(max(x)-min(x))*100
+  k/100 * 90 + 5
+}")
+####################################################
+
+# %w{  assay_id assay_name probeset_id probeset_name cosopt_p_value cosopt_q_value cosopt_period_length cosopt_phase fisherg_p_value fisherg_q_value fisherg_period_length jtk_p_value jtk_q_value jtk_period_length jtk_lag jtk_amp}
+
+# LOMB_SCARGLE
+# index,probe,PhaseShift,PhaseShiftHeight,PeakIndex,PeakSPD,Period,p,N,Nindependent,Nyquist
+puts "Calculate q_value for LOMB_SCARGLE"
+p_values = []
+
+CSV.foreach(ARGV[1], {:headers => :first_row}) do |row|
+
+  p_values << row["p"].to_f
+
+end
+
+q_values = R.getQvalue(p_values)
+
+
+puts "Calculate q_value for DELICHTENBERG"
+p_values_lichtenberg = []
+
+File.open(ARGV[2]).each do |line|
+
+  next if line =~ /probe/
+  line = line.split("\t")
+  p_values_lichtenberg << line[1].to_f
+
+end
+
+q_values_lichtenberg = R.getQvalue(p_values_lichtenberg)
+
+# JTK
+#"BH.Q","ADJ.P","PER","LAG","AMP","LiverJH18CEL"
+
+CSV.open(ARGV[3], "wb") do |csv|
+
+  count = 0
+  lomb = CSV.open(ARGV[1],{:headers => :first_row})
+
+  CSV.foreach(ARGV[0],{:headers => :first_row}) do |row1|
+
+    row2 = lomb.readline()
+    csv << [row1["row_names"], row2["p"],
+      q_values[count], row2["Period"],
+      row2["PhaseShift"], p_values_lichtenberg[count],
+      q_values_lichtenberg[count],"24", row1["BH.Q"],
+      row1["ADJ.P"], row1["PER"], row1["LAG"],row1["AMP"]]
+    count += 1
+
+  end
+
+end
