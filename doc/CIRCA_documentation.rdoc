@@ -1,0 +1,129 @@
+= CIRCA documentation
+
+This documentation will give you a quick overview on how you can include your own datasets.
+
+== Visualize your own dataset
+
+Example prepare script can be found in _/doc/prepare_data_scripts.
+
+1.  You will need to find the matching annotation file for your gene chip. These can be found at websites like Affymetrix[http://www.affymetrix.com/estore/support/mas/index.affx;jsessionid=75076B28FB46EAAB788CD6825E70598F?category=cat120004&categoryIdClicked=cat120004&rootCategoryId=34001&navMode=cat120004&parent=cat120004&aId=supportNav]. To make the annotation files compatible with the database, they need to be in the following format (Checkout prepare_affy_annotation for an example):
+      %w{ gene_chip_id probeset_name genechip_name species    notation_date sequence_type
+      sequence_source transcript_id target_description    presentative_public_id
+      archival_unigene_cluster unigene_id genome_version  ignments   gene_title gene_symbol
+      chromosomal_location unigene_cluster_type ensembl   trez_gene   swissprot ec omim
+      refseq_protein_id refseq_transcript_id flybase agi  rmbase   mgi_name rgd_name
+      sgd_accession_number go_biological_process    _cellular_component go_molecular_function
+      pathway interpro trans_membrane qtl annotation_description    notation_transcript_cluster
+      transcript_assignments annotation_notes }.join(",")
+
+2.   Now you will need to prepare the microarray data itself. To fill the database the following format is expected (Checkout prepare_hughes_liver_data for an example), where _Cubase_ is the link to the google API plot:
+
+      %w{ probe_set time_points.join(",") data_points.join(",") cubase }.join("@")
+
+3.   After the statistic test are finished you can use prepare_stats.
+
+      %w{row_names p_lomb_scargle q_lomb_scargle period_lomb_scargle phase_shift_lomb_scargle p_values_lichtenberg, q_values_lichtenberg
+      period_lichtenberg BH_Q_jtk ADJ_P_jtk
+      PER_jtk LAG_jtk AMP_jtk}.join(",")
+
+4.  Place your prepared datasets into _/seed_data_ folder.
+5.  Before the dataset can be added with _rake seed:fill_ , we will need to take a look at _/lib/tasks/seed.rake_. It is important to comment out the pre-existing datasets that are not required for your own database.
+
+      task :genechips => :environment do
+        c = ActiveRecord::Base.connection
+        c.execute "delete from gene_chips"
+        g  = GeneChip.new(:slug => "Mouse430_2", :name => "Mouse Genome 430 2.0 ( Affymetrix)")
+        g.save
+        ...
+        ### Add your gene chip here
+        #g  = GeneChip.new(:slug => "SLUG-NAME", :name => "DESCRIPTION")
+        #g.save
+      end
+      ...
+      desc "Seed SLUG-NAME annotations"
+      task :SLUG-NAME_probesets => :environment do
+        # probes
+        fields = %w{ gene_chip_id probeset_name genechip_name species   annotation_date sequence_type sequence_source transcript_id   target_description representative_public_id archival_unigene_cluster  unigene_id genome_version alignments gene_title gene_symbol  chromosomal_location unigene_cluster_type ensembl entrez_gene swissprot ec   omim refseq_protein_id refseq_transcript_id flybase agi wormbase mgi_name   rgd_name sgd_accession_number go_biological_process go_cellular_component   go_molecular_function pathway interpro trans_membrane qtl   annotation_description annotation_transcript_cluster transcript_assignments   annotation_notes }
+        g  = GeneChip.find(:first, :conditions => ["slug like ?", "SLUG-NAME"])
+        count = 0
+        buffer = []
+        puts "=== Begin Probeset insert ==="
+        FasterCSV.foreach("#{RAILS_ROOT}/seed_data/prepared_SLUG-NAME.csv",     :headers=> true ) do |ps|
+          count += 1
+          buffer << [g.id] + ps.values_at
+          if count % 1000 == 0
+            Probeset.import(fields,buffer)
+            buffer = []
+            puts count
+          end
+        end
+        Probeset.import(fields,buffer)
+        puts count
+        puts "=== End Probeset insert ==="
+      end
+      ...
+      v = [["liver","Mouse Liver 48 hour (Affymetrix)", affy_id],
+         ["pituitary","Mouse Pituitary 48 hour (Affymetrix)",affy_id],
+         ["NIH3T3","NIH 3T3 Immortilized Cell Line 48 hour (Affymetrix)",affy_id],
+         ["WT_liver","Wild Type Liver (GNF microarray)", gnf_id],
+         ["WT_muscle","Wild Type Muscle (GNF microarray)",gnf_id],
+         ["WT_SCN","Wild Type SCN (GNF microarray)", gnf_id],
+         ["panda_liver","Liver Panda 2002 (Affymetrix)",u74av1_id],
+         ["panda_SCN_MAS4","SCN MAS4 Panda 2002 (Affymetrix)", u74av1_id],
+         ["panda_SCN_gcrma","SCN gcrma Panda 2002 (Affymetrix)", u74av1_id]]
+         ### ADD YOUR ASSAY HERE
+         # ["SLUG-NAME","description", GENE-CHIP_id]]
+
+      #v = []
+      Assay.import(f,v)
+      ...
+      ### Add your dataset
+      %w{ YOUR_PREPARED_DATA_SET }.each do |etype|
+      count = 0
+      buffer = []
+      a = Assay.find(:first, :conditions => ["slug = ?", etype])
+      puts "=== Raw Data #{etype} insert starting ==="
+
+      File.open("#{RAILS_ROOT}/seed_data/#{etype}_data","r" ).each do |line|
+        count += 1
+        line = line.split("@")
+        time_points = line[1].split(",").map {|element| element}
+        data_points = line[2].split(",").map {|element| element}
+        cubase = line[3]
+        psid = probesets[line[0]]
+        buffer << [a.id(), a.slug, psid, line[0], time_points.to_json, data_points.to_json,cubase]
+
+        if count % 1000 == 0
+          ProbesetData.import(fields,buffer)
+          puts count
+          buffer = []
+        end
+      end
+      ProbesetData.import(fields,buffer)
+      puts "=== Raw Data #{etype} end (count= #{count}) ==="
+      ...
+      ### Add your stats
+      %w{ YOUR_PREPARED_DATA_SET }.each do |etype|
+
+        count = 0
+        buffer = []
+        a = Assay.find(:first, :conditions => ["slug = ?", etype])
+        puts "=== Stat Data #{etype} start ==="
+
+        FasterCSV.foreach("#{RAILS_ROOT}/seed_data/hughes_#{etype}_stats") do |row|
+          count += 1
+          aslug, psname = 0,row[0].to_i
+          psid = probesets[row[0]]
+          buffer << [a.id, a.slug,psid, psid, psname] + row[1..-1].to_a
+          if count % 1000 == 0
+            ProbesetStat.import(fields,buffer)
+            buffer = []
+            puts count
+          end
+        end
+        ProbesetStat.import(fields,buffer)
+        puts "=== Stat Data #{etype} end (count = #{count}) ==="
+      end
+      ...
+6.  Run:
+      rake seed:fill
