@@ -30,7 +30,7 @@ If you are only interested in reviewing the site and running a local instance, t
 
 If you are interested in loading your own data, then you will need to load the array annotation information, add a Assay object for your experiment, then add the raw and statistic data from your experiment. See the <code> lib/tasks/seed.rake </code> for an example of our routines that manipulate and load data from source data files.
 
-Example prepare script can be found in <em>/prepare_data_scripts</em>.
+Examples to prepare your data can be found in <em>/prepare_data_scripts</em>.
 
 1.  You will need to find the matching annotation file for your gene chip. These can be found at websites like Affymetrix[http://www.affymetrix.com/estore/support/mas/index.affx;jsessionid=75076B28FB46EAAB788CD6825E70598F?category=cat120004&categoryIdClicked=cat120004&rootCategoryId=34001&navMode=cat120004&parent=cat120004&aId=supportNav]. To make the annotation files compatible with the database, they need to be in the following format (Checkout <em>prepare_affy_annotation</em> for an example):
       %w{ gene_chip_id probeset_name genechip_name species annotation_date sequence_type
