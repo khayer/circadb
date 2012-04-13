@@ -17,5 +17,11 @@ source_data/*
 Gemfile.lock
 .bundle
 ._*
+<<<<<<< Updated upstream
 .Rhistory
 
+=======
+.rbenv
+#*
+config.ru
+>>>>>>> Stashed changes

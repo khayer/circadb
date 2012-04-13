@@ -35,8 +35,8 @@
               %th phase
             %tr
               %th JTK
+              %td= @probeset_stat.jtk_p_value
               %td= @probeset_stat.jtk_q_value
-              %td= @probeset_stat.jtk_p_value  # need to fix that
               %td= @probeset_stat.jtk_period_length
               %td= @probeset_stat.jtk_lag
             %tr
@@ -51,7 +51,7 @@
               %td= @probeset_stat.fisherg_q_value
               %td= @probeset_stat.fisherg_period_length
               %td <i>NA</i>
-.footer.span-17.last.push-1
+.footer.span-15.last.push-1
   .count
   -if @probeset_stats.total_entries != 0
     Total hits #{@probeset_stats.total_entries}

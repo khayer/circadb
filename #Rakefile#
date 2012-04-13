@@ -5,10 +5,8 @@ require(File.join(File.dirname(__FILE__), 'config', 'boot'))
 
 require 'rake'
 require 'rake/testtask'
-#require 'rdoc/task'
-require 'rake/rdoctask'
+require 'rake/'rdoc/task''
 
 require 'tasks/rails'
 
 require 'thinking_sphinx/tasks'
-
