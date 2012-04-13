@@ -21,7 +21,7 @@ blockquote, q {quotes:"" "";}
 a img {border:none;}
 
 /* typography.css */
-body {font-size:75%;color:#222;background:#FFF;font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;}
+body {font-size:75%;color:#222;background:#FFF;font-family:"Helvetica Neue", Helvetica, Arial, sans-serif; padding:0px;}
 h1, h2, h3, h4, h5, h6 {font-weight:normal;color:#111;}
 h1 {font-size:3em;line-height:1;margin-bottom:0.5em;text-align: center}
 h2 {font-size:2em;margin-bottom:0.75em;}
@@ -72,7 +72,7 @@ caption {background:#eee;}
 .bottom {margin-bottom:0;padding-bottom:0;}
 
 /* grid.css */
-.container {width:950px;margin:0 auto;}
+.container {margin-right:500px;margin-left:500px;}
 .showgrid {background:url(/images/grid.png);}
 body {margin:1.5em 0;}
 div.span-1, div.span-2, div.span-3, div.span-4, div.span-5, div.span-6, div.span-7, div.span-8, div.span-9, div.span-10, div.span-11, div.span-12, div.span-13, div.span-14, div.span-15, div.span-16, div.span-17, div.span-18, div.span-19, div.span-20, div.span-21, div.span-22, div.span-23, div.span-24 {float:left;margin-right:500px;}
@@ -207,6 +207,10 @@ hr.space {background:#fff;color:#fff;}
 * html .clearfix, * html .container {height:1%;}
 .clearfix, .container {display:block;}
 .clear {clear:both;}
+
+
+
+
 
 /* forms.css */
 label {font-weight:bold;}

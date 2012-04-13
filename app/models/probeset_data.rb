@@ -4,7 +4,7 @@ class ProbesetData < ActiveRecord::Base
   belongs_to :probeset
   has_one :probeset_stat
 
-  def chart_url(chart_width=450,chart_height=250)
+  def chart_url(chart_width=450,chart_height=300)
     return chart_url_base % [chart_width,chart_height]
   end
 
