@@ -1,3 +1,5 @@
+require 'open-uri'
+
 class Probeset < ActiveRecord::Base
   cattr_reader :per_page
   @@per_page = 25
@@ -12,7 +14,7 @@ class Probeset < ActiveRecord::Base
     return '<i>None</i>' if unigene_id == '---' || unigene_id.nil?
     template = '<a href="http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?ORG=%s&CID=%s">%s</a>'
     org, uid = unigene_id.split('.')
-    return sprintf(template,org,uid,unigene_id)
+    sprintf(template,org,uid,unigene_id)
   end
 
   def gene_symbol_url
@@ -25,7 +27,7 @@ class Probeset < ActiveRecord::Base
     e.each_index do |i|
       links <<  sprintf(template,e[i],g[i])
     end
-    return links.join(" &nbsp; ")
+    links.join(" &nbsp; ")
   end
 
   def refseq_transcript_url
@@ -36,7 +38,22 @@ class Probeset < ActiveRecord::Base
     refseq_transcript_id.split(/\s+\/\/\/\s+/).each do |a|
       links <<  template.gsub('ACC',a)
     end
-    return links.join(" &nbsp; ")
+    links.join(" &nbsp; ")
+  end
+
+  def uscs_rna_url
+    # could be multiple
+    return '<i>None</i>' if refseq_transcript_id == '---' || refseq_transcript_id.nil?
+    template = "<a href='ACC'>RNAseq_NUM</a>"
+    template2 = "http://genome.ucsc.edu/cgi-bin/hgTracks?hgS_doOtherUser=submit&hgS_otherUserName=Lahens&hgS_otherUserSessionName=Norm%20RUM%20-%20AWS&position="
+    links = []
+    refseq_transcript_id.split(/\s+\/\/\/\s+/).each do |a|
+      search_page = template2+a
+      source = open(search_page){|f|f.read}
+      template = template.gsub('NUM',a)
+      links <<  template.gsub('ACC',search_page)
+    end
+    links.join(" &nbsp; ")
   end
 
   def refseq_protein_url
@@ -47,7 +64,7 @@ class Probeset < ActiveRecord::Base
     refseq_transcript_id.split(/\s+\/\/\/\s+/).each do |a|
       links <<  template.gsub('ACC',a)
     end
-    return links.join(" &nbsp; ")
+    links.join(" &nbsp; ")
   end
 end
 

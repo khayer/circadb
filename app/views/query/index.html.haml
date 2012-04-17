@@ -21,6 +21,8 @@
                   NO IMAGE
               %td{:colspan=>2}
                 %br== <b>Tissue       </b> #{@probeset_stat.assay_name}
+                - if @probeset_stat.assay_name == "liver"
+                  %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url}
                 %br== <b>Probeset       </b> #{@probeset.probeset_name}
                 %br== <b>Symbol         </b> #{@probeset.gene_symbol_url }
                 %br== <b>Unigene        </b> #{@probeset.unigene_url}

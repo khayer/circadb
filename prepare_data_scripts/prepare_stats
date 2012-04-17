@@ -69,8 +69,8 @@ CSV.open(ARGV[3], "wb") do |csv|
     csv << [row1["row_names"], row2["p"],
       q_values[count], row2["Period"],
       row2["PhaseShift"], p_values_lichtenberg[count],
-      q_values_lichtenberg[count],"24", row1["BH.Q"],
-      row1["ADJ.P"], row1["PER"], row1["LAG"],row1["AMP"]]
+      q_values_lichtenberg[count],"24",
+      row1["ADJ.P"], row1["BH.Q"], row1["PER"], row1["LAG"],row1["AMP"]]
     count += 1
 
   end
