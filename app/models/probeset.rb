@@ -1,4 +1,4 @@
-require 'open-uri'
+#require 'open-uri'
 
 class Probeset < ActiveRecord::Base
   cattr_reader :per_page
@@ -45,13 +45,13 @@ class Probeset < ActiveRecord::Base
     # could be multiple
     return '<i>None</i>' if refseq_transcript_id == '---' || refseq_transcript_id.nil?
     template = "<a href='ACC'>RNAseq_NUM</a>"
-    template2 = "http://genome.ucsc.edu/cgi-bin/hgTracks?hgS_doOtherUser=submit&hgS_otherUserName=Lahens&hgS_otherUserSessionName=Norm%20RUM%20-%20AWS&position="
+    template2 = "http://genome.ucsc.edu/cgi-bin/hgTracks?hgS_doOtherUser=submit&hgS_otherUserName=Lahens&hgS_otherUserSessionName=Norm%20RUM%20-%20AWS&singleSearch=refGeneAcc&position="
     links = []
     refseq_transcript_id.split(/\s+\/\/\/\s+/).each do |a|
-      search_page = template2+a
-      source = open(search_page){|f|f.read}
-      template = template.gsub('NUM',a)
-      links <<  template.gsub('ACC',search_page)
+      link = template2+a
+      #source = open(search_page){|f|f.read}
+      frame = template.gsub('NUM',a)
+      links <<  frame.gsub('ACC',link)
     end
     links.join(" &nbsp; ")
   end

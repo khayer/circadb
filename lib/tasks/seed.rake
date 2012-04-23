@@ -156,9 +156,9 @@ namespace :seed do
     u74av1_id = GeneChip.find(:first, :conditions => ["slug like ?","U74Av1"]).id
 #    hugene_id = GeneChip.find(:first, :conditions => ["slug like ?","HuGene1_0"]).id
 
-    v = [["liver","Mouse Liver 48 hour (Affymetrix)", affy_id],
-         ["pituitary","Mouse Pituitary 48 hour (Affymetrix)",affy_id],
-         ["NIH3T3","NIH 3T3 Immortilized Cell Line 48 hour (Affymetrix)",affy_id],
+    v = [["liver","Mouse Liver 48 hour Hughes 2009 (Affymetrix)", affy_id],
+         ["pituitary","Mouse Pituitary 48 hour Hughes 2009 (Affymetrix)",affy_id],
+         ["NIH3T3","NIH 3T3 Immortilized Cell Line 48 hour Hughes 2009 (Affymetrix)",affy_id],
          ["WT_liver","Wild Type Liver (GNF microarray)", gnf_id],
          ["WT_muscle","Wild Type Muscle (GNF microarray)",gnf_id],
          ["WT_SCN","Wild Type SCN (GNF microarray)", gnf_id],

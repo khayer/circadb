@@ -17,6 +17,7 @@
   .span-15.last
     .label
       = label_tag :assays, "Choose which experiments to view"
+      = link_to(image_tag('questionmark.png', :alt=> "CIRCA"), about_path())
       %br
       = select_tag(:assays, options_for_select(Assay.all.collect {|e| [e.name ,  e.id.to_s] }, params[:assays]), {:multiple => true})
   .span-15.hov= submit_tag "Search"
