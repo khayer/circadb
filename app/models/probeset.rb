@@ -11,14 +11,14 @@ class Probeset < ActiveRecord::Base
   ## URL helpers
   # unigene_urls
   def unigene_url
-    return '<i>None</i>' if unigene_id == '---' || unigene_id.nil?
+    return '<i>None</i>' if unigene_id == '---' || unigene_id.nil? || entrez_gene == '-'
     template = '<a href="http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?ORG=%s&CID=%s">%s</a>'
     org, uid = unigene_id.split('.')
     sprintf(template,org,uid,unigene_id)
   end
 
   def gene_symbol_url
-    return '<i>None</i>' if entrez_gene == '---' || entrez_gene.nil? ||entrez_gene == '-'
+    return '<i>None</i>' if entrez_gene == '---' || entrez_gene.nil? || entrez_gene == '-'
     # grabs the entrez_gene for the ID and gene-symbol for the link text
     template = "<a href='http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&cmd=Retrieve&list_uids=%d&dopt=full_report'>%s</a>"
     links = []
@@ -32,7 +32,7 @@ class Probeset < ActiveRecord::Base
 
   def refseq_transcript_url
     # could be multiple
-    return '<i>None</i>' if refseq_transcript_id == '---' || refseq_transcript_id.nil?
+    return '<i>None</i>' if refseq_transcript_id == '---' || refseq_transcript_id.nil? || entrez_gene == '-'
     template = "<a href='http://www.ncbi.nlm.nih.gov/coreutils/dispatch.cgi?db=36&term=ACC'>ACC</a>"
     links = []
     refseq_transcript_id.split(/\s+\/\/\/\s+/).each do |a|
@@ -43,7 +43,7 @@ class Probeset < ActiveRecord::Base
 
   def uscs_rna_url
     # could be multiple
-    return '<i>None</i>' if refseq_transcript_id == '---' || refseq_transcript_id.nil?
+    return '<i>None</i>' if refseq_transcript_id == '---' || refseq_transcript_id.nil? || entrez_gene == '-'
     template = "<a href='ACC'>RNAseq_NUM</a>"
     template2 = "http://genome.ucsc.edu/cgi-bin/hgTracks?hgS_doOtherUser=submit&hgS_otherUserName=Lahens&hgS_otherUserSessionName=Norm%20RUM%20-%20AWS&singleSearch=refGeneAcc&position="
     links = []
@@ -57,7 +57,7 @@ class Probeset < ActiveRecord::Base
   end
 
   def refseq_protein_url
-    return '<i>None</i>' if refseq_protein_id == '---' || refseq_protein_id.nil?
+    return '<i>None</i>' if refseq_protein_id == '---' || refseq_protein_id.nil? || entrez_gene == '-'
     # could be multiple
     template = "<a href='http://www.ncbi.nlm.nih.gov/coreutils/dispatch.cgi?db=1&term=ACC'>ACC</a>"
     links = []
