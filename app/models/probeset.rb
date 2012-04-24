@@ -18,7 +18,7 @@ class Probeset < ActiveRecord::Base
   end
 
   def gene_symbol_url
-    return '<i>None</i>' if entrez_gene == '---' || entrez_gene.nil?
+    return '<i>None</i>' if entrez_gene == '---' || entrez_gene.nil? ||entrez_gene == '-'
     # grabs the entrez_gene for the ID and gene-symbol for the link text
     template = "<a href='http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&cmd=Retrieve&list_uids=%d&dopt=full_report'>%s</a>"
     links = []
@@ -61,7 +61,7 @@ class Probeset < ActiveRecord::Base
     # could be multiple
     template = "<a href='http://www.ncbi.nlm.nih.gov/coreutils/dispatch.cgi?db=1&term=ACC'>ACC</a>"
     links = []
-    refseq_transcript_id.split(/\s+\/\/\/\s+/).each do |a|
+    refseq_protein_id.split(/\s+\/\/\/\s+/).each do |a|
       links <<  template.gsub('ACC',a)
     end
     links.join(" &nbsp; ")

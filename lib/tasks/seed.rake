@@ -51,8 +51,8 @@ namespace :seed do
     g.save
     g  = GeneChip.new(:slug => "U74Av1", :name => "Affymetrix GeneChip Mouse Genome U74A-B-C_2 (Affymetrix)")
     g.save
-    #g  = GeneChip.new(:slug => "HuGene1_0", :name => "Affymetrix for GeneChip HuGene-1_0 transcript (Affymetrix)")
-    #g.save
+    g  = GeneChip.new(:slug => "HuGene1_0", :name => "Affymetrix for GeneChip HuGene-1_0 transcript (Affymetrix)")
+    g.save
   end
 
   desc "Seed probeset annotations"
@@ -122,7 +122,7 @@ namespace :seed do
     puts count
     puts "=== End Probeset insert ==="
   end
-=begin
+
   desc "Seed gnf annotations"
   task :hugene_probesets => :environment do
     # probes
@@ -144,7 +144,7 @@ namespace :seed do
     puts count
     puts "=== End Probeset insert ==="
   end
-=end
+
 
   desc "Seed assays"
   task :assays => :environment do
@@ -154,18 +154,19 @@ namespace :seed do
     affy_id = GeneChip.find(:first,:conditions => ["slug like ?","Mouse430_2"]).id
     gnf_id = GeneChip.find(:first, :conditions => ["slug like ?","GNF1M"]).id
     u74av1_id = GeneChip.find(:first, :conditions => ["slug like ?","U74Av1"]).id
-#    hugene_id = GeneChip.find(:first, :conditions => ["slug like ?","HuGene1_0"]).id
+    hugene_id = GeneChip.find(:first, :conditions => ["slug like ?","HuGene1_0"]).id
 
     v = [["liver","Mouse Liver 48 hour Hughes 2009 (Affymetrix)", affy_id],
          ["pituitary","Mouse Pituitary 48 hour Hughes 2009 (Affymetrix)",affy_id],
-         ["NIH3T3","NIH 3T3 Immortilized Cell Line 48 hour Hughes 2009 (Affymetrix)",affy_id],
-         ["WT_liver","Wild Type Liver (GNF microarray)", gnf_id],
-         ["WT_muscle","Wild Type Muscle (GNF microarray)",gnf_id],
-         ["WT_SCN","Wild Type SCN (GNF microarray)", gnf_id],
-         ["panda_liver","Liver Panda 2002 (Affymetrix)",u74av1_id],
-         ["panda_SCN_MAS4","SCN MAS4 Panda 2002 (Affymetrix)", u74av1_id],
-         ["panda_SCN_gcrma","SCN gcrma Panda 2002 (Affymetrix)", u74av1_id]]
-#         ["U2OS","HuGene-1_0 transcript (Affymetrix)", hugene_id]]
+         ["NIH3T3","Mouse NIH 3T3 Immortilized Cell Line 48 hour Hughes 2009 (Affymetrix)",affy_id],
+         ["U2OS","Human U2 OS Hughes 2009 (Affymetrix)", hugene_id],
+         ["WT_liver","Mouse Wild Type Liver (GNF microarray)", gnf_id],
+         ["WT_muscle","Mouse Wild Type Muscle (GNF microarray)",gnf_id],
+         ["WT_SCN","Mouse Wild Type SCN (GNF microarray)", gnf_id],
+         ["panda_liver","Mouse Liver Panda 2002 (Affymetrix)",u74av1_id],
+         ["panda_SCN_MAS4","Mouse SCN MAS4 Panda 2002 (Affymetrix)", u74av1_id],
+         ["panda_SCN_gcrma","Mouse SCN gcrma Panda 2002 (Affymetrix)", u74av1_id]]
+
 
     #v = []
     Assay.import(f,v)
@@ -276,9 +277,6 @@ namespace :seed do
       puts "=== Raw Data #{etype} end (count= #{count}) ==="
     end
 
-
-
-=begin
     g  = GeneChip.find(:first, :conditions => ["slug like ?","HuGene1_0"])
     probesets = {}
     g.probesets.each do |p|
@@ -313,7 +311,7 @@ namespace :seed do
       ProbesetData.import(fields,buffer)
       puts "=== Raw Data #{etype} end (count= #{count}) ==="
     end
-=end
+
 
     buffer = []
     ProbesetData.import(fields,buffer)
@@ -421,7 +419,6 @@ namespace :seed do
       puts "=== Stat Data #{etype} end (count = #{count}) ==="
     end
 
-=begin
     g  = GeneChip.find(:first, :conditions => ["slug like ?","HuGene1_0"])
     probesets = {}
 
@@ -451,9 +448,6 @@ namespace :seed do
       ProbesetStat.import(fields,buffer)
       puts "=== Stat Data #{etype} end (count = #{count}) ==="
     end
-=end
-
-
 
     puts "=== Stat Data END ==="
   end
@@ -490,7 +484,7 @@ namespace :seed do
   task :build_sphinx => ["ts:stop", "ts:config", "ts:rebuild", "ts:start"]
 
   task :fill => [:delete_from_all, :genechips,
-    :mouse430_probesets, :u74av1_probesets, :gnf1m_probesets,
+    :mouse430_probesets, :u74av1_probesets, :gnf1m_probesets, :hugene_probesets,
     :assays, :datas, :stats, :refbackfill, :build_sphinx]
 
   desc "Reset the source data and stats"
