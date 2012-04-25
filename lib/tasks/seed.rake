@@ -62,7 +62,7 @@ namespace :seed do
     g  = GeneChip.find(:first, :conditions => ["slug like ?","U74Av1"])
     count = 0
     buffer = []
-    puts "=== Begin Probeset insert ==="
+    puts "=== Begin u74av1 Probeset insert ==="
     FasterCSV.foreach("#{RAILS_ROOT}/seed_data/prepared_MG_U74Av2.na31.annot.csv", :headers=> true ) do |ps|
       count += 1
       buffer << [g.id] + ps.values_at
@@ -74,7 +74,7 @@ namespace :seed do
     end
     Probeset.import(fields,buffer)
     puts count
-    puts "=== End Probeset insert ==="
+    puts "=== End u74av1 Probeset insert ==="
   end
 
 
@@ -85,7 +85,7 @@ namespace :seed do
     g  = GeneChip.find(:first, :conditions => ["slug like ?","Mouse430_2"])
     count = 0
     buffer = []
-    puts "=== Begin Probeset insert ==="
+    puts "=== Begin Mouse430_2 Probeset insert ==="
     FasterCSV.foreach("#{RAILS_ROOT}/seed_data/prepared_Mouse430_2.na28.annot.csv" ) do |ps|
       count += 1
       buffer << [g.id] + ps[0..-1]
@@ -98,7 +98,7 @@ namespace :seed do
     end
     Probeset.import(fields,buffer)
     puts count
-    puts "=== End Probeset insert ==="
+    puts "=== End Mouse430_2 Probeset insert ==="
   end
 
   desc "Seed gnf annotations"
@@ -108,7 +108,7 @@ namespace :seed do
     g  = GeneChip.find(:first, :conditions => ["slug like ?", "GNF1M"])
     count = 0
     buffer = []
-    puts "=== Begin Probeset insert ==="
+    puts "=== Begin GNF1M Probeset insert ==="
     FasterCSV.foreach("#{RAILS_ROOT}/seed_data/prepared_gnf1m.annot2007.csv", :headers=> true ) do |ps|
       count += 1
       buffer << [g.id] + ps.values_at
@@ -120,17 +120,17 @@ namespace :seed do
     end
     Probeset.import(fields,buffer)
     puts count
-    puts "=== End Probeset insert ==="
+    puts "=== End GNF1M Probeset insert ==="
   end
 
-  desc "Seed gnf annotations"
+  desc "Seed HuGene annotations"
   task :hugene_probesets => :environment do
     # probes
     fields = %w{ gene_chip_id probeset_name genechip_name species annotation_date sequence_type sequence_source transcript_id target_description representative_public_id archival_unigene_cluster unigene_id genome_version alignments gene_title gene_symbol chromosomal_location unigene_cluster_type ensembl entrez_gene swissprot ec omim refseq_protein_id refseq_transcript_id flybase agi wormbase mgi_name rgd_name sgd_accession_number go_biological_process go_cellular_component go_molecular_function pathway interpro trans_membrane qtl annotation_description annotation_transcript_cluster transcript_assignments annotation_notes }
     g  = GeneChip.find(:first, :conditions => ["slug like ?", "HuGene1_0"])
     count = 0
     buffer = []
-    puts "=== Begin Probeset insert ==="
+    puts "=== Begin HuGene1_0 Probeset insert ==="
     FasterCSV.foreach("#{RAILS_ROOT}/seed_data/prepared_HuGene-1_0-st-v1.na32.hg19.transcript.csv", :headers=> true ) do |ps|
       count += 1
       buffer << [g.id] + ps.values_at
@@ -142,7 +142,7 @@ namespace :seed do
     end
     Probeset.import(fields,buffer)
     puts count
-    puts "=== End Probeset insert ==="
+    puts "=== End HuGene1_0 Probeset insert ==="
   end
 
 
@@ -170,7 +170,7 @@ namespace :seed do
 
     #v = []
     Assay.import(f,v)
-    puts "=== 9 Assay inserted ==="
+    puts "=== 10 Assay inserted ==="
 
   end
 
@@ -470,6 +470,13 @@ namespace :seed do
     c.execute "delete from probeset_datas"
   end
 
+  task :delete_from_probesets => :environment do
+    c = ActiveRecord::Base.connection
+    c.execute "delete from probesets"
+    puts "=== delete_from_probesets done!"
+  end
+
+  desc "Warning: Deletes all content"
   task :delete_from_all => :environment do
     c = ActiveRecord::Base.connection
     c.execute "delete from gene_chips"
@@ -483,9 +490,15 @@ namespace :seed do
   desc "Build the sphinx index"
   task :build_sphinx => ["ts:stop", "ts:config", "ts:rebuild", "ts:start"]
 
+  desc "Fill database from scratch"
   task :fill => [:delete_from_all, :genechips,
     :mouse430_probesets, :u74av1_probesets, :gnf1m_probesets, :hugene_probesets,
     :assays, :datas, :stats, :refbackfill, :build_sphinx]
+
+  desc "Refill Probesets"
+  task :refill_probesets => [:delete_from_probesets, :mouse430_probesets,
+    :u74av1_probesets, :gnf1m_probesets, :hugene_probesets,
+    :build_sphinx]
 
   desc "Reset the source data and stats"
   task :reset_data => [:delete_from_data, :datas2, :stats2, :refbackfill] do

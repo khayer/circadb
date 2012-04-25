@@ -28,7 +28,7 @@ CSV.open(ARGV[1], "wb") do |csv|
     sequence_type = "-"
     sequence_source = "-"
     transcript_id = "-"
-    target_description = row["Description"]
+    target_description = "-"
     representative_public_id = "-"
     archival_unigene_cluster = "-"
     unigene_id = row["UniGene"]
@@ -43,8 +43,8 @@ CSV.open(ARGV[1], "wb") do |csv|
     swissprot = "-"
     ec = "-"
     omim = "-"
-    refseq_protein_id = "-"
-    refseq_transcript_id = "-"
+    refseq_protein_id = "---"
+    refseq_transcript_id = row["RefSeq"]
     flybase = "-"
     agi = "-"
     wormbase = "-"
@@ -58,7 +58,7 @@ CSV.open(ARGV[1], "wb") do |csv|
     interpro = "-"
     trans_membrane = "-"
     qtl = "-"
-    annotation_description = "-"
+    annotation_description = row["Description"]
     annotation_transcript_cluster = "-"
     transcript_assignments = "-"
     annotation_notes = "-"

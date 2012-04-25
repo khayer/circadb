@@ -1,0 +1,50 @@
+#!/usr/bin/env ruby
+require 'csv'
+require 'rsruby'
+
+usage =<<EOF
+      #{$0} hughes.csv prepared_hughes.csv
+EOF
+
+if ARGV.length != 2
+  puts usage
+  exit
+end
+
+# functions
+####################################################
+R = RSRuby.instance()
+R.eval_R("scaleData <- function(x) {
+  k = (x-min(x))/(max(x)-min(x))*100
+  k/100 * 90 + 5
+}")
+
+R.eval_R("avgData <- function(d) {
+  dd <- filter(d,rep(0.33,3))
+  dd[1] <- d[1]
+  dd[length(dd)] <- d[length(d)]
+  dd
+}")
+####################################################
+
+out = File.new(ARGV[1],"w")
+
+CSV.foreach(ARGV[0],  {:headers => :first_row}) do |row|
+  numbers = []
+  time_points = []
+
+  for i in 1..48
+    numbers << row["JB#{i}"].to_f
+    time_points << i
+  end
+
+  max = R.max(numbers).to_i
+  min = R.min(numbers).to_i
+  mid = R.mean(numbers).to_i
+
+  scaled = R.scaleData(numbers).map {|e| e.to_i }
+  averaged = R.avgData(scaled).map {|e| e.to_i }
+
+  cubase = "http://chart.apis.google.com/chart?chs=%sx%s&cht=lc&chxt=x,y&chxl=0:|18||||||24||||||30||||||36||||||42||||||48||||||54||||||60|||||65||1:|#{min}|#{mid}|#{max}|&chxp=1,2,50,97&chxr=0,18,66&chls=0,0,0|2,1,0&chf=c,ls,0,CCCCCC,0.125,FFFFFF,0.25,CCCCCC,0.25,FFFFFF,0.25,CCCCCC,0.125&chd=t:#{scaled.join(",")}|#{averaged.join(",")}&chco=3164A6,FDB33A&chm=o,555555,0,-1,5"
+  out.puts row["Probe Set ID (human)"] +"@"+time_points.join(",")+"@"+numbers.join(",")+"@"+cubase
+end

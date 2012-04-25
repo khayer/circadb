@@ -21,31 +21,38 @@ end
 # transcript_assignments annotation_notes }
 CSV.open(ARGV[1], "wb") do |csv|
   CSV.foreach(ARGV[0],  {:headers => :first_row}) do |row|
-    probeset_name = row["probese_id"]
+    probeset_name = row["probeset_id"]
     genechip_name = "HuGene-1_0-st-v1"
     species = "Homo Sapiens"
     annotation_date = "2011-06-22"
     sequence_type = "-"
     sequence_source = "-"
-    transcript_id = row["transcript_cluster_id"]
-    dummy = row["gene_assignment"].split(" // ")
-    target_description = dummy[2]
+    transcript_id = "-"
+    dummy = row["gene_assignment"].split(" /// ")
+    dummy_gene_assignement = dummy[0].split(" // ")
+    dummy_mrna_assignement = row["mrna_assignment"].split(" // ")
+    target_description = dummy_gene_assignement[2]
     representative_public_id = "-"
     archival_unigene_cluster = "-"
-    unigene_id = row["unigene"]
+    unigene_id = row["unigene"].split(" // ")[1]
     genome_version = "-"
     alignments = "-"
     gene_title = "-"
-    gene_symbol = "-"
+    gene_symbol = dummy_gene_assignement[1]
     chromosomal_location = "-"
     unigene_cluster_type = "-"
     ensembl = "-"
-    entrez_gene = "-"
+    entrez_gene = dummy_gene_assignement[4]
     swissprot = row["swissprot"]
     ec = "-"
     omim = "-"
-    refseq_protein_id = "-"
-    refseq_transcript_id = dummy[1]
+    refseq_protein_id = "---"
+    refseq_transcript_id = []
+    dummy.each do |entry|
+      helper = entry.split(" // ")
+      refseq_transcript_id << helper[0] if helper[0] =~ /NM/
+    end
+    refseq_transcript_id = refseq_transcript_id.join(" /// ")
     flybase = "-"
     agi = "-"
     wormbase = "-"
@@ -59,7 +66,7 @@ CSV.open(ARGV[1], "wb") do |csv|
     interpro = "-"
     trans_membrane = "-"
     qtl = "-"
-    annotation_description = "-"
+    annotation_description = dummy_gene_assignement[2]
     annotation_transcript_cluster = "-"
     transcript_assignments = "-"
     annotation_notes = "-"
