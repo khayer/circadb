@@ -34,7 +34,7 @@ CSV.open(ARGV[1], "wb") do |csv|
     unigene_id = row["UniGene"]
     genome_version = "-"
     alignments = "-"
-    gene_title = "-"
+    gene_title = row["Description"]
     gene_symbol = row["Symbol"]
     chromosomal_location = "-"
     unigene_cluster_type = "-"
@@ -58,7 +58,7 @@ CSV.open(ARGV[1], "wb") do |csv|
     interpro = "-"
     trans_membrane = "-"
     qtl = "-"
-    annotation_description = row["Description"]
+    annotation_description = "-"
     annotation_transcript_cluster = "-"
     transcript_assignments = "-"
     annotation_notes = "-"
