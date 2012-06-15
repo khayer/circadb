@@ -53,6 +53,8 @@ namespace :seed do
     g.save
     g  = GeneChip.new(:slug => "HuGene1_0", :name => "Affymetrix for GeneChip HuGene-1_0 transcript (Affymetrix)")
     g.save
+    g  = GeneChip.new(:slug => "Mouse_1.OST", :name => "Affymetrix for GeneChip MoGene-1_0-st-v1.na32.mm9 transcript (Affymetrix)")
+    g.save
   end
 
   desc "Seed probeset annotations"
@@ -145,6 +147,28 @@ namespace :seed do
     puts "=== End HuGene1_0 Probeset insert ==="
   end
 
+  desc "Seed MoGene annotations"
+  task :mogene_probesets => :environment do
+    # probes
+    fields = %w{ gene_chip_id probeset_name genechip_name species annotation_date sequence_type sequence_source transcript_id target_description representative_public_id archival_unigene_cluster unigene_id genome_version alignments gene_title gene_symbol chromosomal_location unigene_cluster_type ensembl entrez_gene swissprot ec omim refseq_protein_id refseq_transcript_id flybase agi wormbase mgi_name rgd_name sgd_accession_number go_biological_process go_cellular_component go_molecular_function pathway interpro trans_membrane qtl annotation_description annotation_transcript_cluster transcript_assignments annotation_notes }
+    g  = GeneChip.find(:first, :conditions => ["slug like ?", "Mouse_1.OST"])
+    count = 0
+    buffer = []
+    puts "=== Begin Mouse_1.OST Probeset insert ==="
+    FasterCSV.foreach("#{RAILS_ROOT}/seed_data/prepared_MoGene-1_0-st-v1.na32.mm9.transcript.csv", :headers=> true ) do |ps|
+      count += 1
+      buffer << [g.id] + ps.values_at
+      if count % 1000 == 0
+        Probeset.import(fields,buffer)
+        buffer = []
+        puts count
+      end
+    end
+    Probeset.import(fields,buffer)
+    puts count
+    puts "=== End Mouse_1.OST  Probeset insert ==="
+  end
+
 
   desc "Seed assays"
   task :assays => :environment do
@@ -155,6 +179,7 @@ namespace :seed do
     gnf_id = GeneChip.find(:first, :conditions => ["slug like ?","GNF1M"]).id
     u74av1_id = GeneChip.find(:first, :conditions => ["slug like ?","U74Av1"]).id
     hugene_id = GeneChip.find(:first, :conditions => ["slug like ?","HuGene1_0"]).id
+    mogene_id = GeneChip.find(:first, :conditions => ["slug like ?","Mouse_1.OST"]).id
 
     v = [["liver","Mouse Liver 48 hour Hughes 2009 (Affymetrix)", affy_id],
          ["pituitary","Mouse Pituitary 48 hour Hughes 2009 (Affymetrix)",affy_id],
@@ -165,12 +190,20 @@ namespace :seed do
          ["WT_SCN","Mouse Wild Type SCN (GNF microarray)", gnf_id],
          ["panda_liver","Mouse Liver Panda 2002 (Affymetrix)",u74av1_id],
          ["panda_SCN_MAS4","Mouse SCN MAS4 Panda 2002 (Affymetrix)", u74av1_id],
-         ["panda_SCN_gcrma","Mouse SCN gcrma Panda 2002 (Affymetrix)", u74av1_id]]
+         ["panda_SCN_gcrma","Mouse SCN gcrma Panda 2002 (Affymetrix)", u74av1_id],
+         ["Mouse_1.OST-Adr","Mouse 1.OST Adr (Affymetrix)", mogene_id],
+         ["Mouse_1.OST-Aorta","Mouse 1.OST Aorta (Affymetrix)", mogene_id],
+         ["Mouse_1.OST-BFAT","Mouse 1.OST BFAT (Affymetrix)", mogene_id],
+         ["Mouse_1.OST-BS","Mouse 1.OST BS (Affymetrix)", mogene_id],
+         ["Mouse_1.OST-Heart","Mouse 1.OST Heart (Affymetrix)", mogene_id],
+         ["Mouse_1.OST-Kidney","Mouse 1.OST Kidney (Affymetrix)", mogene_id],
+         ["Mouse_1.OST-Mus","Mouse 1.OST Mus (Affymetrix)", mogene_id],
+         ["Mouse_1.OST-WFAT","Mouse 1.OST WFAT (Affymetrix)", mogene_id]]
 
 
     #v = []
     Assay.import(f,v)
-    puts "=== 10 Assay inserted ==="
+    puts "=== 18 Assay inserted ==="
 
   end
 
@@ -315,7 +348,36 @@ namespace :seed do
 
     buffer = []
     ProbesetData.import(fields,buffer)
-    #puts "=== Raw Data 3T3 cells insert ended (count= #{count}) ==="
+    #puts "=== Raw Data U2OS cells insert ended (count= #{count}) ==="
+
+    %w{ Adr Aorta BFAT BS Heart Kidney Mus WFAT }.each do |etype|
+      count = 0
+      buffer = []
+      a = Assay.find(:first, :conditions => ["slug = ?", etype])
+      puts "=== Raw Data #{etype} insert starting ==="
+
+      File.open("#{RAILS_ROOT}/seed_data/mogene_#{etype}_data","r" ).each do |line|
+        count += 1
+        line = line.split("@")
+        time_points = line[1].split(",").map {|element| element}
+        data_points = line[2].split(",").map {|element| element}
+        cubase = line[3]
+        psid = probesets[line[0]]
+        buffer << [a.id(), a.slug, psid, line[0], time_points.to_json, data_points.to_json,cubase]
+
+        if count % 1000 == 0
+          ProbesetData.import(fields,buffer)
+          puts count
+          buffer = []
+        end
+      end
+      ProbesetData.import(fields,buffer)
+      puts "=== Raw Data MoGene #{etype} end (count= #{count}) ==="
+    end
+
+
+    buffer = []
+    ProbesetData.import(fields,buffer)
 
     puts "=== Raw Data insert ended ==="
   end
@@ -449,6 +511,35 @@ namespace :seed do
       puts "=== Stat Data #{etype} end (count = #{count}) ==="
     end
 
+    g  = GeneChip.find(:first, :conditions => ["slug like ?","Mouse_1.OST"])
+    probesets = {}
+
+    g.probesets.each do |p|
+      p.probeset_name
+      probesets[p.probeset_name]= p.id
+    end
+
+    %w{ Adr Aorta BFAT BS Heart Kidney Mus WFAT }.each do |etype|
+      count = 0
+      buffer = []
+      a = Assay.find(:first, :conditions => ["slug = ?", etype])
+      puts "=== Stat Data mogene #{etype} start ==="
+
+      FasterCSV.foreach("#{RAILS_ROOT}/seed_data/mogene_#{etype}_stats") do |row|
+        count += 1
+        aslug, psname = 0,row[0].to_i
+        psid = probesets[row[0]]
+        buffer << [a.id, a.slug,psid, psid, psname] + row[1..-1].to_a
+        if count % 1000 == 0
+          ProbesetStat.import(fields,buffer)
+          buffer = []
+          puts count
+        end
+      end
+      ProbesetStat.import(fields,buffer)
+      puts "=== Stat Data mogene #{etype} end (count = #{count}) ==="
+    end
+
     puts "=== Stat Data END ==="
   end
 
@@ -493,11 +584,11 @@ namespace :seed do
   desc "Fill database from scratch"
   task :fill => [:delete_from_all, :genechips,
     :mouse430_probesets, :u74av1_probesets, :gnf1m_probesets, :hugene_probesets,
-    :assays, :datas, :stats, :refbackfill, :build_sphinx]
+    :mogene_probesets, :assays, :datas, :stats, :refbackfill, :build_sphinx]
 
   desc "Refill Probesets"
   task :refill_probesets => [:delete_from_probesets, :mouse430_probesets,
-    :u74av1_probesets, :gnf1m_probesets, :hugene_probesets,
+    :u74av1_probesets, :gnf1m_probesets, :hugene_probesets, :mogene_probesets
     :build_sphinx]
 
   desc "Reset the source data and stats"
