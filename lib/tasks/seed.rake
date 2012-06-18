@@ -191,16 +191,16 @@ namespace :seed do
          ["panda_liver","Mouse Liver Panda 2002 (Affymetrix)",u74av1_id],
          ["panda_SCN_MAS4","Mouse SCN MAS4 Panda 2002 (Affymetrix)", u74av1_id],
          ["panda_SCN_gcrma","Mouse SCN gcrma Panda 2002 (Affymetrix)", u74av1_id],
-         ["Mouse_1.OST-Adr","Mouse 1.OST Adr (Affymetrix)", mogene_id],
-         ["Mouse_1.OST-Aorta","Mouse 1.OST Aorta (Affymetrix)", mogene_id],
-         ["Mouse_1.OST-BFAT","Mouse 1.OST BFAT (Affymetrix)", mogene_id],
-         ["Mouse_1.OST-BS","Mouse 1.OST BS (Affymetrix)", mogene_id],
-         ["Mouse_1.OST-Heart","Mouse 1.OST Heart (Affymetrix)", mogene_id],
-         ["Mouse_1.OST-Kidney","Mouse 1.OST Kidney (Affymetrix)", mogene_id],
-         ["Mouse_1.OST-Mus","Mouse 1.OST Mus (Affymetrix)", mogene_id],
-         ["Mouse_1.OST-WFAT","Mouse 1.OST WFAT (Affymetrix)", mogene_id]]
+         ["Adr","Mouse 1.OST Adr (Affymetrix)", mogene_id],
+         ["Aorta","Mouse 1.OST Aorta (Affymetrix)", mogene_id],
+         ["BFAT","Mouse 1.OST BFAT (Affymetrix)", mogene_id],
+         ["BS","Mouse 1.OST BS (Affymetrix)", mogene_id],
+         ["Heart","Mouse 1.OST Heart (Affymetrix)", mogene_id],
+         ["Kidney","Mouse 1.OST Kidney (Affymetrix)", mogene_id],
+         ["Mus","Mouse 1.OST Mus (Affymetrix)", mogene_id],
+         ["WFAT","Mouse 1.OST WFAT (Affymetrix)", mogene_id]]
 
-
+    #Adr Aorta BFAT BS Heart Kidney Mus WFAT
     #v = []
     Assay.import(f,v)
     puts "=== 18 Assay inserted ==="
@@ -588,7 +588,7 @@ namespace :seed do
 
   desc "Refill Probesets"
   task :refill_probesets => [:delete_from_probesets, :mouse430_probesets,
-    :u74av1_probesets, :gnf1m_probesets, :hugene_probesets, :mogene_probesets
+    :u74av1_probesets, :gnf1m_probesets, :hugene_probesets, :mogene_probesets,
     :build_sphinx]
 
   desc "Reset the source data and stats"
