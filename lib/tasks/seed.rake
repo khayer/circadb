@@ -45,6 +45,8 @@ namespace :seed do
     c = ActiveRecord::Base.connection
     c.execute "delete from gene_chips"
 
+    g  = GeneChip.new(:slug => "Mouse_1.OST", :name => "Affymetrix for GeneChip MoGene-1_0-st-v1.na32.mm9 transcript (Affymetrix)")
+    g.save
     g  = GeneChip.new(:slug => "Mouse430_2", :name => "Mouse Genome 430 2.0 (Affymetrix)")
     g.save
     g  = GeneChip.new(:slug => "GNF1M", :name => "Mouse GNF1M (GNF)")
@@ -52,8 +54,6 @@ namespace :seed do
     g  = GeneChip.new(:slug => "U74Av1", :name => "Affymetrix GeneChip Mouse Genome U74A-B-C_2 (Affymetrix)")
     g.save
     g  = GeneChip.new(:slug => "HuGene1_0", :name => "Affymetrix for GeneChip HuGene-1_0 transcript (Affymetrix)")
-    g.save
-    g  = GeneChip.new(:slug => "Mouse_1.OST", :name => "Affymetrix for GeneChip MoGene-1_0-st-v1.na32.mm9 transcript (Affymetrix)")
     g.save
   end
 
@@ -181,7 +181,15 @@ namespace :seed do
     hugene_id = GeneChip.find(:first, :conditions => ["slug like ?","HuGene1_0"]).id
     mogene_id = GeneChip.find(:first, :conditions => ["slug like ?","Mouse_1.OST"]).id
 
-    v = [["liver","Mouse Liver 48 hour Hughes 2009 (Affymetrix)", affy_id],
+    v = [["adrenal_gland","Mouse 1.OST Adrenal Gland (Affymetrix)", mogene_id],
+         ["aorta","Mouse 1.OST Aorta (Affymetrix)", mogene_id],
+         ["brown_adipose","Mouse 1.OST Brown Adipose (Affymetrix)", mogene_id],
+         ["brain_stem","Mouse 1.OST Brain Stem (Affymetrix)", mogene_id],
+         ["heart","Mouse 1.OST Heart (Affymetrix)", mogene_id],
+         ["kidney","Mouse 1.OST Kidney (Affymetrix)", mogene_id],
+         ["skeletal_muscle","Mouse 1.OST Skeletal Muscle (Affymetrix)", mogene_id],
+         ["white_adipose","Mouse 1.OST White Adipose (Affymetrix)", mogene_id],
+         ["liver","Mouse Liver 48 hour Hughes 2009 (Affymetrix)", affy_id],
          ["pituitary","Mouse Pituitary 48 hour Hughes 2009 (Affymetrix)",affy_id],
          ["NIH3T3","Mouse NIH 3T3 Immortilized Cell Line 48 hour Hughes 2009 (Affymetrix)",affy_id],
          ["U2OS","Human U2 OS Hughes 2009 (Affymetrix)", hugene_id],
@@ -190,15 +198,7 @@ namespace :seed do
          ["WT_SCN","Mouse Wild Type SCN (GNF microarray)", gnf_id],
          ["panda_liver","Mouse Liver Panda 2002 (Affymetrix)",u74av1_id],
          ["panda_SCN_MAS4","Mouse SCN MAS4 Panda 2002 (Affymetrix)", u74av1_id],
-         ["panda_SCN_gcrma","Mouse SCN gcrma Panda 2002 (Affymetrix)", u74av1_id],
-         ["adrenal_gland","Mouse 1.OST Adrenal Gland (Affymetrix)", mogene_id],
-         ["aorta","Mouse 1.OST Aorta (Affymetrix)", mogene_id],
-         ["brown_adipose","Mouse 1.OST Brown Adipose (Affymetrix)", mogene_id],
-         ["brain_stem","Mouse 1.OST Brain Stem (Affymetrix)", mogene_id],
-         ["heart","Mouse 1.OST Heart (Affymetrix)", mogene_id],
-         ["kidney","Mouse 1.OST Kidney (Affymetrix)", mogene_id],
-         ["skeletal_muscle","Mouse 1.OST Skeletal Muscle (Affymetrix)", mogene_id],
-         ["white_adipose","Mouse 1.OST White Adipose (Affymetrix)", mogene_id]]
+         ["panda_SCN_gcrma","Mouse SCN gcrma Panda 2002 (Affymetrix)", u74av1_id]]
 
          # adrenal_gland aorta brown_adipose brain_stem heart kidney skeletal_muscle white_adipose
 
@@ -611,6 +611,11 @@ namespace :seed do
 
   desc "Reset the source stats"
   task :reset_stats => [:delete_from_stats,  :stats, :refbackfill,
+    :build_sphinx] do
+  end
+
+  desc "Reset assays"
+  task :reset_assays => [:assays, :refbackfill,
     :build_sphinx] do
   end
 
