@@ -13,19 +13,19 @@ class QueryController < ApplicationController
 
     # tissue
     cnd[:assay_id] = params[:assays] if params[:assays]
-    if params[:query_string].to_s.empty? 
+    if params[:query_string].to_s.strip.empty?
       params[:query_string] = nil
     end
 
     if params[:query_string]
-      @probeset_stats = ProbesetStat.search(params[:query_string].strip!,
+      @probeset_stats = ProbesetStat.search(params[:query_string],
         :page => current_page, :per_page => @@per_page, :with => cnd,
         :order => "#{params[:filter]} ASC", :match_mode => :any,
-        :include => [:probeset_data, :probeset])
+        :include => [:probeset_data, :probeset, :probeset_stats])
     else
       @probeset_stats = ProbesetStat.search(:page => current_page, :per_page => @@per_page, :with => cnd,
         :order => "#{params[:filter]} ASC",
-        :include => [:probeset_data, :probeset])
+        :include => [:probeset_data, :probeset, :probeset_stats])
     end
     puts "@probeset_stats = #{@probeset_stats.length}"
     respond_to do |format|
