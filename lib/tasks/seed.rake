@@ -191,14 +191,16 @@ namespace :seed do
          ["panda_liver","Mouse Liver Panda 2002 (Affymetrix)",u74av1_id],
          ["panda_SCN_MAS4","Mouse SCN MAS4 Panda 2002 (Affymetrix)", u74av1_id],
          ["panda_SCN_gcrma","Mouse SCN gcrma Panda 2002 (Affymetrix)", u74av1_id],
-         ["Adr","Mouse 1.OST Adr (Affymetrix)", mogene_id],
-         ["Aorta","Mouse 1.OST Aorta (Affymetrix)", mogene_id],
-         ["BFAT","Mouse 1.OST BFAT (Affymetrix)", mogene_id],
-         ["BS","Mouse 1.OST BS (Affymetrix)", mogene_id],
-         ["Heart","Mouse 1.OST Heart (Affymetrix)", mogene_id],
-         ["Kidney","Mouse 1.OST Kidney (Affymetrix)", mogene_id],
-         ["Mus","Mouse 1.OST Mus (Affymetrix)", mogene_id],
-         ["WFAT","Mouse 1.OST WFAT (Affymetrix)", mogene_id]]
+         ["adrenal_gland","Mouse 1.OST Adrenal Gland (Affymetrix)", mogene_id],
+         ["aorta","Mouse 1.OST Aorta (Affymetrix)", mogene_id],
+         ["brown_adipose","Mouse 1.OST Brown Adipose (Affymetrix)", mogene_id],
+         ["brain_stem","Mouse 1.OST Brain Stem (Affymetrix)", mogene_id],
+         ["heart","Mouse 1.OST Heart (Affymetrix)", mogene_id],
+         ["kidney","Mouse 1.OST Kidney (Affymetrix)", mogene_id],
+         ["skeletal_muscle","Mouse 1.OST Skeletal Muscle (Affymetrix)", mogene_id],
+         ["white_adipose","Mouse 1.OST White Adipose (Affymetrix)", mogene_id]]
+
+         # adrenal_gland aorta brown_adipose brain_stem heart kidney skeletal_muscle white_adipose
 
     #Adr Aorta BFAT BS Heart Kidney Mus WFAT
     #v = []
@@ -345,12 +347,19 @@ namespace :seed do
       puts "=== Raw Data #{etype} end (count= #{count}) ==="
     end
 
+    # Mouse_1.OST
+    g  = GeneChip.find(:first, :conditions => ["slug like ?","Mouse_1.OST"])
+    probesets = {}
+    g.probesets.each do |p|
+      probesets[p.probeset_name]= p.id
+    end
+
 
     buffer = []
     ProbesetData.import(fields,buffer)
     #puts "=== Raw Data U2OS cells insert ended (count= #{count}) ==="
 
-    %w{ Adr Aorta BFAT BS Heart Kidney Mus WFAT }.each do |etype|
+    %w{ adrenal_gland aorta brown_adipose brain_stem heart kidney skeletal_muscle white_adipose }.each do |etype|
       count = 0
       buffer = []
       a = Assay.find(:first, :conditions => ["slug = ?", etype])
@@ -519,7 +528,7 @@ namespace :seed do
       probesets[p.probeset_name]= p.id
     end
 
-    %w{ Adr Aorta BFAT BS Heart Kidney Mus WFAT }.each do |etype|
+    %w{ adrenal_gland aorta brown_adipose brain_stem heart kidney skeletal_muscle white_adipose }.each do |etype|
       count = 0
       buffer = []
       a = Assay.find(:first, :conditions => ["slug = ?", etype])
@@ -557,7 +566,6 @@ namespace :seed do
 
   task :delete_from_data => :environment do
     c = ActiveRecord::Base.connection
-    c.execute "delete from probeset_stats"
     c.execute "delete from probeset_datas"
   end
 
@@ -565,6 +573,11 @@ namespace :seed do
     c = ActiveRecord::Base.connection
     c.execute "delete from probesets"
     puts "=== delete_from_probesets done!"
+  end
+
+  task :delete_from_stats => :environment do
+    c = ActiveRecord::Base.connection
+    c.execute "delete from probeset_stats"
   end
 
   desc "Warning: Deletes all content"
@@ -591,8 +604,16 @@ namespace :seed do
     :u74av1_probesets, :gnf1m_probesets, :hugene_probesets, :mogene_probesets,
     :build_sphinx]
 
-  desc "Reset the source data and stats"
-  task :reset_data => [:delete_from_data, :datas2, :stats2, :refbackfill] do
+  desc "Reset the source data"
+  task :reset_data => [:delete_from_data, :assays, :datas, :refbackfill,
+    :build_sphinx] do
   end
+
+  desc "Reset the source stats"
+  task :reset_stats => [:delete_from_stats,  :stats, :refbackfill,
+    :build_sphinx] do
+  end
+
+
 
 end
