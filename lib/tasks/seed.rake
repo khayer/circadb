@@ -614,8 +614,8 @@ namespace :seed do
     :build_sphinx] do
   end
 
-  desc "Reset assays"
-  task :reset_assays => [:assays, :refbackfill,
+  desc "Reset assays and genechips"
+  task :reset_assays => [:assays, :genechips, :refbackfill,
     :build_sphinx] do
   end
 
