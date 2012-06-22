@@ -2,7 +2,7 @@
 
 class Probeset < ActiveRecord::Base
   cattr_reader :per_page
-  @@per_page = 30
+  @@per_page = 10
   belongs_to :gene_chip
   has_many :probeset_stats
   has_many :probeset_datas
