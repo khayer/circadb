@@ -1,5 +1,5 @@
 class QueryController < ApplicationController
-  @@per_page = 30
+  @@per_page = 10
 
   def index
     # condition hash
