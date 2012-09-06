@@ -29,6 +29,7 @@ class ProbesetStat < ActiveRecord::Base
         indexes probeset.#{m}, :as => :#{m}
         EOF
     end
+    # define filter attributes
     has assay_id, cosopt_p_value, cosopt_q_value, cosopt_period_length,
       cosopt_phase, fisherg_p_value, fisherg_q_value, fisherg_period_length,
       jtk_p_value, jtk_q_value, jtk_period_length, jtk_lag, jtk_amp

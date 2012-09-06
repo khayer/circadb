@@ -5,9 +5,20 @@ namespace :bootstrap do
 
   desc "Download DB data from AWS"
   task :download_db => :environment do
+    require 'net/http'
     unless File.exists? "#{Rails.root}/circadb.mysql.dmp"
-      require 'curb'
-      Curl::Easy.download("http://s3.amazonaws.com/itmat.circadb/circadb.mysql.dmp.gz", "#{Rails.root}/circadb.mysql.dmp.gz")
+      uri = URI('http://s3.amazonaws.com/itmat.circadb/circadb.mysql.dmp.gz')
+      Net::HTTP.start(uri.host, uri.port) do |http|
+        request = Net::HTTP::Get.new uri.request_uri
+
+        http.request request do |response|
+          open "#{Rails.root}/circadb.mysql.dmp.gz", 'wb' do |io|
+            response.read_body do |chunk|
+              io.write chunk
+            end
+          end
+        end
+      end
       system("gunzip circadb.mysql.dmp.gz")
     end
   end
