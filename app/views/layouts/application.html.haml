@@ -28,8 +28,10 @@
     .footer.span-18.last
       %ul#nav
         %li
-          Penn Medicine | ITMAT Bioninformatics Facility
-    -#.tail.span-9.last
-      -#= link_to( image_tag('DARPA_Logo.png', :alt=> "CIRCA"), "http://www.darpa.mil/")
+          %a(href="http://www.med.upenn.edu" ) Penn Medicine
+          |
+          %a(href="http://bioinf.itmat.upenn.edu/home.html") ITMAT Bioninformatics Facility
+    / .tail.span-9.last
+    /   = link_to( image_tag('DARPA_Logo.png', :alt=> "CIRCA"), "http://www.darpa.mil/")
     .tail.span-18.last
       = link_to( image_tag('NHLBI.png', :alt=> "CIRCA"), "http://www.nhlbi.nih.gov/")
