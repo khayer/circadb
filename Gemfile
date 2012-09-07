@@ -10,11 +10,12 @@ gem "riddle"
 gem "thinking-sphinx", "~> 1.4",  :require => "thinking_sphinx"
 
 # These gems are needed for bootstrapping a site
-gem "curb"
+#  gem "curb" # replaced with Net::HTTP due to curb gem compile errors
 gem "ar-extensions"
 gem "fastercsv"
 
 group :development do
+  gem "rake"
   gem "rails-footnotes"
   gem "wirble"
   gem "annotate"
