@@ -16,12 +16,15 @@ class QueryController < ApplicationController
     if params[:query_string].to_s.strip.empty?
       params[:query_string] = nil
     end
+    # query match mode
+    params[:match_mode] ||= 'any'
+    @match_mode = params[:match_mode].to_sym
 
     if params[:query_string]
       @probeset_stats = ProbesetStat.search(params[:query_string],
         :page => current_page, :per_page => @@per_page, :with => cnd,
         :order => "#{params[:filter]} ASC", :match_mode => :any,
-        :include => [:probeset_data, :probeset, :probeset_stats])
+        :include => [:probeset_data, :probeset, :probeset_stats] )
     else
       @probeset_stats = ProbesetStat.search(:page => current_page, :per_page => @@per_page, :with => cnd,
         :order => "#{params[:filter]} ASC",
