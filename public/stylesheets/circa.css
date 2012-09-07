@@ -81,4 +81,7 @@
 #link a:focus, #link a:hover {color:#111;}
 
 
-
+code {
+  color:#F93;
+  font-weight: bold;
+}

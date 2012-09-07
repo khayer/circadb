@@ -1,46 +1,29 @@
 .span-17.last
-  %h2== CIRCA Help
-%p
-  Welcome on the CIRCA help page. Here we give you an example that shows the usage of the CIRCA application.
-  %br
-  %br
-  %b Example
-  %br
-  In this example we want to find out if
-  %em== Per3
-  is cyclic. The first step is to enter the gene name into the search
-  box. Next we can adjust the probability filter. The default is set on
-  the JTK P-value. Together with the probability cut-off value this
-  filter looks for JTK P-values beneath the cut-off. If we are only
-  interested in significant JTK P-values of 0.01 and lower we can
-  set the probability cut-off value on 0.01. With the last filter
-  method a specific tissue can be chosen. Once the sheet is filled
-  out the search can be begin.
-  %br
-  %br
-  %b Understanding the plot
-  %br
-  As result we will see a plot, where the X-axis is the time in
-  hours and the Y-axis reflects the expression levels measured
-  on the individual gene chips.
-  %br
-  %br
-  %b Understanding the values
-  %br
-  There are three different algorithms to statistically test if a dataset
-  is cyclic or not. More information about these algorithm can be found
-  in the "About" tab.
-  %br
-  %br
-  %b Note
-  %br
-  For all the algorithms we tested cyclic behaviour for a range of different
-  periods, except for the DeLichtenberg were we only looked for a period of 24
-  hours.
-  %br
-
-
-
-
-
-
+  %h2 CIRCA Help
+  %p
+    Welcome on the CIRCA help page. Here we give you an example that shows the usage of the CIRCA application.
+  %h3 Querying CircaDB
+  %p
+    In this example we want to find out if <em> Per3</em>
+    is cyclic. The first step is to enter the gene name into the search
+    box. Next we can adjust the probability filter. The default is set on
+    the JTK P-value. Together with the probability cut-off value this
+    filter looks for JTK P-values beneath the cut-off. If we are only
+    interested in significant JTK P-values of 0.01 and lower we can
+    set the probability cut-off value on 0.01. With the last filter
+    method a specific tissue can be chosen. Once the sheet is filled
+    out the search can be begin.
+  %p== For more query options, see the #{  link_to("Advanced Query Help", advanced_query_help_path()) }
+  %h3 Understanding the plot
+  %p
+    As result we will see a plot, where the X-axis is the time in
+    hours and the Y-axis reflects the expression levels measured
+    on the individual gene chips. The background shaded areas represent the cycle of light and dark conditions based on CT times.
+  %h3 Understanding the values
+  %p
+    There are three different algorithms to statistically test if a dataset
+    is cyclic or not. More information about these algorithm can be found
+    in the #{link_to("About", about_path())} tab.
+  %p
+    %b Note:
+    %i For all the algorithms we tested cyclic behaviour for a range of different periods, except for the DeLichtenberg were we only looked for a period of 24 hours.

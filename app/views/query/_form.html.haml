@@ -1,10 +1,26 @@
 .params.span-14.last
-- form_tag :controller => "query", :action => "index" do
+- form_tag query_path(),  :html => {:method => :post} do
   .span-15.last
-    = label_tag :example, "Enter a search word "
-    %span.help ("1451371_at", "AFFX-MURINE_B2_at" or "gnf1m00037_a_at")
+    = label_tag :example, "Enter a search"
+    %br
+    %span.help
+      (Examples 
+      = link_to("1451371_at 1422470_at gnf1m00037_a_at", query_path(:params => {:query_string => "1451371_at\n1422470_at\ngnf1m00037_a_at"} ))
+      or 
+      = link_to("Arntl", query_path(:params => {:query_string => "Arntl"} ))
+      or
+      = link_to("kinase inhibitor", query_path(:params => {:query_string =>  "kinase inhibitor"} ))
+      )
   .qbox.span-15.last{:style => "padding-bottom: 20px;"}
     = text_area_tag :query_string, params[:query_string]
+    %br
+    %b Query syntax mode:
+    - @match_mode = params[:match_mode]
+    = radio_button_tag(:match_mode, "any", (@match_mode == "any" ? true : false ))
+    = label_tag(:match_mode_any, "simple")
+    = radio_button_tag(:match_mode, "extended", (@match_mode == "extended" ? true : false ))
+    = label_tag(:match_mode_advanced, "advanced")
+    = link_to(image_tag('questionmark.png', :alt=> "Advanced query help page"), advanced_query_help_path())
   .span-15.last
     .span-15{:style => "padding-bottom: 10px;"}
       = label_tag :filter, "Choose probability filter"
@@ -17,7 +33,7 @@
   .span-15.last
     .label
       = label_tag :assays, "Choose which experiments to view"
-      = link_to(image_tag('questionmark.png', :alt=> "CIRCA"), about_path())
+      = link_to(image_tag('questionmark.png', :alt=> "Experiment help page"), about_path())
       %br
       = select_tag(:assays, options_for_select(Assay.all.collect {|e| [e.name ,  e.id.to_s] }, params[:assays]), {:multiple => true})
   .span-15.hov= submit_tag "Search"
