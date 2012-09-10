@@ -17,8 +17,8 @@
 }
 
 table {
-  /*border: 1px solid #DDD;*/
-  padding: 3px;
+  border: 1px solid #DDD;
+  padding: 1px;
   margin: 1px;
 }
 
