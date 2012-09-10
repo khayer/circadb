@@ -61,5 +61,9 @@
                   %td <i>NA</i>
 
 .push-1.span-9.last
-  .paginate
-    = will_paginate @probeset_stats
+  %table
+    %td
+      Total hits #{@probeset_stats.total_entries}
+    %td
+      .paginate
+        = will_paginate @probeset_stats
