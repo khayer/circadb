@@ -5,6 +5,8 @@
     -if @probeset_stats.total_entries != 0
       Total hits #{@probeset_stats.total_entries}
       = will_paginate @probeset_stats , :class => "apple_pagination", :params => params
+    -else
+      Total hits #{@probeset_stats.total_entries}
 .results.span-14.last.push-1
   %table
     -for @probeset_stat in @probeset_stats do
