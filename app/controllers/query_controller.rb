@@ -50,3 +50,4 @@ class QueryController < ApplicationController
     end
   end
 end
+
