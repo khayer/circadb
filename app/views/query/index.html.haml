@@ -1,4 +1,8 @@
 .form.span-15.last.push-1{:style => "border-left: 2px double #E5ECF9; padding: 10px;" }
+  %p
+    Welcome to the CIRCA database! If this is your first visit, please see our
+    = link_to("Query Help", advanced_query_help_path())
+    for guidance. At the moment we support mice and human tissues.
   = render :partial => "form"
 .footer.span-15.last.push-1
   .count
