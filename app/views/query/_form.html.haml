@@ -20,7 +20,7 @@
     = label_tag(:match_mode_any, "simple")
     = radio_button_tag(:match_mode, "extended", (@match_mode == "extended" ? true : false ))
     = label_tag(:match_mode_advanced, "advanced")
-    = link_to(image_tag('questionmark.png', :alt=> "Advanced query help page"), advanced_query_help_path())
+    = link_to(image_tag('questionmark_orange2.png', :alt=> "Advanced query help page"), advanced_query_help_path())
   .span-15.last
     .span-15{:style => "padding-bottom: 10px;"}
       = label_tag :filter, "Choose probability filter"
@@ -33,7 +33,7 @@
   .span-15.last
     .label
       = label_tag :assays, "Choose which experiments to view"
-      = link_to(image_tag('questionmark.png', :alt=> "Experiment help page"), about_path())
+      = link_to(image_tag('questionmark_orange2.png', :alt=> "Experiment help page"), about_path())
       %br
       = select_tag(:assays, options_for_select(Assay.all.collect {|e| [e.name ,  e.id.to_s] }, params[:assays]), {:multiple => true})
   .span-15.hov= submit_tag "Search"
