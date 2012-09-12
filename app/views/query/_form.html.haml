@@ -1,5 +1,5 @@
 .params.span-14.last
-- form_tag query_path(),  :html => {:method => :post} do
+- form_tag query_path(),  {:action => "demo_form.asp", :method => "post", :name => "myForm", :onsubmit => "return validateForm()"} do
   .span-15.last
     = label_tag :example, "Enter a search"
     %br
@@ -27,7 +27,7 @@
       = select_tag(:filter, options_for_select(ProbesetStat.pval_filters, params[:filter]))
       %br{:style => "padding-bottom: 10px;"}
       = label_tag :filter_value, "Probabily cut-off value"
-      = text_field_tag :filter_value, (params[:filter_value] || "0.05"),:size => 5
+      = text_field_tag :filter_value, (params[:filter_value] || "0.05"),{:size => 5, :name => "filter_value"}
       %span.help ("0.5" or "2e-10")
       %br{:style => "padding-bottom: 10px;"}
       = label_tag :phase_range, "JTK phase range"
@@ -40,7 +40,8 @@
       = link_to(image_tag('questionmark_orange3.png', :alt=> "Experiment help page"), about_path())
       %br
       = select_tag(:assays, options_for_select(Assay.all.collect {|e| [e.name ,  e.id.to_s] }, params[:assays]), {:multiple => true})
-  .span-15.hov= submit_tag "Search"
+    .span-15.hov= submit_tag "Search"
+
 
 
 

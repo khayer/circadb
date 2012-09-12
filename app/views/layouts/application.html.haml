@@ -15,6 +15,16 @@
     %title CIRCA: Circadian gene expression profiles.
     %link{:rel => 'shortcut icon', :href => 'favicon.ico'}
     %link{:rel => 'apple-touch-icon', :href => 'favicon.ico'}
+    :javascript
+      function validateForm()
+      {
+      var x=document.forms["myForm"]["filter_value"].value;
+      if (x==null || x=="")
+        {
+        alert("First name must be filled out");
+        return false;
+        }
+      }
   %body.span-18.last.container
     .header.span-18.last
       %h1= link_to( image_tag('circa_2.png', :alt=> "CIRCA"), root_path())
