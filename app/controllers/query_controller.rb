@@ -22,6 +22,16 @@ class QueryController < ApplicationController
     if params[:query_string].to_s.strip.empty?
       params[:query_string] = nil
     end
+
+    # phase
+    params[:phase_range] = "0-40" if params[:phase_range] == nil #? params[:phase_range] : "0-40"
+    pv = params[:phase_range].split("-")
+    pv_lower = pv[0].to_f
+    pv_upper = pv[1].to_f
+    cnd[:jtk_lag] = (pv_lower)..(pv_upper)
+
+
+
     # query match mode
     params[:match_mode] ||= 'any'
     @match_mode = params[:match_mode].to_sym
@@ -40,7 +50,7 @@ class QueryController < ApplicationController
     # if you want to log messages, look at the Rails logger functionality
     # puts "@probeset_stats = #{@probeset_stats.length}"
     respond_to do |format|
-      format.html 
+      format.html
       format.bgps do
         @unigene_id = params[:query_string]
         render :action => "index", :layout => "biogps"
