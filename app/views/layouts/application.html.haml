@@ -19,7 +19,7 @@
       function validateForm()
       {
       var x=document.forms["myForm"]["filter_value"].value;
-      if (x==null || x=="" || x<=0 || x>1)
+      if (x==null || x=="" || x<=0 || x>1 || isNaN(Number(x)))
         {
         alert("Probabily cut-off value must between 0 and 1");
         return false;
@@ -27,7 +27,7 @@
       var x=document.forms["myForm"]["phase_range"].value;
       var minuspos=x.indexOf("-");
       var n=x.split("-");
-      if (x==null || x=="" )
+      if (x==null || x=="" || isNaN(Number(n[1])) || isNaN(Number(n[0]))  )
         {
         alert("Please enter a JTK phase range (e.g. 0-6)");
         return false;
