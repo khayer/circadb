@@ -69,7 +69,11 @@ class Probeset < ActiveRecord::Base
 
   def wiki_url
     gene_symbol_capatilized = gene_symbol.upcase()
-    return "<a href='http://en.wikipedia.org/wiki/#{gene_symbol_capatilized}'>#{gene_symbol}</a>"
+    return "<a href='http://en.wikipedia.org/wiki/#{gene_symbol_capatilized}'>Wikipedia</a>"
+  end
+
+  def homolo_gene_url
+    return "<a href='http://www.ncbi.nlm.nih.gov/sites/entrez?Db=homologene&Cmd=DetailsSearch&Term=#{gene_symbol}%5BAll+Fields%5D'>HomoloGene</a>"
   end
 end
 
