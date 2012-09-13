@@ -2,14 +2,20 @@
   %table
     %tr
       %th
+        %a(name="top") CIRCA Help
+    %tr
+      %th
         %a(href="#simple") Simple Search
     %tr
       %th
         %a(href="#advanced") Advanced Search
+    %tr
+      %th
+        %a(href="#faq") FAQ
 
 .span-14.last{:style => "border-left: 2px double #E5ECF9; padding: 13px;" }
-  %h1
-    %a(name="top") CIRCA Help
+  %h2
+    CIRCA Help
   %p
     Welcome on the CIRCA help page. Here we give you an example that shows the usage of the CIRCA application.
   %h3 Querying CircaDB
@@ -24,12 +30,12 @@
     method a specific tissue can be chosen. Once the sheet is filled
     out the search can be begin.
   %p== For more query options, see the #{  link_to("Advanced Query Help", advanced_query_help_path()) }
-  %h3 Understanding the plot
+  %h4 Understanding the plot
   %p
     As result we will see a plot, where the X-axis is the time in
     hours and the Y-axis reflects the expression levels measured
     on the individual gene chips. The background shaded areas represent the cycle of light and dark conditions based on CT times.
-  %h3 Understanding the values
+  %h4 Understanding the values
   %p
     There are three different algorithms to statistically test if a dataset
     is cyclic or not. More information about these algorithm can be found
@@ -37,13 +43,13 @@
   %p
     %b Note:
     %i For all the algorithms we tested cyclic behaviour for a range of different periods, except for the DeLichtenberg were we only looked for a period of 24 hours.
-  %h2 Query Help
+  %h3 Query Help
   %p
     There are two mode of querying CircaDB:
     %a(href="#simple") Simple
     and
     %a(href="#advanced") Advanced.
-  %h3
+  %h4
     %a(name="simple") Simple Query Mode
   %p
     This is the default. Simply enter a set of terms and the engine will query for
@@ -55,7 +61,7 @@
     This is usually not what one would want returned from such a query. This is where
     the advanced query mode comes in.
 
-  %h3
+  %h4
     %a(name="advanced") Advanced Query Mode
   %p
     Once the "advanced query mode" checkbox has been selected, the query strings
@@ -134,5 +140,15 @@
     %tr
       %td target_description
       %td The description from the Affymetrix annotation file
+  %h3
+    %a(name="faq") Frequently asked questions
+  %table
+    %tr
+      %th How do I select more than one experiment?
+      %td "Ctrl+Right Click" lets you select multiple Experiments ("Command+Right Click" for mac users)
+
+.span-20.last.push-6{:style => "text-align:center; padding: 13px;" }
+  %p
+    %a(href="#top") back to the top
 
 
