@@ -19,9 +19,22 @@
       function validateForm()
       {
       var x=document.forms["myForm"]["filter_value"].value;
-      if (x==null || x=="")
+      if (x==null || x=="" || x<=0 || x>1)
         {
-        alert("First name must be filled out");
+        alert("Probabily cut-off value must between 0 and 1");
+        return false;
+        }
+      var x=document.forms["myForm"]["phase_range"].value;
+      var minuspos=x.indexOf("-");
+      var n=x.split("-");
+      if (x==null || x=="" )
+        {
+        alert("Please enter a JTK phase range (e.g. 0-6)");
+        return false;
+        }
+      if (minuspos < 1 || parseFloat(n[1])<parseFloat(n[0]))
+        {
+        alert(x + " is not a valid range");
         return false;
         }
       }

@@ -66,6 +66,11 @@ class Probeset < ActiveRecord::Base
     end
     links.join(" &nbsp; ")
   end
+
+  def wiki_url
+    gene_symbol_capatilized = gene_symbol.upcase()
+    return "<a href='http://en.wikipedia.org/wiki/#{gene_symbol_capatilized}'>#{gene_symbol}</a>"
+  end
 end
 
 
