@@ -9,11 +9,11 @@
 %p
   This is the default. Simply enter a set of terms and the engine will query for
   each term seperately, then join all of the results from each separate term together
-  into the final result. In other words a query for <code>kinase inhibitor</code> 
-  will return all entries with the word <code>kinase</code> together with any entry 
+  into the final result. In other words a query for <code>kinase inhibitor</code>
+  will return all entries with the word <code>kinase</code> together with any entry
   that has <code>inhibitor</code> in their respective annotations.
 %p
-  This is usually not what one would want returned from such a query. This is where 
+  This is usually not what one would want returned from such a query. This is where
   the advanced query mode comes in.
 
 %h3
@@ -22,7 +22,7 @@
   Once the "advanced query mode" checkbox has been selected, the query strings
   are no longer simply split into individual queries. As the saying goes "with
   great power comes great responsibility". In a nutshell, you must now use the
-  underlying Sphinx search engine's 
+  underlying Sphinx search engine's
   %a(href="http://sphinxsearch.com/docs/2.0.5/extended-syntax.html") extended syntax query mode.
 
 
@@ -35,8 +35,8 @@
   To bring back the <code>OR</code> behavior you would need to separate terms
   with a <code>|</code> (a vertical bar, or "pipe") character. E.g.
   <code> kinase | inhibitor</code>.
-%p 
-  To bring back the specific phrase "kinase inhibitor", you would need to 
+%p
+  To bring back the specific phrase "kinase inhibitor", you would need to
   surround both words with quotes. E.g. <code>"kinase inhibitor"</code>
 %h3 More examples
 %p
@@ -45,13 +45,13 @@
   %code "kinase inhibitor" mitochondrial
 %p
   %em Query for kinases, but not any entry with "inhibitor" in the record
-  %br 
+  %br
   %code kinase !inhibitor
 
 %h3 Even more examples
 %p
   Sphinx is a large a powerful system. You can review all of the various
-  ways to use the extended syntax at the 
+  ways to use the extended syntax at the
   %a(href="http://sphinxsearch.com/docs/2.0.4/extended-syntax.html") Sphinx extended query syntax help page
 
 %h3 CircaDB Query Fields
@@ -68,6 +68,7 @@
   %tr
     %td transcript_id
     %td The transcript ID
+    %td
   %tr
     %td representative_public_id
     %td
@@ -80,6 +81,7 @@
   %tr
     %td gene_title
     %td Full gene title
+    %td
   %tr
     %td entrez_gene
     %td The Entrez gene ID
