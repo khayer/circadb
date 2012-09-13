@@ -65,20 +65,20 @@
 #link{
 
 }
-#link a{
+a{
   text-decoration:none;
   /*display:inline-block; */
   padding:0px;
   color:#416BA5;
   /*font-weight:bold;*/
-  font-size:1.2em;
+  /*font-size:1.2em;*/
   padding-top: 0px ;
   padding-bottom: 0px ;
   /*background:#DDD;*/
 
 }
 
-#link a:focus, #link a:hover {color:#111;}
+link a:focus, #link a:hover {color:#111;}
 
 
 code {
