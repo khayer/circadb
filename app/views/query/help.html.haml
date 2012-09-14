@@ -5,20 +5,31 @@
         %a(name="top") CIRCA Help
     %tr
       %th
-        %a(href="#simple") Simple Search
+        %a(href="#querying") Queriyng
     %tr
       %th
-        %a(href="#advanced") Advanced Search
+        %a(href="#simple") - Simple Search
+    %tr
+      %th
+        %a(href="#advanced") - Advanced Search
+    %tr
+      %th
+        %a(href="#plot") Plots
+    %tr
+      %th
+        %a(href="#values") Algorithms
     %tr
       %th
         %a(href="#faq") FAQ
 
 .span-14.last{:style => "border-left: 2px double #E5ECF9; padding: 13px;" }
-  %h2
+  %h1
     CIRCA Help
   %p
-    Welcome on the CIRCA help page. Here we give you an example that shows the usage of the CIRCA application.
-  %h3 Querying CircaDB
+    Welcome to the CIRCA help page. Here you will find all the information
+    you need for a succesful search.
+  %h2
+    %a(name="querying") Querying CircaDB
   %p
     In this example we want to find out if <em> Per3</em>
     is cyclic. The first step is to enter the gene name into the search
@@ -29,27 +40,12 @@
     set the probability cut-off value on 0.01. With the last filter
     method a specific tissue can be chosen. Once the sheet is filled
     out the search can be begin.
-  %p== For more query options, see the #{  link_to("Advanced Query Help", advanced_query_help_path()) }
-  %h4 Understanding the plot
-  %p
-    As result we will see a plot, where the X-axis is the time in
-    hours and the Y-axis reflects the expression levels measured
-    on the individual gene chips. The background shaded areas represent the cycle of light and dark conditions based on CT times.
-  %h4 Understanding the values
-  %p
-    There are three different algorithms to statistically test if a dataset
-    is cyclic or not. More information about these algorithm can be found
-    in the #{link_to("About", about_path())} tab.
-  %p
-    %b Note:
-    %i For all the algorithms we tested cyclic behaviour for a range of different periods, except for the DeLichtenberg were we only looked for a period of 24 hours.
-  %h3 Query Help
   %p
     There are two mode of querying CircaDB:
     %a(href="#simple") Simple
     and
     %a(href="#advanced") Advanced.
-  %h4
+  %h3
     %a(name="simple") Simple Query Mode
   %p
     This is the default. Simply enter a set of terms and the engine will query for
@@ -61,7 +57,7 @@
     This is usually not what one would want returned from such a query. This is where
     the advanced query mode comes in.
 
-  %h4
+  %h3
     %a(name="advanced") Advanced Query Mode
   %p
     Once the "advanced query mode" checkbox has been selected, the query strings
@@ -83,7 +79,7 @@
   %p
     To bring back the specific phrase "kinase inhibitor", you would need to
     surround both words with quotes. E.g. <code>"kinase inhibitor"</code>
-  %h3 More examples
+  %h4 More examples
   %p
     %em Query for the exact phrase "kinase inhibitor" that also make mention of "mitochondrial"
     %br
@@ -93,13 +89,13 @@
     %br
     %code kinase !inhibitor
 
-  %h3 Even more examples
+  %h4 Even more examples
   %p
     Sphinx is a large a powerful system. You can review all of the various
     ways to use the extended syntax at the
     %a(href="http://sphinxsearch.com/docs/2.0.4/extended-syntax.html") Sphinx extended query syntax help page
 
-  %h3 CircaDB Query Fields
+  %h4 CircaDB Query Fields
   %p
     Having read the above, you may be wondering what fields you can use to query CircaDB. The annotation is straight from   the Affymetrix annotation files. We have pulled out certain columns from that file and indexed them as follows:
 
@@ -140,12 +136,30 @@
     %tr
       %td target_description
       %td The description from the Affymetrix annotation file
-  %h3
+
+  %h2
+    %a(name="plot") Understanding the plots
+  %p
+    As result we will see a plot, where the X-axis is the time in
+    hours and the Y-axis reflects the expression levels measured
+    on the individual gene chips. The background shaded areas represent the cycle of light and dark conditions based on CT times.
+  %h2
+    %a(name="values") Understanding the values
+  %p
+    There are three different algorithms to statistically test if a dataset
+    is cyclic or not. More information about these algorithms can be found
+    in the #{link_to("About", about_path())} tab.
+  %p
+    %b Note:
+    %i For all the algorithms we tested cyclic behaviour for a range of different periods, except for the DeLichtenberg were we only looked for a period of 24 hours.
+  %h2
     %a(name="faq") Frequently asked questions
   %table
     %tr
       %th How do I select more than one experiment?
       %td "Ctrl+Right Click" lets you select multiple experiments ("Command+Right Click" for mac users)
+
+
 
 .span-20.last.push-6{:style => "text-align:center; padding: 13px;" }
   %p
