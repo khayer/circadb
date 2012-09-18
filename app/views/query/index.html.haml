@@ -33,7 +33,8 @@
                 %br== <b>RefSeq DNA     </b> #{@probeset.refseq_transcript_url}
                 %br== <b>Description    </b> #{@probeset.gene_title}
             %tr
-              %td &nbsp;
+              %td{:style => "text-align:center" }
+                =link_to(image_tag('questionmark_orange3.png', :alt=> "Experiment help page"), results_path())
               %th p-Value
               %th q-Value
               %th period
