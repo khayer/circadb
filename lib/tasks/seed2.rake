@@ -56,8 +56,6 @@ namespace :seed2 do
     c = ActiveRecord::Base.connection
     c.execute "delete from gene_chips"
 
-    #g  = GeneChip.new(:slug => "Mouse_1.OST", :name => "Affymetrix for GeneChip MoGene-1_0-st-v1.na32.mm9 transcript (Affymetrix)")
-    #g.save
     g  = GeneChip.new(:slug => "Mouse430_2", :name => "Mouse Genome 430 2.0 (Affymetrix)")
     g.save
     g  = GeneChip.new(:slug => "GNF1M", :name => "Mouse GNF1M (GNF)")
@@ -192,7 +190,9 @@ namespace :seed2 do
     hugene_id = GeneChip.find(:first, :conditions => ["slug like ?","HuGene1_0"]).id
     #mogene_id = GeneChip.find(:first, :conditions => ["slug like ?","Mouse_1.OST"]).id
 
-    v = [["NIH3T3","Mouse NIH 3T3 Immortilized Cell Line 48 hour Hughes 2009 (Affymetrix)",affy_id],
+    v = [["liver","Mouse Liver 48 hour Hughes 2009 (Affymetrix)", affy_id],
+         ["pituitary","Mouse Pituitary 48 hour Hughes 2009 (Affymetrix)",affy_id],
+         ["NIH3T3","Mouse NIH 3T3 Immortilized Cell Line 48 hour Hughes 2009 (Affymetrix)",affy_id],
          ["U2OS","Human U2 OS Hughes 2009 (Affymetrix)", hugene_id],
          ["WT_liver","Mouse Wild Type Liver (GNF microarray)", gnf_id],
          ["WT_muscle","Mouse Wild Type Muscle (GNF microarray)",gnf_id],
@@ -235,10 +235,8 @@ namespace :seed2 do
         line = line.split("@")
         time_points = line[1].split(",").map {|element| element}
         data_points = line[2].split(",").map {|element| element}
-
         cubase = line[3]
         psid = probesets[line[0]]
-        puts "HEre"
         buffer << [a.id(), a.slug, psid, line[0], time_points.to_json, data_points.to_json,cubase]
 
         if count % 1000 == 0
@@ -351,15 +349,15 @@ namespace :seed2 do
     end
 
     # Mouse_1.OST
-    g  = GeneChip.find(:first, :conditions => ["slug like ?","Mouse_1.OST"])
-    probesets = {}
-    g.probesets.each do |p|
-      probesets[p.probeset_name]= p.id
-    end
-
-
-    buffer = []
-    ProbesetData.import(fields,buffer)
+    #g  = GeneChip.find(:first, :conditions => ["slug like ?","Mouse_1.OST"])
+    #probesets = {}
+    #g.probesets.each do |p|
+    #  probesets[p.probeset_name]= p.id
+    #end
+#
+#
+    #buffer = []
+    #ProbesetData.import(fields,buffer)
     #puts "=== Raw Data U2OS cells insert ended (count= #{count}) ==="
 
     #%w{ adrenal_gland aorta brown_adipose brain_stem heart kidney skeletal_muscle white_adipose }.each do |etype|
@@ -523,13 +521,13 @@ namespace :seed2 do
       puts "=== Stat Data #{etype} end (count = #{count}) ==="
     end
 
-    g  = GeneChip.find(:first, :conditions => ["slug like ?","Mouse_1.OST"])
-    probesets = {}
-
-    g.probesets.each do |p|
-      p.probeset_name
-      probesets[p.probeset_name]= p.id
-    end
+    #g  = GeneChip.find(:first, :conditions => ["slug like ?","Mouse_1.OST"])
+    #probesets = {}
+#
+    #g.probesets.each do |p|
+    #  p.probeset_name
+    #  probesets[p.probeset_name]= p.id
+    #end
 
     #%w{ adrenal_gland aorta brown_adipose brain_stem heart kidney skeletal_muscle white_adipose }.each do |etype|
     #  count = 0
