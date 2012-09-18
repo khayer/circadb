@@ -14,10 +14,13 @@
         %a(href="#advanced") - Advanced Search
     %tr
       %th
-        %a(href="#plot") Plots
+        %a(href="#results") Results
     %tr
       %th
-        %a(href="#values") Algorithms
+        %a(href="#plot") - Plots
+    %tr
+      %th
+        %a(href="#values") - Algorithms
     %tr
       %th
         %a(href="#faq") FAQ
@@ -138,12 +141,14 @@
       %td The description from the Affymetrix annotation file
 
   %h2
+    %a(name="results") Understanding the results
+  %h3
     %a(name="plot") Understanding the plots
   %p
     As result we will see a plot, where the X-axis is the time in
     hours and the Y-axis reflects the expression levels measured
     on the individual gene chips. The background shaded areas represent the cycle of light and dark conditions based on CT times.
-  %h2
+  %h3
     %a(name="values") Understanding the values
   %p
     There are three different algorithms to statistically test if a dataset
