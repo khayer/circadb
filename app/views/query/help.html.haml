@@ -20,7 +20,16 @@
         %a(href="#plot") - Plots
     %tr
       %th
-        %a(href="#values") - Algorithms
+        %a(href="#p-value") - p-Value
+    %tr
+      %th
+        %a(href="#q-value") - q-Value
+    %tr
+      %th
+        %a(href="#period") - Period
+    %tr
+      %th
+        %a(href="#phase") - Phase
     %tr
       %th
         %a(href="#faq") FAQ
@@ -32,7 +41,7 @@
     Welcome to the CIRCA help page. Here you will find all the information
     you need for a succesful search.
   %h2
-    %a(name="querying") Querying CircaDB
+    %a(name="querying"){:style => "color:#111;"} Querying CircaDB
   %p
     In this example we want to find out if <em> Per3</em>
     is cyclic. The first step is to enter the gene name into the search
@@ -49,7 +58,7 @@
     and
     %a(href="#advanced") Advanced.
   %h3
-    %a(name="simple") Simple Query Mode
+    %a(name="simple"){:style => "color:#111;"} Simple Query Mode
   %p
     This is the default. Simply enter a set of terms and the engine will query for
     each term seperately, then join all of the results from each separate term together
@@ -61,7 +70,7 @@
     the advanced query mode comes in.
 
   %h3
-    %a(name="advanced") Advanced Query Mode
+    %a(name="advanced"){:style => "color:#111;"} Advanced Query Mode
   %p
     Once the "advanced query mode" checkbox has been selected, the query strings
     are no longer simply split into individual queries. As the saying goes "with
@@ -141,15 +150,7 @@
       %td The description from the Affymetrix annotation file
 
   %h2
-    %a(name="results") Understanding the results
-  %h3
-    %a(name="plot") Understanding the plots
-  %p
-    As result we will see a plot, where the X-axis is the time in
-    hours and the Y-axis reflects the expression levels measured
-    on the individual gene chips. The background shaded areas represent the cycle of light and dark conditions based on CT times.
-  %h3
-    %a(name="values") Understanding the values
+    %a(name="results"){:style => "color:#111;"} Understanding the results
   %p
     There are three different algorithms to statistically test if a dataset
     is cyclic or not. More information about these algorithms can be found
@@ -157,8 +158,28 @@
   %p
     %b Note:
     %i For all the algorithms we tested cyclic behaviour for a range of different periods, except for the DeLichtenberg were we only looked for a period of 24 hours.
+  %h3
+    %a(name="plot"){:style => "color:#111;"} Plots
+  %p
+    As result we will see a plot, where the X-axis is the time in
+    hours and the Y-axis reflects the expression levels measured
+    on the individual gene chips. The background shaded areas represent the cycle of light and dark conditions based on CT times.
+  %h3
+    %a(name="p-value"){:style => "color:#111;"} p-Value
+  %h3
+    %a(name="q-value"){:style => "color:#111;"} q-Value
+  %h3
+    %a(name="period"){:style => "color:#111;"} Period
+  %p
+    This value gives information on how often the cycle is repeated. Is the period
+    %i 24
+    , the pattern reoccurs every 24 hours.
+  %h3
+    %a(name="phase"){:style => "color:#111;"} Phase
+  %p
+    The phase is "everything" and reflects the timing in the individual tissues. The DeLichtenberg algorithm does not provide this value in its output.
   %h2
-    %a(name="faq") Frequently asked questions
+    %a(name="faq"){:style => "color:#111;"} Frequently asked questions
   %table
     %tr
       %th How do I select more than one experiment?
