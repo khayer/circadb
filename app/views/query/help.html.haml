@@ -2,9 +2,6 @@
   %table
     %tr
       %th
-        %a(name="top") CIRCA Help
-    %tr
-      %th
         %a(href="#querying") Queriyng
     %tr
       %th
@@ -167,8 +164,12 @@
   =image_tag("plot.png", :alt=> "PLOT")
   %h3
     %a(name="p-value"){:style => "color:#111;"} p-Value
+  %p
+    This statistical size, is the estimated probability of rejecting the null hypothesis. Here the null hypothesis is a dataset not being cyclic. The lower the p-value the more significant is the test result.
   %h3
     %a(name="q-value"){:style => "color:#111;"} q-Value
+  %p
+    The q-value of a test is the minimum False discovery rate.
   %h3
     %a(name="period"){:style => "color:#111;"} Period
   %p
@@ -178,7 +179,7 @@
   %h3
     %a(name="phase"){:style => "color:#111;"} Phase
   %p
-    The phase is "everything" and reflects the timing in the individual tissues. The DeLichtenberg algorithm does not provide this value in its output.
+    The phase reflects the timing in the individual tissues. The DeLichtenberg algorithm does not provide this value in its output.
   %h2
     %a(name="faq"){:style => "color:#111;"} Frequently asked questions
   %table
