@@ -57,6 +57,9 @@
               %td= @probeset_stat.fisherg_q_value
               %td= @probeset_stat.fisherg_period_length
               %td <i>NA</i>
+            %tr
+              %td{:colspan=>5,:style => "text-align:right;"}
+                %a(href="#top")back to the top
 .footer.span-15.last.push-1
   .count
   -if @probeset_stats.total_entries != 0
