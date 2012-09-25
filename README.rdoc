@@ -11,7 +11,7 @@ http://bioinf.itmat.upenn.edu/hogeneschlab
 
 = License
 
-All of the source code for data loading and the web application is  licensed under the The GNU General Public License (GPL-2.0). See the LICENSE file for more details.
+All of the source code for data loading and the web application is  licensed under the GNU General Public License (GPL-2.0). See the LICENSE file for more details.
 
 = Installing
 
