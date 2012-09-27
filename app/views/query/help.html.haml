@@ -46,16 +46,6 @@
   %h2
     %a(name="querying"){:style => "color:#111;"} Querying CircaDB
   %p
-    In this example we want to find out if <em> Per3</em>
-    is cyclic. The first step is to enter the gene name into the search
-    box. Next we can adjust the probability filter. The default is set on
-    the JTK P-value. Together with the probability cut-off value this
-    filter looks for JTK P-values beneath the cut-off. If we are only
-    interested in significant JTK P-values of 0.01 and lower we can
-    set the probability cut-off value on 0.01. With the last filter
-    method a specific tissue can be chosen. Once the sheet is filled
-    out the search can be begin.
-  %p
     There are two mode of querying CircaDB:
     %a(href="#simple") Simple
     and
@@ -154,11 +144,17 @@
   %h3
     %a(name="probability"){:style => "color:#111;"} Probability filter
   %p
-    THIS NEEDS TO BE FILLED
+    The probability filter can be used to narrow the output to the most significant results. The data can be filtered for
+    %a(href="#p-value") p-values
+    and
+    %a(href="#p-value") q-values
+    produced by the different algorithms. The given value is used as the upper cutoff.
   %h3
     %a(name="phase_range"){:style => "color:#111;"} Phase range
   %p
-    THIS NEEDS TO BE FILLED
+    The here specified range can be used to filter for genes that share the same
+    %a(href="#range") phase.
+    Only the phases computed by JTK are considered during this filter step.
   %h2
     %a(name="results"){:style => "color:#111;"} Understanding the results
   %p
@@ -167,7 +163,7 @@
     in the #{link_to("About", about_path())} tab.
   %p
     %b Note:
-    %i For all the algorithms we tested cyclic behaviour for a range of different periods, except for the DeLichtenberg were we only looked for a period of 24 hours.
+    %i For all the algorithms we tested cyclic behavior for a range of different periods, except for the DeLichtenberg were we only looked for a period of 24 hours.
   %h3
     %a(name="plot"){:style => "color:#111;"} Plots
   %p
