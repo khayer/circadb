@@ -288,7 +288,7 @@ namespace :seed2 do
       a = Assay.find(:first, :conditions => ["slug = ?", etype])
       puts "=== Raw Data #{etype} insert starting ==="
 
-      File.open("#{RAILS_ROOT}/seed_data/rubic_#{etype}_data","r" ).each do |line|
+      File.open("#{RAILS_ROOT}/seed_data/rudic_#{etype}_data","r" ).each do |line|
         count += 1
         line = line.split("@")
         time_points = line[1].split(",").map {|element| element}
@@ -524,7 +524,7 @@ namespace :seed2 do
       a = Assay.find(:first, :conditions => ["slug = ?", etype])
       puts "=== Stat Data #{etype} start ==="
 
-      FasterCSV.foreach("#{RAILS_ROOT}/seed_data/rudic#{etype}_stats") do |row|
+      FasterCSV.foreach("#{RAILS_ROOT}/seed_data/rudic_#{etype}_stats") do |row|
         count += 1
         aslug, psname = 0,row[0].to_i
         psid = probesets[row[0]]
