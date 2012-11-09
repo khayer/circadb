@@ -7,7 +7,7 @@ namespace :bootstrap do
   task :download_db => :environment do
     require 'net/http'
     unless File.exists? "#{Rails.root}/circadb.mysql.dmp"
-      uri = URI('http://s3.amazonaws.com/itmat.circadb/circadb.mysql.dmp.gz')
+      uri = URI('http://s3.amazonaws.com/circadb_data/circadb.mysql.dmp.gz')
       Net::HTTP.start(uri.host, uri.port) do |http|
         request = Net::HTTP::Get.new uri.request_uri
 
