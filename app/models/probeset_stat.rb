@@ -1,6 +1,6 @@
 class ProbesetStat < ActiveRecord::Base
   cattr_reader :per_page
-  @@per_page = 10
+  @@per_page = 50
   cattr_reader :pval_filters
   @@pval_filters = []
   ["jtk", "JTK", "cosopt", "Lomb Scargle", "fisherg", "DeLichtenberg" ].each_slice(2) do |id,txt|

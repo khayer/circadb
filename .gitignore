@@ -15,7 +15,6 @@ config/database.yml
 config/*sphinx.conf
 seed_data/*
 source_data/*
-Gemfile.lock
 .bundle
 ._*
 .Rhistory

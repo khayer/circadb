@@ -1,5 +1,6 @@
 # config/sphinx.yml
 development:
+  max_matches: 10000
   port: 9312
   searchd_file_path: "db/sphinx"
   ignore_chars: "., U+002E"
