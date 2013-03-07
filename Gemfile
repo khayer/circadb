@@ -3,6 +3,7 @@ source "http://rubygems.org"
 
 gem "rails", "2.3.17"
 gem 'will_paginate', "2.3.11"
+#gem 'will_paginate', :require=>'will_paginate/data_mapper'
 gem 'haml', "3.0.18"
 gem "jrails"
 gem "mysql"
