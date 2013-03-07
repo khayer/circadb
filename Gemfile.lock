@@ -1,16 +1,16 @@
 GEM
   remote: http://rubygems.org/
   specs:
-    actionmailer (2.3.16)
-      actionpack (= 2.3.16)
-    actionpack (2.3.16)
-      activesupport (= 2.3.16)
+    actionmailer (2.3.17)
+      actionpack (= 2.3.17)
+    actionpack (2.3.17)
+      activesupport (= 2.3.17)
       rack (~> 1.1.0)
-    activerecord (2.3.16)
-      activesupport (= 2.3.16)
-    activeresource (2.3.16)
-      activesupport (= 2.3.16)
-    activesupport (2.3.16)
+    activerecord (2.3.17)
+      activesupport (= 2.3.17)
+    activeresource (2.3.17)
+      activesupport (= 2.3.17)
+    activesupport (2.3.17)
     after_commit (1.0.11)
       activerecord (>= 1.15.6, < 3.0.0)
     annotate (2.5.0)
@@ -21,13 +21,13 @@ GEM
     haml (3.0.18)
     jrails (0.6.0)
     mysql (2.9.0)
-    rack (1.1.5)
-    rails (2.3.16)
-      actionmailer (= 2.3.16)
-      actionpack (= 2.3.16)
-      activerecord (= 2.3.16)
-      activeresource (= 2.3.16)
-      activesupport (= 2.3.16)
+    rack (1.1.6)
+    rails (2.3.17)
+      actionmailer (= 2.3.17)
+      actionpack (= 2.3.17)
+      activerecord (= 2.3.17)
+      activeresource (= 2.3.17)
+      activesupport (= 2.3.17)
       rake (>= 0.8.3)
     rails-footnotes (3.6.7)
     rake (10.0.3)
@@ -49,7 +49,7 @@ DEPENDENCIES
   haml (= 3.0.18)
   jrails
   mysql
-  rails (= 2.3.16)
+  rails (= 2.3.17)
   rails-footnotes
   rake
   riddle
