@@ -4,7 +4,7 @@
   .count
     -if @probeset_stats.total_entries != 0
       Total hits #{@probeset_stats.total_entries}
-      = will_paginate @probeset_stats , :class => "apple_pagination", :params => params
+      = will_paginate @probeset_stats , :class => "apple_pagination", :params => params, :inner_window => 2
     -else
       Total hits #{@probeset_stats.total_entries}
 .results.span-14.last.push-1
