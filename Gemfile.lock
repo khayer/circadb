@@ -20,6 +20,7 @@ GEM
     fastercsv (1.5.5)
     haml (3.0.18)
     jrails (0.6.0)
+    json (1.7.7)
     mysql (2.9.0)
     rack (1.1.6)
     rails (2.3.17)
@@ -31,6 +32,8 @@ GEM
       rake (>= 0.8.3)
     rails-footnotes (3.6.7)
     rake (10.0.3)
+    rdoc (3.12.1)
+      json (~> 1.4)
     riddle (1.5.4)
     thinking-sphinx (1.4.14)
       activerecord (>= 1.15.6, < 3.0.0)
@@ -52,6 +55,7 @@ DEPENDENCIES
   rails (= 2.3.17)
   rails-footnotes
   rake
+  rdoc
   riddle
   thinking-sphinx (~> 1.4)
   will_paginate (= 2.3.11)
