@@ -9,6 +9,7 @@ test:
   searchd_file_path: "db/sphinx"
   ignore_chars: "., U+002E"
 production:
+  max_matches: 10000
   port: 9310
   searchd_file_path: "db/sphinx"
   ignore_chars: "., U+002E"
