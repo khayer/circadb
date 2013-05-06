@@ -215,7 +215,8 @@ namespace :seed do
          ["panda_SCN_MAS4","Mouse SCN MAS4 Panda 2002 (Affymetrix)", u74av1_id],
          ["panda_SCN_gcrma","Mouse SCN gcrma Panda 2002 (Affymetrix)", u74av1_id],
          ["aorta_2004","Mouse Aorta Rudic 2004 (Affymetrix)", u74av1_id],
-         ["kidney_2004","Mouse Kidney Rudic 2004 (Affymetrix)", u74av1_id]]
+         ["kidney_2004","Mouse Kidney Rudic 2004 (Affymetrix)", u74av1_id],
+         ["dc","Mouse Distal Colon 2008 (Affymetrix)",  affy_id]]
 
          # adrenal_gland aorta brown_adipose brain_stem cerebellum heart hypothalamus kidney mogene_liver lung skeletal_muscle white_adipose
 
@@ -427,6 +428,43 @@ namespace :seed do
       puts "=== Raw Data MoGene #{etype} end (count= #{count}) ==="
     end
 
+    # Hoogerwerf
+    g  = GeneChip.find(:first, :conditions => ["slug like ?","Mouse430_2"])
+    probesets = {}
+    g.probesets.each do |p|
+      probesets[p.probeset_name]= p.id
+    end
+
+
+    buffer = []
+    ProbesetData.import(fields,buffer)
+    #puts "=== Raw Data U2OS cells insert ended (count= #{count}) ==="
+
+    %w{ dc }.each do |etype|
+      count = 0
+      buffer = []
+      a = Assay.find(:first, :conditions => ["slug = ?", etype])
+      puts "=== Raw Data #{etype} insert starting ==="
+
+      File.open("#{RAILS_ROOT}/seed_data/hoogerwerf_#{etype}_data","r" ).each do |line|
+        count += 1
+        line = line.split("@")
+        time_points = line[1].split(",").map {|element| element}
+        data_points = line[2].split(",").map {|element| element}
+        cubase = line[3]
+        psid = probesets[line[0]]
+        buffer << [a.id(), a.slug, psid, line[0], time_points.to_json, data_points.to_json,cubase]
+
+        if count % 1000 == 0
+          ProbesetData.import(fields,buffer)
+          puts count
+          buffer = []
+        end
+      end
+      ProbesetData.import(fields,buffer)
+      puts "=== Raw Data Hoogerwerf #{etype} end (count= #{count}) ==="
+    end
+
 
     buffer = []
     ProbesetData.import(fields,buffer)
@@ -612,6 +650,38 @@ namespace :seed do
       end
       ProbesetStat.import(fields,buffer)
       puts "=== Stat Data mogene #{etype} end (count = #{count}) ==="
+    end
+
+    # hoogerwerf
+
+    g  = GeneChip.find(:first, :conditions => ["slug like ?","Mouse430_2"])
+    probesets = {}
+
+    g.probesets.each do |p|
+      p.probeset_name
+      probesets[p.probeset_name]= p.id
+    end
+
+    %w{ dc }.each do |etype|
+      #liver
+      count = 0
+      buffer = []
+      a = Assay.find(:first, :conditions => ["slug = ?", etype])
+      puts "=== Stat Data #{etype} start ==="
+
+      FasterCSV.foreach("#{RAILS_ROOT}/seed_data/hoogerwerf_#{etype}_stats") do |row|
+        count += 1
+        aslug, psname = 0,row[0].to_i
+        psid = probesets[row[0]]
+        buffer << [a.id, a.slug,psid, psid, psname] + row[1..-1].to_a
+        if count % 1000 == 0
+          ProbesetStat.import(fields,buffer)
+          buffer = []
+          puts count
+        end
+      end
+      ProbesetStat.import(fields,buffer)
+      puts "=== Stat Data #{etype} end (count = #{count}) ==="
     end
 
     puts "=== Stat Data END ==="
