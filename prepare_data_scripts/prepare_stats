@@ -1,9 +1,10 @@
 #!/usr/bin/env ruby
-require 'csv'
 require 'rsruby'
+require 'csv'
+
 
 usage =<<EOF
-      #{$0} jtk_out.csv dominant.csv delichtenberg stats.csv
+      #{$0} jtk_out.csv dominant.csv raw_delichtenberg stats.csv
 EOF
 
 if ARGV.length != 4
@@ -34,9 +35,8 @@ puts "Calculate q_value for LOMB_SCARGLE"
 p_values = []
 
 CSV.foreach(ARGV[1], {:headers => :first_row}) do |row|
-
+  #puts row
   p_values << row["p"].to_f
-
 end
 
 q_values = R.getQvalue(p_values)
@@ -57,7 +57,7 @@ q_values_lichtenberg = R.getQvalue(p_values_lichtenberg)
 
 # JTK
 #"BH.Q","ADJ.P","PER","LAG","AMP","LiverJH18CEL"
-
+puts "Preparing output"
 CSV.open(ARGV[3], "wb") do |csv|
 
   count = 0

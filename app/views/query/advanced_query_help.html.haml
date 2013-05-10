@@ -1,0 +1,99 @@
+%h2 Query Help
+%p
+  There are two mode of querying CircaDB:
+  %a(href="#simple") Simple
+  and
+  %a(href="#advanced") Advanced.
+%h3
+  %a(name="simple") Simple Query Mode
+%p
+  This is the default. Simply enter a set of terms and the engine will query for
+  each term seperately, then join all of the results from each separate term together
+  into the final result. In other words a query for <code>kinase inhibitor</code>
+  will return all entries with the word <code>kinase</code> together with any entry
+  that has <code>inhibitor</code> in their respective annotations.
+%p
+  This is usually not what one would want returned from such a query. This is where
+  the advanced query mode comes in.
+
+%h3
+  %a(name="advanced") Advanced Query Mode
+%p
+  Once the "advanced query mode" checkbox has been selected, the query strings
+  are no longer simply split into individual queries. As the saying goes "with
+  great power comes great responsibility". In a nutshell, you must now use the
+  underlying Sphinx search engine's
+  %a(href="http://sphinxsearch.com/docs/2.0.5/extended-syntax.html") extended syntax query mode.
+
+
+%p
+  Briefly, the default behavior of the query <code>kinase inhibitor</code> would bring
+  back all entries that match both <code>kinase <b> AND </b> inhibitor</code>.
+  Instead of an implicit <code>OR</code> between terms, there is now an implicit
+  <code>AND</code> between terms.
+%p
+  To bring back the <code>OR</code> behavior you would need to separate terms
+  with a <code>|</code> (a vertical bar, or "pipe") character. E.g.
+  <code> kinase | inhibitor</code>.
+%p
+  To bring back the specific phrase "kinase inhibitor", you would need to
+  surround both words with quotes. E.g. <code>"kinase inhibitor"</code>
+%h3 More examples
+%p
+  %em Query for the exact phrase "kinase inhibitor" that also make mention of "mitochondrial"
+  %br
+  %code "kinase inhibitor" mitochondrial
+%p
+  %em Query for kinases, but not any entry with "inhibitor" in the record
+  %br
+  %code kinase !inhibitor
+
+%h3 Even more examples
+%p
+  Sphinx is a large a powerful system. You can review all of the various
+  ways to use the extended syntax at the
+  %a(href="http://sphinxsearch.com/docs/2.0.4/extended-syntax.html") Sphinx extended query syntax help page
+
+%h3 CircaDB Query Fields
+%p
+  Having read the above, you may be wondering what fields you can use to query CircaDB. The annotation is straight from the Affymetrix annotation files. We have pulled out certain columns from that file and indexed them as follows:
+
+%table
+  %tr
+    %th Field
+    %th Description
+  %tr
+    %td probeset_name
+    %td The Affymetrix probeset name
+  %tr
+    %td transcript_id
+    %td The transcript ID
+    %td
+  %tr
+    %td representative_public_id
+    %td
+  %tr
+    %td unigene_id
+    %td Unigene ID
+  %tr
+    %td gene_symbol
+    %td NCBI gene symbol
+  %tr
+    %td gene_title
+    %td Full gene title
+    %td
+  %tr
+    %td entrez_gene
+    %td The Entrez gene ID
+  %tr
+    %td swissprot
+    %td The SwisProt accession
+  %tr
+    %td refseq_protein_id
+    %td The RefSeq protein accession
+  %tr
+    %td refseq_transcript_id
+    %td The RefSeq NA sequence accession
+  %tr
+    %td target_description
+    %td The description from the Affymetrix annotation file

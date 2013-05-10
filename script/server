@@ -1,3 +1,4 @@
 #!/usr/bin/env ruby
-require File.dirname(__FILE__) + '/../config/boot'
+require Dir.getwd + '/config/boot'
+#require '/Users/hayer/github/circadb/config/boot'
 require 'commands/server'
