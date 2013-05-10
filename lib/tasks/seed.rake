@@ -50,7 +50,7 @@ end
 desc "Seed database using raw data"
 namespace :seed do
   require "ar-extensions"
-  require "fastercsv"
+  require "csv"
 
   task :genechips => :environment do
     c = ActiveRecord::Base.connection
@@ -76,7 +76,7 @@ namespace :seed do
     count = 0
     buffer = []
     puts "=== Begin u74av1 Probeset insert ==="
-    FasterCSV.foreach("#{RAILS_ROOT}/seed_data/prepared_MG_U74Av2.na31.annot.csv", :headers=> true ) do |ps|
+    CSV.foreach("#{RAILS_ROOT}/seed_data/prepared_MG_U74Av2.na31.annot.csv", :headers=> true ) do |ps|
       count += 1
       buffer << [g.id] + ps.values_at
       if count % 1000 == 0
@@ -99,7 +99,7 @@ namespace :seed do
     count = 0
     buffer = []
     puts "=== Begin Mouse430_2 Probeset insert ==="
-    FasterCSV.foreach("#{RAILS_ROOT}/seed_data/prepared_Mouse430_2.na28.annot.csv" ) do |ps|
+    CSV.foreach("#{RAILS_ROOT}/seed_data/prepared_Mouse430_2.na28.annot.csv" ) do |ps|
       count += 1
       buffer << [g.id] + ps[0..-1]
 
@@ -122,7 +122,7 @@ namespace :seed do
     count = 0
     buffer = []
     puts "=== Begin GNF1M Probeset insert ==="
-    FasterCSV.foreach("#{RAILS_ROOT}/seed_data/prepared_gnf1m.annot2007.csv", :headers=> true ) do |ps|
+    CSV.foreach("#{RAILS_ROOT}/seed_data/prepared_gnf1m.annot2007.csv", :headers=> true ) do |ps|
       count += 1
       buffer << [g.id] + ps.values_at
       if count % 1000 == 0
@@ -144,7 +144,7 @@ namespace :seed do
     count = 0
     buffer = []
     puts "=== Begin HuGene1_0 Probeset insert ==="
-    FasterCSV.foreach("#{RAILS_ROOT}/seed_data/prepared_HuGene-1_0-st-v1.na32.hg19.transcript.csv", :headers=> true ) do |ps|
+    CSV.foreach("#{RAILS_ROOT}/seed_data/prepared_HuGene-1_0-st-v1.na32.hg19.transcript.csv", :headers=> true ) do |ps|
       count += 1
       buffer << [g.id] + ps.values_at
       if count % 1000 == 0
@@ -166,7 +166,7 @@ namespace :seed do
     count = 0
     buffer = []
     puts "=== Begin Mouse_1.OST Probeset insert ==="
-    FasterCSV.foreach("#{RAILS_ROOT}/seed_data/prepared_MoGene-1_0-st-v1.na32.mm9.transcript.csv", :headers=> true ) do |ps|
+    CSV.foreach("#{RAILS_ROOT}/seed_data/prepared_MoGene-1_0-st-v1.na32.mm9.transcript.csv", :headers=> true ) do |ps|
       count += 1
       buffer << [g.id] + ps.values_at
       if count % 1000 == 0
@@ -493,7 +493,7 @@ namespace :seed do
       a = Assay.find(:first, :conditions => ["slug = ?", etype])
       puts "=== Stat Data #{etype} start ==="
 
-      FasterCSV.foreach("#{RAILS_ROOT}/seed_data/hughes_#{etype}_stats") do |row|
+      CSV.foreach("#{RAILS_ROOT}/seed_data/hughes_#{etype}_stats") do |row|
         count += 1
         aslug, psname = 0,row[0].to_i
         psid = probesets[row[0]]
@@ -525,7 +525,7 @@ namespace :seed do
       a = Assay.find(:first, :conditions => ["slug = ?", etype])
       puts "=== Stat Data #{etype} start ==="
 
-      FasterCSV.foreach("#{RAILS_ROOT}/seed_data/#{etype}_stats") do |row|
+      CSV.foreach("#{RAILS_ROOT}/seed_data/#{etype}_stats") do |row|
         count += 1
         aslug, psname = 0,row[0].to_i
         psid = probesets[row[0]]
@@ -556,7 +556,7 @@ namespace :seed do
       a = Assay.find(:first, :conditions => ["slug = ?", etype])
       puts "=== Stat Data #{etype} start ==="
 
-      FasterCSV.foreach("#{RAILS_ROOT}/seed_data/#{etype}_stats") do |row|
+      CSV.foreach("#{RAILS_ROOT}/seed_data/#{etype}_stats") do |row|
         count += 1
         aslug, psname = 0,row[0].to_i
         psid = probesets[row[0]]
@@ -578,7 +578,7 @@ namespace :seed do
       a = Assay.find(:first, :conditions => ["slug = ?", etype])
       puts "=== Stat Data #{etype} start ==="
 
-      FasterCSV.foreach("#{RAILS_ROOT}/seed_data/rudic_#{etype}_stats") do |row|
+      CSV.foreach("#{RAILS_ROOT}/seed_data/rudic_#{etype}_stats") do |row|
         count += 1
         aslug, psname = 0,row[0].to_i
         psid = probesets[row[0]]
@@ -608,7 +608,7 @@ namespace :seed do
       a = Assay.find(:first, :conditions => ["slug = ?", etype])
       puts "=== Stat Data #{etype} start ==="
 
-      FasterCSV.foreach("#{RAILS_ROOT}/seed_data/hughes_#{etype}_stats") do |row|
+      CSV.foreach("#{RAILS_ROOT}/seed_data/hughes_#{etype}_stats") do |row|
         count += 1
         aslug, psname = 0,row[0].to_i
         psid = probesets[row[0]]
@@ -637,7 +637,7 @@ namespace :seed do
       a = Assay.find(:first, :conditions => ["slug = ?", etype])
       puts "=== Stat Data mogene #{etype} start ==="
 
-      FasterCSV.foreach("#{RAILS_ROOT}/seed_data/mogene_#{etype}_stats") do |row|
+      CSV.foreach("#{RAILS_ROOT}/seed_data/mogene_#{etype}_stats") do |row|
         count += 1
         aslug, psname = 0,row[0].to_i
         psid = probesets[row[0]]
@@ -669,7 +669,7 @@ namespace :seed do
       a = Assay.find(:first, :conditions => ["slug = ?", etype])
       puts "=== Stat Data #{etype} start ==="
 
-      FasterCSV.foreach("#{RAILS_ROOT}/seed_data/hoogerwerf_#{etype}_stats") do |row|
+      CSV.foreach("#{RAILS_ROOT}/seed_data/hoogerwerf_#{etype}_stats") do |row|
         count += 1
         aslug, psname = 0,row[0].to_i
         psid = probesets[row[0]]

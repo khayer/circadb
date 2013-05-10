@@ -47,7 +47,7 @@ CSV.foreach(ARGV[0],  {:headers => :first_row}) do |row|
   scaled = R.scaleData(numbers).map {|e| e.to_i }
   averaged = R.avgData(scaled).map {|e| e.to_i }
 
-  cubase = "http://chart.apis.google.com/chart?chs=%sx%s&cht=lc&chxt=x,y&chxl=0:|30||||||36||||||42||||||48||||||54||||||60||||||66||||||72|||1:|#{min}|#{mid}|#{max}|&chxp=1,2,50,97&chxr=0,18,66&chls=0,0,0|2,1,0&chf=c,ls,0,CCCCCC,0.125,FFFFFF,0.25,CCCCCC,0.25,FFFFFF,0.25,CCCCCC,0.125&chd=t:#{scaled.join(",")}|#{averaged.join(",")}&chco=3164A6,FDB33A&chm=o,555555,0,-1,5"
+  cubase = "http://chart.apis.google.com/chart?chs=%sx%s&cht=lc&chxt=x,y&chxl=0:|8||||||12||||||16||||||20||||||24||||||28|1:|#{min}|#{mid}|#{max}|&chxp=1,2,50,97&chxr=0,18,66&chls=0,0,0|2,1,0&chf=c,ls,0,CCCCCC,0.125,FFFFFF,0.25,CCCCCC,0.25,FFFFFF,0.25,CCCCCC,0.125&chd=t:#{scaled.join(",")}|#{averaged.join(",")}&chco=3164A6,FDB33A&chm=o,555555,0,-1,5"
   out.puts row["row_names"] +"@"+time_points.join(",")+"@"+numbers.join(",")+"@"+cubase
 
 end
