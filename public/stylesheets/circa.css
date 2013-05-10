@@ -14,6 +14,14 @@
 
 }
 
+.news {
+ text-align: center;
+ background: #B8E6B8;
+ padding-top: 5px;
+ padding-bottom: 5px;
+ margin-bottom: 10px;
+}
+
 .footer {
   margin-bottom: 30px;
   text-align: center ;

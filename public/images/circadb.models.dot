@@ -1,0 +1,14 @@
+digraph models_diagram {
+	graph[overlap=false, splines=true]
+	"ProbesetData" [shape=Mrecord, label="{ProbesetData|id :integer\lassay_id :integer\lprobeset_id :integer\lassay_name :string\lprobeset_name :string\ltime_points :string\ldata_points :string\lchart_url_base :string\l}"]
+	"GeneChip" [shape=Mrecord, label="{GeneChip|id :integer\lslug :string\lname :string\l}"]
+	"Assay" [shape=Mrecord, label="{Assay|id :integer\lslug :string\lname :string\ldescription :string\l}"]
+	"ProbesetStat" [shape=Mrecord, label="{ProbesetStat|id :integer\lassay_id :integer\lprobeset_id :integer\lprobeset_data_id :integer\lcosopt_p_value :float\lcosopt_q_value :float\lcosopt_period_length :float\lcosopt_phase :float\lfisherg_p_value :float\lfisherg_q_value :float\lfisherg_period_length :float\lassay_name :string\lprobeset_name :string\ljtk_p_value :float\ljtk_q_value :float\ljtk_period_length :float\ljtk_lag :float\ljtk_amp :float\l}"]
+	"Probeset" [shape=Mrecord, label="{Probeset|id :integer\lgene_chip_id :integer\lprobeset_name :string\lgenechip_name :string\lspecies :string\lannotation_date :string\lsequence_type :string\lsequence_source :string\ltranscript_id :string\ltarget_description :text\lrepresentative_public_id :string\larchival_unigene_cluster :string\lunigene_id :string\lgenome_version :string\lalignments :text\lgene_title :text\lgene_symbol :string\lchromosomal_location :string\lunigene_cluster_type :string\lensembl :string\lentrez_gene :string\lswissprot :string\lec :string\lomim :string\lrefseq_protein_id :string\lrefseq_transcript_id :string\lflybase :string\lagi :string\lwormbase :string\lmgi_name :string\lrgd_name :string\lsgd_accession_number :string\lgo_biological_process :text\lgo_cellular_component :text\lgo_molecular_function :text\lpathway :string\linterpro :string\ltrans_membrane :text\lqtl :string\lannotation_description :text\lannotation_transcript_cluster :text\ltranscript_assignments :string\lannotation_notes :text\l}"]
+	"ProbesetData" -> "ProbesetStat" [arrowtail=odot, arrowhead=dot, dir=both color="#C4BDC1"]
+	"GeneChip" -> "Probeset" [arrowtail=odot, arrowhead=crow, dir=both color="#886ADC"]
+	"Assay" -> "ProbesetStat" [arrowtail=odot, arrowhead=crow, dir=both color="#082D80"]
+	"Assay" -> "ProbesetData" [arrowtail=odot, arrowhead=crow, dir=both color="#3B3EC9"]
+	"Probeset" -> "ProbesetStat" [arrowtail=odot, arrowhead=crow, dir=both color="#09A4A1"]
+	"Probeset" -> "ProbesetData" [arrowtail=odot, arrowhead=crow, dir=both color="#B8A58F"]
+}
