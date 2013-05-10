@@ -1,23 +1,21 @@
-.span-17.last
-  %h2== About CIRCA
-%p
-  Circadian rhythms drive daily oscillations in many different physiologies, including
-  blood pressure, body temperature and behavior. In addition, disruptions of the circadian
-  clock contribute to the pathologies of metabolic disorders as well as cardiovascular
-  disease and cancer. Our lab is interested in the mechanism by which circadian
-  oscillations drive these processes. We are using microarray analysis in combination with
-  curve-fitting and Fourier-transform based statistical algorithms to search the genome
-  for transcripts which oscillate under circadian control. We have identified more than
-  3000 cycling genes in the liver and smaller subsets of rhythmic genes in the pituitary
-  and fibroblasts. We are currently expanding our initial studies to identify rhythmic
-  transcripts in over 15 different tissue types including the heart, kidneys and brain.
-  These data sets will be mined using bioinformatic techniques to discover novel circadian
-  regulatory elements, characterize components of the circadian clock, and identify
-  regulatory genes responsible for the physiologies and pathologies associated with
-  circadian rhythms.
-  %br
-  %br
-  %b References
+.span-18.last
+  %h1 About CIRCA
+  %p
+    Circadian rhythms drive daily oscillations in many different physiologies, including
+    blood pressure, body temperature and behavior. In addition, disruptions of the circadian
+    clock contribute to the pathologies of metabolic disorders as well as cardiovascular
+    disease and cancer. Our lab is interested in the mechanism by which circadian
+    oscillations drive these processes. We are using microarray analysis in combination with
+    curve-fitting and Fourier-transform based statistical algorithms to search the genome
+    for transcripts which oscillate under circadian control. We have identified more than
+    3000 cycling genes in the liver and smaller subsets of rhythmic genes in the pituitary
+    and fibroblasts. We are currently expanding our initial studies to identify rhythmic
+    transcripts in over 15 different tissue types including the heart, kidneys and brain.
+    These data sets will be mined using bioinformatic techniques to discover novel circadian
+    regulatory elements, characterize components of the circadian clock, and identify
+    regulatory genes responsible for the physiologies and pathologies associated with
+    circadian rhythms.
+  %h2 References
   %ul#link
     %a{:href => "http://www.ncbi.nlm.nih.gov/pubmed/20876817"} JTK:
     %em== "JTK_CYCLE: an efficient nonparametric algorithm for detectingrhythmiccomponents in genome-scale data sets."
@@ -33,28 +31,93 @@
     %em== "Comparison of computational methods for the identification of cell cycle-regulated genes."
     by de Lichtenberg U, Jensen LJ, Fausbøll A, Jensen TS, Bork P, Brunak S. (2005)
     %br
-  %b Data References
+  %h2 Data references
+  %table
+    %tr
+      %th Dataset
+      %th Paper
+      %th GEO number
+    %tr
+      %td Mouse Liver 48 hour Hughes 2009
+      %td
+        %a{:href=>"http://www.ncbi.nlm.nih.gov/pubmed/19343201"}Hughes et al., PLoS Genetics, 2009
+      %td
+        %a{:href=>"http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE11923"}GSE11923
+    %tr
+      %td Mouse Pituitary 48 hour Hughes 2009
+      %td
+        %a{:href=>"http://www.ncbi.nlm.nih.gov/pubmed/19343201"}Hughes et al., PLoS Genetics, 2009
+      %td
+        %a{:href=>"http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE11923"}GSE11923
+    %tr
+      %td Mouse NIH 3T3 Immortalized Cell Line 48 hour Hughes 2009
+      %td
+        %a{:href=>"http://www.ncbi.nlm.nih.gov/pubmed/19343201"}Hughes et al., PLoS Genetics, 2009
+      %td
+        %a{:href=>"http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE11923"}GSE11923
+    %tr
+      %td Human U2 OS Hughes 2009
+      %td
+        %a{:href=>"http://www.ncbi.nlm.nih.gov/pubmed/19343201"}Hughes et al., PLoS Genetics, 2009
+      %td
+        %a{:href=>"http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE11923"}GSE11923
+    %tr
+      %td Mouse Wild Type Liver
+      %td
+        %a{:href=>"http://www.ncbi.nlm.nih.gov/pubmed/17360649"} Miller et al., WT and Clock livers, 2007
+      %td
+        %a{:href=>"http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE3748"}GSE3748
+    %tr
+      %td Mouse Wild Type Muscle
+      %td
+        %a{:href=>"http://www.ncbi.nlm.nih.gov/pubmed/20956306"}Andrews et al., WT and Clock skeletal muscle
+      %td
+        %a{:href=>"http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE3748"}GSE3748
+    %tr
+      %td Mouse Liver Panda 2002
+      %td
+        %a{:href=>"http://www.ncbi.nlm.nih.gov/pubmed/12015981"} Panda et al., Cell, 2002
+      %td
+        %a{:href=>"http://s3.amazonaws.com/circadb_data/Liver_Panda_2002_U74Av1.csv"}download data
+    %tr
+      %td Mouse SCN MAS4 Panda 2002
+      %td
+        %a{:href=>"http://www.ncbi.nlm.nih.gov/pubmed/12015981"} Panda et al., Cell, 2002
+      %td
+        %a{:href=>"http://s3.amazonaws.com/circadb_data/SCN_2002_U74Av1_MAS4.csv"}download data
+    %tr
+      %td Mouse SCN gcrma Panda 2002
+      %td
+        %a{:href=>"http://www.ncbi.nlm.nih.gov/pubmed/12015981"} Panda et al., Cell, 2002
+      %td
+        %a{:href=>"http://s3.amazonaws.com/circadb_data/SCN_2002_U74Av1_gcrma.csv"}download data
+    %tr
+      %td Mouse aorta MU74v2
+      %td
+        %a{:href=>"http://www.ncbi.nlm.nih.gov/pubmed/15523558"}Rudic et al., PLoS Biology, 2004
+      %td
+        %a{:href=>"http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE414"}GSE414
+    %tr
+      %td Mouse kidney MU74v2
+      %td
+        %a{:href=>"http://www.ncbi.nlm.nih.gov/pubmed/15523558"}Rudic et al., PLoS Biology, 2004
+      %td
+        %a{:href=>"http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE414"}GSE414
+  %h2 Links
   %ul#link
-    %br
-    GNF microarray:
-    %br
-    %a{:href => "http://www.ncbi.nlm.nih.gov/pubmed/20956306"} Andrews 2010
-    %br
-    %a{:href => "http://www.ncbi.nlm.nih.gov/pubmed/17360649"} Miller 2007
-    %br
-    %br
-    %a{:href => "http://www.ncbi.nlm.nih.gov/pubmed/19343201"} Hughes 2009
-    %br
-    %br
-    %a{:href => "http://www.ncbi.nlm.nih.gov/pubmed/12015981"} Panda 2002
-    %br
-
-    %br
-  %b Links
-  %ul#link
-    %br
     %a{:href => "http://bioinf.itmat.upenn.edu/hogeneschlab"} Hogenesch Lab
     %br
     %br
     %a{:href => "http://www.salk.edu/faculty/faculty_details.php?id=65"} Panda Lab
     %br
+  %h2 Requesting Addition of New Data Sets
+  %p
+    Researchers can request that a particular data set be added by
+    %a(href="https://github.com/itmat/circadb/issues") submitting an issue
+    at our
+    %a(href="https://github.com/itmat/circadb") project page hosted at Github.
+  %h2 Source Code
+  %p
+    Circadb is open source Ruby on Rails application and available under
+    %a{:href => "https://github.com/itmat/circadb"} github.com/circadb.
+    Circadb is licensed under the GNU General Public License (GPL-2.0).

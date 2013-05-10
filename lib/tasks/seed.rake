@@ -5,9 +5,20 @@ namespace :bootstrap do
 
   desc "Download DB data from AWS"
   task :download_db => :environment do
+    require 'net/http'
     unless File.exists? "#{Rails.root}/circadb.mysql.dmp"
-      require 'curb'
-      Curl::Easy.download("http://s3.amazonaws.com/itmat.circadb/circadb.mysql.dmp.gz", "#{Rails.root}/circadb.mysql.dmp.gz")
+      uri = URI('http://s3.amazonaws.com/circadb_data/circadb.mysql.dmp.gz')
+      Net::HTTP.start(uri.host, uri.port) do |http|
+        request = Net::HTTP::Get.new uri.request_uri
+
+        http.request request do |response|
+          open "#{Rails.root}/circadb.mysql.dmp.gz", 'wb' do |io|
+            response.read_body do |chunk|
+              io.write chunk
+            end
+          end
+        end
+      end
       system("gunzip circadb.mysql.dmp.gz")
     end
   end
@@ -39,12 +50,14 @@ end
 desc "Seed database using raw data"
 namespace :seed do
   require "ar-extensions"
-  require "fastercsv"
+  require "csv"
 
   task :genechips => :environment do
     c = ActiveRecord::Base.connection
     c.execute "delete from gene_chips"
 
+    g  = GeneChip.new(:slug => "Mouse_1.OST", :name => "Affymetrix for GeneChip MoGene-1_0-st-v1.na32.mm9 transcript (Affymetrix)")
+    g.save
     g  = GeneChip.new(:slug => "Mouse430_2", :name => "Mouse Genome 430 2.0 (Affymetrix)")
     g.save
     g  = GeneChip.new(:slug => "GNF1M", :name => "Mouse GNF1M (GNF)")
@@ -63,7 +76,7 @@ namespace :seed do
     count = 0
     buffer = []
     puts "=== Begin u74av1 Probeset insert ==="
-    FasterCSV.foreach("#{RAILS_ROOT}/seed_data/prepared_MG_U74Av2.na31.annot.csv", :headers=> true ) do |ps|
+    CSV.foreach("#{RAILS_ROOT}/seed_data/prepared_MG_U74Av2.na31.annot.csv", :headers=> true ) do |ps|
       count += 1
       buffer << [g.id] + ps.values_at
       if count % 1000 == 0
@@ -86,7 +99,7 @@ namespace :seed do
     count = 0
     buffer = []
     puts "=== Begin Mouse430_2 Probeset insert ==="
-    FasterCSV.foreach("#{RAILS_ROOT}/seed_data/prepared_Mouse430_2.na28.annot.csv" ) do |ps|
+    CSV.foreach("#{RAILS_ROOT}/seed_data/prepared_Mouse430_2.na28.annot.csv" ) do |ps|
       count += 1
       buffer << [g.id] + ps[0..-1]
 
@@ -109,7 +122,7 @@ namespace :seed do
     count = 0
     buffer = []
     puts "=== Begin GNF1M Probeset insert ==="
-    FasterCSV.foreach("#{RAILS_ROOT}/seed_data/prepared_gnf1m.annot2007.csv", :headers=> true ) do |ps|
+    CSV.foreach("#{RAILS_ROOT}/seed_data/prepared_gnf1m.annot2007.csv", :headers=> true ) do |ps|
       count += 1
       buffer << [g.id] + ps.values_at
       if count % 1000 == 0
@@ -131,7 +144,7 @@ namespace :seed do
     count = 0
     buffer = []
     puts "=== Begin HuGene1_0 Probeset insert ==="
-    FasterCSV.foreach("#{RAILS_ROOT}/seed_data/prepared_HuGene-1_0-st-v1.na32.hg19.transcript.csv", :headers=> true ) do |ps|
+    CSV.foreach("#{RAILS_ROOT}/seed_data/prepared_HuGene-1_0-st-v1.na32.hg19.transcript.csv", :headers=> true ) do |ps|
       count += 1
       buffer << [g.id] + ps.values_at
       if count % 1000 == 0
@@ -145,6 +158,28 @@ namespace :seed do
     puts "=== End HuGene1_0 Probeset insert ==="
   end
 
+  desc "Seed MoGene annotations"
+  task :mogene_probesets => :environment do
+    # probes
+    fields = %w{ gene_chip_id probeset_name genechip_name species annotation_date sequence_type sequence_source transcript_id target_description representative_public_id archival_unigene_cluster unigene_id genome_version alignments gene_title gene_symbol chromosomal_location unigene_cluster_type ensembl entrez_gene swissprot ec omim refseq_protein_id refseq_transcript_id flybase agi wormbase mgi_name rgd_name sgd_accession_number go_biological_process go_cellular_component go_molecular_function pathway interpro trans_membrane qtl annotation_description annotation_transcript_cluster transcript_assignments annotation_notes }
+    g  = GeneChip.find(:first, :conditions => ["slug like ?", "Mouse_1.OST"])
+    count = 0
+    buffer = []
+    puts "=== Begin Mouse_1.OST Probeset insert ==="
+    CSV.foreach("#{RAILS_ROOT}/seed_data/prepared_MoGene-1_0-st-v1.na32.mm9.transcript.csv", :headers=> true ) do |ps|
+      count += 1
+      buffer << [g.id] + ps.values_at
+      if count % 1000 == 0
+        Probeset.import(fields,buffer)
+        buffer = []
+        puts count
+      end
+    end
+    Probeset.import(fields,buffer)
+    puts count
+    puts "=== End Mouse_1.OST  Probeset insert ==="
+  end
+
 
   desc "Seed assays"
   task :assays => :environment do
@@ -155,8 +190,21 @@ namespace :seed do
     gnf_id = GeneChip.find(:first, :conditions => ["slug like ?","GNF1M"]).id
     u74av1_id = GeneChip.find(:first, :conditions => ["slug like ?","U74Av1"]).id
     hugene_id = GeneChip.find(:first, :conditions => ["slug like ?","HuGene1_0"]).id
+    mogene_id = GeneChip.find(:first, :conditions => ["slug like ?","Mouse_1.OST"]).id
 
-    v = [["liver","Mouse Liver 48 hour Hughes 2009 (Affymetrix)", affy_id],
+    v = [["adrenal_gland","Mouse 1.OST Adrenal Gland (Affymetrix)", mogene_id],
+         ["aorta","Mouse 1.OST Aorta (Affymetrix)", mogene_id],
+         ["brown_adipose","Mouse 1.OST Brown Adipose (Affymetrix)", mogene_id],
+         ["brain_stem","Mouse 1.OST Brain Stem (Affymetrix)", mogene_id],
+         ["cerebellum","Mouse 1.OST Cerebellum (Affymetrix)", mogene_id],
+         ["heart","Mouse 1.OST Heart (Affymetrix)", mogene_id],
+         ["hypothalamus","Mouse 1.OST Hypothalamus (Affymetrix)", mogene_id],
+         ["kidney","Mouse 1.OST Kidney (Affymetrix)", mogene_id],
+         ["mogene_liver","Mouse 1.OST Liver (Affymetrix)", mogene_id],
+         ["lung","Mouse 1.OST Lung (Affymetrix)", mogene_id],
+         ["skeletal_muscle","Mouse 1.OST Skeletal Muscle (Affymetrix)", mogene_id],
+         ["white_adipose","Mouse 1.OST White Adipose (Affymetrix)", mogene_id],
+         ["liver","Mouse Liver 48 hour Hughes 2009 (Affymetrix)", affy_id],
          ["pituitary","Mouse Pituitary 48 hour Hughes 2009 (Affymetrix)",affy_id],
          ["NIH3T3","Mouse NIH 3T3 Immortilized Cell Line 48 hour Hughes 2009 (Affymetrix)",affy_id],
          ["U2OS","Human U2 OS Hughes 2009 (Affymetrix)", hugene_id],
@@ -165,12 +213,17 @@ namespace :seed do
          ["WT_SCN","Mouse Wild Type SCN (GNF microarray)", gnf_id],
          ["panda_liver","Mouse Liver Panda 2002 (Affymetrix)",u74av1_id],
          ["panda_SCN_MAS4","Mouse SCN MAS4 Panda 2002 (Affymetrix)", u74av1_id],
-         ["panda_SCN_gcrma","Mouse SCN gcrma Panda 2002 (Affymetrix)", u74av1_id]]
+         ["panda_SCN_gcrma","Mouse SCN gcrma Panda 2002 (Affymetrix)", u74av1_id],
+         ["aorta_2004","Mouse Aorta Rudic 2004 (Affymetrix)", u74av1_id],
+         ["kidney_2004","Mouse Kidney Rudic 2004 (Affymetrix)", u74av1_id],
+         ["dc","Mouse Distal Colon 2008 (Affymetrix)",  affy_id]]
 
+         # adrenal_gland aorta brown_adipose brain_stem cerebellum heart hypothalamus kidney mogene_liver lung skeletal_muscle white_adipose
 
+    #Adr Aorta BFAT BS Heart Kidney Mus WFAT
     #v = []
     Assay.import(f,v)
-    puts "=== 10 Assay inserted ==="
+    puts "=== 18 Assay inserted ==="
 
   end
 
@@ -227,6 +280,32 @@ namespace :seed do
       puts "=== Raw Data #{etype} insert starting ==="
 
       File.open("#{RAILS_ROOT}/seed_data/#{etype}_data","r" ).each do |line|
+        count += 1
+        line = line.split("@")
+        time_points = line[1].split(",").map {|element| element}
+        data_points = line[2].split(",").map {|element| element}
+        cubase = line[3]
+        psid = probesets[line[0]]
+        buffer << [a.id(), a.slug, psid, line[0], time_points.to_json, data_points.to_json,cubase]
+
+        if count % 1000 == 0
+          ProbesetData.import(fields,buffer)
+          puts count
+          buffer = []
+        end
+      end
+      ProbesetData.import(fields,buffer)
+      puts "=== Raw Data #{etype} end (count= #{count}) ==="
+    end
+
+    # Same Gene Chip as Panda
+    %w{ aorta_2004 kidney_2004 }.each do |etype|
+      count = 0
+      buffer = []
+      a = Assay.find(:first, :conditions => ["slug = ?", etype])
+      puts "=== Raw Data #{etype} insert starting ==="
+
+      File.open("#{RAILS_ROOT}/seed_data/rudic_#{etype}_data","r" ).each do |line|
         count += 1
         line = line.split("@")
         time_points = line[1].split(",").map {|element| element}
@@ -312,10 +391,83 @@ namespace :seed do
       puts "=== Raw Data #{etype} end (count= #{count}) ==="
     end
 
+    # Mouse_1.OST
+    g  = GeneChip.find(:first, :conditions => ["slug like ?","Mouse_1.OST"])
+    probesets = {}
+    g.probesets.each do |p|
+      probesets[p.probeset_name]= p.id
+    end
+
 
     buffer = []
     ProbesetData.import(fields,buffer)
-    #puts "=== Raw Data 3T3 cells insert ended (count= #{count}) ==="
+    #puts "=== Raw Data U2OS cells insert ended (count= #{count}) ==="
+
+    %w{ adrenal_gland aorta brown_adipose brain_stem cerebellum heart hypothalamus kidney mogene_liver lung skeletal_muscle white_adipose }.each do |etype|
+      count = 0
+      buffer = []
+      a = Assay.find(:first, :conditions => ["slug = ?", etype])
+      puts "=== Raw Data #{etype} insert starting ==="
+
+      File.open("#{RAILS_ROOT}/seed_data/mogene_#{etype}_data","r" ).each do |line|
+        count += 1
+        line = line.split("@")
+        time_points = line[1].split(",").map {|element| element}
+        data_points = line[2].split(",").map {|element| element}
+        cubase = line[3]
+        psid = probesets[line[0]]
+        buffer << [a.id(), a.slug, psid, line[0], time_points.to_json, data_points.to_json,cubase]
+
+        if count % 1000 == 0
+          ProbesetData.import(fields,buffer)
+          puts count
+          buffer = []
+        end
+      end
+      ProbesetData.import(fields,buffer)
+      puts "=== Raw Data MoGene #{etype} end (count= #{count}) ==="
+    end
+
+    # Hoogerwerf
+    g  = GeneChip.find(:first, :conditions => ["slug like ?","Mouse430_2"])
+    probesets = {}
+    g.probesets.each do |p|
+      probesets[p.probeset_name]= p.id
+    end
+
+
+    buffer = []
+    ProbesetData.import(fields,buffer)
+    #puts "=== Raw Data U2OS cells insert ended (count= #{count}) ==="
+
+    %w{ dc }.each do |etype|
+      count = 0
+      buffer = []
+      a = Assay.find(:first, :conditions => ["slug = ?", etype])
+      puts "=== Raw Data #{etype} insert starting ==="
+
+      File.open("#{RAILS_ROOT}/seed_data/hoogerwerf_#{etype}_data","r" ).each do |line|
+        count += 1
+        line = line.split("@")
+        time_points = line[1].split(",").map {|element| element}
+        data_points = line[2].split(",").map {|element| element}
+        cubase = line[3]
+        psid = probesets[line[0]]
+        buffer << [a.id(), a.slug, psid, line[0], time_points.to_json, data_points.to_json,cubase]
+
+        if count % 1000 == 0
+          ProbesetData.import(fields,buffer)
+          puts count
+          buffer = []
+        end
+      end
+      ProbesetData.import(fields,buffer)
+      puts "=== Raw Data Hoogerwerf #{etype} end (count= #{count}) ==="
+    end
+
+
+    buffer = []
+    ProbesetData.import(fields,buffer)
 
     puts "=== Raw Data insert ended ==="
   end
@@ -341,7 +493,7 @@ namespace :seed do
       a = Assay.find(:first, :conditions => ["slug = ?", etype])
       puts "=== Stat Data #{etype} start ==="
 
-      FasterCSV.foreach("#{RAILS_ROOT}/seed_data/hughes_#{etype}_stats") do |row|
+      CSV.foreach("#{RAILS_ROOT}/seed_data/hughes_#{etype}_stats") do |row|
         count += 1
         aslug, psname = 0,row[0].to_i
         psid = probesets[row[0]]
@@ -373,7 +525,7 @@ namespace :seed do
       a = Assay.find(:first, :conditions => ["slug = ?", etype])
       puts "=== Stat Data #{etype} start ==="
 
-      FasterCSV.foreach("#{RAILS_ROOT}/seed_data/#{etype}_stats") do |row|
+      CSV.foreach("#{RAILS_ROOT}/seed_data/#{etype}_stats") do |row|
         count += 1
         aslug, psname = 0,row[0].to_i
         psid = probesets[row[0]]
@@ -404,7 +556,29 @@ namespace :seed do
       a = Assay.find(:first, :conditions => ["slug = ?", etype])
       puts "=== Stat Data #{etype} start ==="
 
-      FasterCSV.foreach("#{RAILS_ROOT}/seed_data/#{etype}_stats") do |row|
+      CSV.foreach("#{RAILS_ROOT}/seed_data/#{etype}_stats") do |row|
+        count += 1
+        aslug, psname = 0,row[0].to_i
+        psid = probesets[row[0]]
+        buffer << [a.id, a.slug,psid, psid, psname] + row[1..-1].to_a
+        if count % 1000 == 0
+          ProbesetStat.import(fields,buffer)
+          buffer = []
+          puts count
+        end
+      end
+      ProbesetStat.import(fields,buffer)
+      puts "=== Stat Data #{etype} end (count = #{count}) ==="
+    end
+
+    # Same gene chip as panda
+    %w{ aorta_2004 kidney_2004 }.each do |etype|
+      count = 0
+      buffer = []
+      a = Assay.find(:first, :conditions => ["slug = ?", etype])
+      puts "=== Stat Data #{etype} start ==="
+
+      CSV.foreach("#{RAILS_ROOT}/seed_data/rudic_#{etype}_stats") do |row|
         count += 1
         aslug, psname = 0,row[0].to_i
         psid = probesets[row[0]]
@@ -434,7 +608,68 @@ namespace :seed do
       a = Assay.find(:first, :conditions => ["slug = ?", etype])
       puts "=== Stat Data #{etype} start ==="
 
-      FasterCSV.foreach("#{RAILS_ROOT}/seed_data/hughes_#{etype}_stats") do |row|
+      CSV.foreach("#{RAILS_ROOT}/seed_data/hughes_#{etype}_stats") do |row|
+        count += 1
+        aslug, psname = 0,row[0].to_i
+        psid = probesets[row[0]]
+        buffer << [a.id, a.slug,psid, psid, psname] + row[1..-1].to_a
+        if count % 1000 == 0
+          ProbesetStat.import(fields,buffer)
+          buffer = []
+          puts count
+        end
+      end
+      ProbesetStat.import(fields,buffer)
+      puts "=== Stat Data #{etype} end (count = #{count}) ==="
+    end
+
+    g  = GeneChip.find(:first, :conditions => ["slug like ?","Mouse_1.OST"])
+    probesets = {}
+
+    g.probesets.each do |p|
+      p.probeset_name
+      probesets[p.probeset_name]= p.id
+    end
+
+    %w{ adrenal_gland aorta brown_adipose brain_stem cerebellum heart hypothalamus kidney mogene_liver lung skeletal_muscle white_adipose }.each do |etype|
+      count = 0
+      buffer = []
+      a = Assay.find(:first, :conditions => ["slug = ?", etype])
+      puts "=== Stat Data mogene #{etype} start ==="
+
+      CSV.foreach("#{RAILS_ROOT}/seed_data/mogene_#{etype}_stats") do |row|
+        count += 1
+        aslug, psname = 0,row[0].to_i
+        psid = probesets[row[0]]
+        buffer << [a.id, a.slug,psid, psid, psname] + row[1..-1].to_a
+        if count % 1000 == 0
+          ProbesetStat.import(fields,buffer)
+          buffer = []
+          puts count
+        end
+      end
+      ProbesetStat.import(fields,buffer)
+      puts "=== Stat Data mogene #{etype} end (count = #{count}) ==="
+    end
+
+    # hoogerwerf
+
+    g  = GeneChip.find(:first, :conditions => ["slug like ?","Mouse430_2"])
+    probesets = {}
+
+    g.probesets.each do |p|
+      p.probeset_name
+      probesets[p.probeset_name]= p.id
+    end
+
+    %w{ dc }.each do |etype|
+      #liver
+      count = 0
+      buffer = []
+      a = Assay.find(:first, :conditions => ["slug = ?", etype])
+      puts "=== Stat Data #{etype} start ==="
+
+      CSV.foreach("#{RAILS_ROOT}/seed_data/hoogerwerf_#{etype}_stats") do |row|
         count += 1
         aslug, psname = 0,row[0].to_i
         psid = probesets[row[0]]
@@ -466,7 +701,6 @@ namespace :seed do
 
   task :delete_from_data => :environment do
     c = ActiveRecord::Base.connection
-    c.execute "delete from probeset_stats"
     c.execute "delete from probeset_datas"
   end
 
@@ -474,6 +708,11 @@ namespace :seed do
     c = ActiveRecord::Base.connection
     c.execute "delete from probesets"
     puts "=== delete_from_probesets done!"
+  end
+
+  task :delete_from_stats => :environment do
+    c = ActiveRecord::Base.connection
+    c.execute "delete from probeset_stats"
   end
 
   desc "Warning: Deletes all content"
@@ -493,15 +732,28 @@ namespace :seed do
   desc "Fill database from scratch"
   task :fill => [:delete_from_all, :genechips,
     :mouse430_probesets, :u74av1_probesets, :gnf1m_probesets, :hugene_probesets,
-    :assays, :datas, :stats, :refbackfill, :build_sphinx]
+    :mogene_probesets, :assays, :datas, :stats, :refbackfill, :build_sphinx]
 
   desc "Refill Probesets"
   task :refill_probesets => [:delete_from_probesets, :mouse430_probesets,
-    :u74av1_probesets, :gnf1m_probesets, :hugene_probesets,
+    :u74av1_probesets, :gnf1m_probesets, :hugene_probesets, :mogene_probesets,
     :build_sphinx]
 
-  desc "Reset the source data and stats"
-  task :reset_data => [:delete_from_data, :datas2, :stats2, :refbackfill] do
+  desc "Reset the source data"
+  task :reset_data => [:delete_from_data, :assays, :datas, :refbackfill,
+    :build_sphinx] do
   end
+
+  desc "Reset the source stats"
+  task :reset_stats => [:delete_from_stats,  :stats, :refbackfill,
+    :build_sphinx] do
+  end
+
+  desc "Reset assays and genechips"
+  task :reset_assays => [:assays, :genechips, :refbackfill,
+    :build_sphinx] do
+  end
+
+
 
 end

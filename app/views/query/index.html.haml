@@ -4,7 +4,9 @@
   .count
     -if @probeset_stats.total_entries != 0
       Total hits #{@probeset_stats.total_entries}
-      = will_paginate @probeset_stats , :class => "apple_pagination", :params => params
+      = will_paginate @probeset_stats , :class => "apple_pagination", :params => params, :inner_window => 2
+    -else
+      Total hits #{@probeset_stats.total_entries}
 .results.span-14.last.push-1
   %table
     -for @probeset_stat in @probeset_stats do
@@ -24,13 +26,15 @@
                 - if @probeset_stat.assay_name == "liver"
                   %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url}
                 %br== <b>Probeset       </b> #{@probeset.probeset_name}
+                %br== <b>Links          </b> #{@probeset.wiki_url}  #{@probeset.homolo_gene_url}
                 %br== <b>Symbol         </b> #{@probeset.gene_symbol_url }
                 %br== <b>Unigene        </b> #{@probeset.unigene_url}
                 %br== <b>RefSeq Protein </b> #{@probeset.refseq_protein_url}
                 %br== <b>RefSeq DNA     </b> #{@probeset.refseq_transcript_url}
                 %br== <b>Description    </b> #{@probeset.gene_title}
             %tr
-              %td &nbsp;
+              %td{:style => "text-align:center" }
+                =link_to(image_tag('questionmark_orange3.png', :alt=> "Experiment help page"), results_path())
               %th p-Value
               %th q-Value
               %th period
@@ -53,6 +57,9 @@
               %td= @probeset_stat.fisherg_q_value
               %td= @probeset_stat.fisherg_period_length
               %td <i>NA</i>
+            %tr
+              %td{:colspan=>5,:style => "text-align:right;"}
+                %a(href="#top")back to the top
 .footer.span-15.last.push-1
   .count
   -if @probeset_stats.total_entries != 0

@@ -13,6 +13,10 @@
   padding-bottom: 10px ;
 
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
 .news {
  text-align: center;
  background: #B8E6B8;
@@ -20,6 +24,10 @@
  padding-bottom: 5px;
  margin-bottom: 10px;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
 .footer {
   margin-bottom: 30px;
   text-align: center ;
@@ -28,6 +36,10 @@
 
 .help {
   color: #AAA;
+}
+
+.tail{
+  text-align:center;
 }
 
 #nav{
@@ -67,20 +79,23 @@
 #link{
 
 }
-#link a{
+a{
   text-decoration:none;
   /*display:inline-block; */
   padding:0px;
   color:#416BA5;
   /*font-weight:bold;*/
-  font-size:1.2em;
+  /*font-size:1.2em;*/
   padding-top: 0px ;
   padding-bottom: 0px ;
   /*background:#DDD;*/
 
 }
 
-#link a:focus, #link a:hover {color:#111;}
+link a:focus, #link a:hover {color:#111;}
 
 
-
+code {
+  color:#F93;
+  font-weight: bold;
+}

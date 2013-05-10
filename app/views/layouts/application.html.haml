@@ -15,23 +15,54 @@
     %title CIRCA: Circadian gene expression profiles.
     %link{:rel => 'shortcut icon', :href => 'favicon.ico'}
     %link{:rel => 'apple-touch-icon', :href => 'favicon.ico'}
-  %body.span-18.last.container
+    :javascript
+      function validateForm()
+      {
+      var x=document.forms["myForm"]["filter_value"].value;
+      if (x==null || x=="" || x<=0 || x>1 || isNaN(Number(x)))
+        {
+        alert("Probabily cut-off value must between 0 and 1");
+        return false;
+        }
+      var x=document.forms["myForm"]["phase_range"].value;
+      var minuspos=x.indexOf("-");
+      var n=x.split("-");
+      if (x==null || x=="" || isNaN(Number(n[1])) || isNaN(Number(n[0]))  )
+        {
+        alert("Please enter a JTK phase range (e.g. 0-6)");
+        return false;
+        }
+      if (minuspos < 1 || parseFloat(n[1])<parseFloat(n[0]))
+        {
+        alert(x + " is not a valid range");
+        return false;
+        }
+      }
+  %body.span-18.last.container{:style => "margin:auto;" }
     .header.span-18.last
-      %h1= link_to( image_tag('circa_2.png', :alt=> "CIRCA"), root_path())
+      %h1= link_to( image_tag('CircaDB.png', :alt=> "CIRCA",:name=>"top"), root_path())
       %ul#nav.last
         %span
         %li=link_to("Home", root_path)
         %li=link_to("Help", help_path)
         %li=link_to("About", about_path)
     .news.span-18.last
+<<<<<<< HEAD
       %b NEWS:
       New Mouse 1.0ST data sets added to CircaDB. 
+=======
+      %b NEWS (4/18/2013):
+      New Mouse 1.0ST data sets added to CircaDB.
+>>>>>>> master
     .content.span-18.last
       = yield
     .footer.span-18.last
       %ul#nav
         %li
-          Penn Medicine | ITMAT Bioninformatics Facility
-
-
-
+          %a(href="http://www.med.upenn.edu" ) Penn Medicine
+          |
+          %a(href="http://bioinf.itmat.upenn.edu/home.html") ITMAT Bioninformatics Facility
+    / .tail.span-9.last
+    /   = link_to( image_tag('DARPA_Logo.png', :alt=> "CIRCA"), "http://www.darpa.mil/")
+    .tail.span-18.last
+      = link_to( image_tag('NHLBI.png', :alt=> "CIRCA"), "http://www.nhlbi.nih.gov/")

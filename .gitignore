@@ -4,7 +4,7 @@
 log/*
 tmp/*
 *~
-.#*
+.\#*
 *.sqlite
 *.sqlite3
 *.db
@@ -15,14 +15,10 @@ config/database.yml
 config/*sphinx.conf
 seed_data/*
 source_data/*
-Gemfile.lock
 .bundle
 ._*
-<<<<<<< Updated upstream
 .Rhistory
-
-=======
-.rbenv
-#*
+.rbenv-version
 config.ru
->>>>>>> Stashed changes
+\#*
+tmtags*

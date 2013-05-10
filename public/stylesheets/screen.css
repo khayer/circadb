@@ -11,11 +11,11 @@
 ----------------------------------------------------------------------- */
 
 /* reset.css */
-html, body, div, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {margin:0;padding:0;border:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;vertical-align:baseline;}
+html, body, div, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, tk, th, td {margin:0;padding:0;border:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;vertical-align:baseline;}
 body {line-height:1.5;}
 table {border-collapse:separate;border-spacing:0;}
-caption, th, td {text-align:left;font-weight:normal;}
-table, td, th {vertical-align:middle;}
+caption, tk, th, td {text-align:left;font-weight:normal;}
+table, td, tk, th {vertical-align:middle;}
 blockquote:before, blockquote:after, q:before, q:after {content:"";}
 blockquote, q {quotes:"" "";}
 a img {border:none;}
@@ -54,7 +54,8 @@ dl dt {font-weight:bold;}
 dd {margin-left:1.5em;}
 table {margin-bottom:1.4em;width:100%;}
 th {font-weight:bold;background:#B5D4FC;}
-th, td {padding:4px 10px 4px 5px;}
+tk {font-weight:bold;background:#FF7f2a;}
+th, td, tk {padding:4px 10px 4px 5px;}
 tr.even td {background:#E5ECF9;}
 tfoot {font-style:italic;}
 caption {background:#eee;}
