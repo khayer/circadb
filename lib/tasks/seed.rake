@@ -216,7 +216,7 @@ namespace :seed do
          ["panda_SCN_gcrma","Mouse SCN gcrma Panda 2002 (Affymetrix)", u74av1_id],
          ["aorta_2004","Mouse Aorta Rudic 2004 (Affymetrix)", u74av1_id],
          ["kidney_2004","Mouse Kidney Rudic 2004 (Affymetrix)", u74av1_id],
-         ["dc","Mouse Distal Colon 2008 (Affymetrix)",  affy_id]]
+         ["distal_colon","Mouse Distal Colon 2008 (Affymetrix)",  affy_id]]
 
          # adrenal_gland aorta brown_adipose brain_stem cerebellum heart hypothalamus kidney mogene_liver lung skeletal_muscle white_adipose
 
@@ -440,7 +440,7 @@ namespace :seed do
     ProbesetData.import(fields,buffer)
     #puts "=== Raw Data U2OS cells insert ended (count= #{count}) ==="
 
-    %w{ dc }.each do |etype|
+    %w{ distal_colon }.each do |etype|
       count = 0
       buffer = []
       a = Assay.find(:first, :conditions => ["slug = ?", etype])
@@ -662,7 +662,7 @@ namespace :seed do
       probesets[p.probeset_name]= p.id
     end
 
-    %w{ dc }.each do |etype|
+    %w{ distal_colon }.each do |etype|
       #liver
       count = 0
       buffer = []
