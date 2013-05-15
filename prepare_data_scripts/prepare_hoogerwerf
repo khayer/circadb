@@ -57,25 +57,11 @@ CSV.foreach(ARGV[0],  {:headers => :first_row}) do |row|
   mid = R.mean(all).to_i
 
   scaled_all = R.scaleData([numbers,number_max,number_min].flatten).map {|e| e.to_i }
-  puts scaled_all.length
   scaled = scaled_all[0..5]
   scaled_max = scaled_all[6..11]
   scaled_min = scaled_all[12..17]
-  averaged_0 = R.avgData(numbers).map {|e| e.to_i }
-  #averaged = R.scaleData(averaged_0).map {|e| puts e.round }
-  averaged = R.scaleData(scaled).map {|e| e.round.to_i }
-  scaled_a = R.scaleData(number_a).map {|e| e.to_i }
-  scaled_b = R.scaleData(number_b).map {|e| e.to_i }
-  scaled_c = R.scaleData(number_c).map {|e| e.to_i }
-  #scaled_min = R.scaleData(number_min).map {|e| e.to_i }
-  #scaled_max = R.scaleData(number_max).map {|e| e.to_i }
   #cubase = "http://chart.apis.google.com/chart?chs=%sx%s&cht=lc&chxt=x,y&chxl=0:|8||||||12||||||16||||||20||||||24||||||28|1:|#{min}|#{mid}|#{max}|&chxp=1,2,50,97&chxr=0,18,66&chls=0,0,0|0,0,0|2,1,0|0,0,0&chf=c,ls,0,CCCCCC,0.125,FFFFFF,0.25,CCCCCC,0.25,FFFFFF,0.25,CCCCCC,0.125&chd=t:#{scaled_min.join(",")}|#{scaled_max.join(",")}|#{scaled.join(",")}&chco=3164A6,FDB33A&chm=a,555555,0,-1,5|o,555555,2,-1,5|o,555555,3,-1,5|E,111111,0,-1,1:20|E,111111,0,1,1:20|E,111111,0,2,1:20|E,111111,0,3,1:20|E,111111,0,4,1:20|E,111111,0,5,1:20"
   cubase = "http://chart.apis.google.com/chart?chs=%sx%s&cht=lc&chxt=x,y&chxl=0:|8||||||12||||||16||||||20||||||24||||||28|1:|#{min}|#{mid}|#{max}|&chxp=1,2,50,97&chxr=0,18,66&chls=0,0,0|0,0,0|2,1,0|0,0,0&chf=c,ls,0,CCCCCC,0.125,FFFFFF,0.25,CCCCCC,0.25,FFFFFF,0.25,CCCCCC,0.125&chd=t:#{scaled_min.join(",")}|#{scaled_max.join(",")}|#{scaled.join(",")}&chco=3164A6,FDB33A&chm=E,111111,0,-1,1:20"
   out.puts row["row_names"] +"@"+time_points.join(",")+"@"+numbers.join(",")+"@"+cubase
-  puts scaled_min.join(",")
-  puts scaled_max.join(",")
-  puts scaled_c.join(",")
-  puts averaged.join(",")
-  puts cubase
-  STDIN.gets
+
 end
