@@ -1,6 +1,7 @@
 *.sql
 .DS_Store
 .Thumbs
+.ruby-version
 log/*
 tmp/*
 *~
