@@ -34,10 +34,10 @@ class QueryController < ApplicationController
 
 
     # query match mode
-    params[:match_mode] ||= 'any'
+    params[:match_mode] ||= 'gene_symbol'
     @match_mode = params[:match_mode].to_sym
 
-    if params[:match_mode] == 'any' && params[:query_string]
+    if params[:match_mode] == 'gene_symbol' && params[:query_string]
       @new_query = ""
       if params[:query_string]
         @match_mode = "extended".to_sym
@@ -59,9 +59,9 @@ class QueryController < ApplicationController
         :include => [:probeset_data, :probeset, :probeset_stats])
     end
 
-    if params[:query_string]
+    if params[:query_string] && params[:match_mode] == 'gene_symbol'
       fields = params[:query_string].split("@gene_symbol")
-      params[:query_string] = fields.join("\n").delete("|")
+      params[:query_string] = fields.join("\n").delete(" | ")
     end
 
     # if you want to log messages, look at the Rails logger functionality
