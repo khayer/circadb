@@ -5,28 +5,36 @@
     %br
     %span.help
       (Examples
-      = link_to("1451371_at 1422470_at gnf1m00037_a_at", query_path(:params => {:query_string => "1451371_at\n1422470_at\ngnf1m00037_a_at"} ))
+      = link_to("1451371_at 1422470_at gnf1m00037_a_at", query_path(:params => {:query_string => "1451371_at\n1422470_at\ngnf1m00037_a_at", :match_mode => "any"} ))
       or
       = link_to("Arntl", query_path(:params => {:query_string => "Arntl"} ))
       or
-      = link_to("kinase inhibitor", query_path(:params => {:query_string =>  "kinase inhibitor"} ))
+      = link_to("kinase inhibitor", query_path(:params => {:query_string =>  "kinase inhibitor", :match_mode => "any"} ))
       )
-  .qbox.span-15.last{:style => "padding-bottom: 20px;"}
+  .qbox.span-5.last{:style => "padding-bottom: 1px;"}
     /= text_area_tag :query_string, params[:query_string]
     = text_area_tag :query_string, params[:query_string]
+
+  .span-10.last
     %br
     %b Query syntax mode:
     - @match_mode = params[:match_mode]
+    = radio_button_tag(:match_mode, "gene_symbol", (@match_mode == "gene_symbol" ? true : false))
+    = label_tag(:match_mode_any, "by gene symbol")
     /= radio_button_tag(:match_mode, "any", (@match_mode == "any" ? true : false ))
     = radio_button_tag(:match_mode, "any", (@match_mode == "any" ? true : false))
     = label_tag(:match_mode_any, "simple")
-    = params[:query_string]
+
+
+
     = radio_button_tag(:match_mode, "extended", (@match_mode == "extended" ? true : false ))
     = label_tag(:match_mode_advanced, "advanced")
     = link_to(image_tag('questionmark_orange3.png', :alt=> "Advanced query help page"), advanced_query_help_path())
+    / For develop purposes
+    /= params[:query_string]
 
-  .span-15.last
-    .span-15{:style => "padding-bottom: 10px;"}
+  .span-10.last
+    .span-10{:style => "padding-bottom: 10px;"}
       = label_tag :filter, "Choose probability filter"
       = select_tag(:filter, options_for_select(ProbesetStat.pval_filters, params[:filter]))
       %br{:style => "padding-bottom: 10px;"}
@@ -38,7 +46,7 @@
       = text_field_tag :phase_range, (params[:phase_range] || "0-40"),{:size => 5, :name => "phase_range"}
       %span.help ("0-6" or "10.30-11.10")
 
-  .span-15.last
+  .span-10.last
     .label
       = label_tag :assays, "Select one or more experiments to view"
       = link_to(image_tag('questionmark_orange3.png', :alt=> "Experiment help page"), select_more_than_one_path())
