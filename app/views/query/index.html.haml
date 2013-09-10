@@ -22,7 +22,7 @@
                 -else
                   NO IMAGE
               %td{:colspan=>2}
-                %br== <b>Tissue       </b> #{@probeset_stat.assay_name}
+                %br== <b>Experiment       </b> #{Assay.find_by_id(@probeset_stat.assay_id).name}
                 - if @probeset_stat.assay_name == "liver"
                   %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url}
                 %br== <b>Probeset       </b> #{@probeset.probeset_name}

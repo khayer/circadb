@@ -52,7 +52,7 @@
       = link_to(image_tag('questionmark_orange3.png', :alt=> "Experiment help page"), select_more_than_one_path())
       %br
       %span.help (If nothing is selected, CIRCA will search all experiments.)
-      = select_tag(:assays, options_for_select(Assay.all.collect {|e| [e.name ,  e.id.to_s] }, params[:assays]), {:multiple => true})
+      = select_tag(:assays, options_for_select(Assay.all.collect {|e| [e.name ,  e.id.to_s] }, params[:assays]), {:multiple => true,  :style => "height: 200px;"})
     .span-15.hov= submit_tag "Search"
 
 
