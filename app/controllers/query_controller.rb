@@ -59,6 +59,7 @@ class QueryController < ApplicationController
         :include => [:probeset_data, :probeset, :probeset_stats])
     end
 
+
     if params[:query_string] && params[:match_mode] == 'gene_symbol'
       fields = params[:query_string].split("@gene_symbol")
       params[:query_string] = fields.join("\n").delete(" | ")
