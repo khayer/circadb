@@ -13,5 +13,7 @@ test:
 production:
   max_matches: 10000
   port: 9312
+  nable_star: 1
+  min_infix_len: 3
   searchd_file_path: "db/sphinx"
-  ignore_chars: "., U+002E"
+  ignore_chars: "., -, U+002E"
