@@ -25,6 +25,30 @@
                 %br== <b>Experiment       </b> #{Assay.find_by_id(@probeset_stat.assay_id).name}
                 - if @probeset_stat.assay_name == "liver"
                   %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url}
+                - elsif @probeset_stat.assay_name == "adrenal_gland"
+                  %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_adrenal_gland}
+                - elsif @probeset_stat.assay_name == "aorta"
+                  %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_aorta}
+                - elsif @probeset_stat.assay_name == "brown_adipose"
+                  %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_brown_adipose}
+                - elsif @probeset_stat.assay_name == "brain_stem"
+                  %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_brain_stem}
+                - elsif @probeset_stat.assay_name == "cerebellum"
+                  %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_cerebellum}
+                - elsif @probeset_stat.assay_name == "heart"
+                  %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_heart}
+                - elsif @probeset_stat.assay_name == "hypothalamus"
+                  %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_hypothalamus}
+                - elsif @probeset_stat.assay_name == "kidney"
+                  %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_kidney}
+                - elsif @probeset_stat.assay_name == "mogene_liver"
+                  %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_mogene_liver}
+                - elsif @probeset_stat.assay_name == "lung"
+                  %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_lung}
+                - elsif @probeset_stat.assay_name == "skeletal_muscle"
+                  %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_skeletal_muscle}
+                - elsif @probeset_stat.assay_name == "white_adipose"
+                  %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_white_adipose}
                 %br== <b>Probeset       </b> #{@probeset.probeset_name}
                 %br== <b>Links          </b> #{@probeset.wiki_url}  #{@probeset.homolo_gene_url}
                 %br== <b>Symbol         </b> #{@probeset.gene_symbol_url }
