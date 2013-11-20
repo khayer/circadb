@@ -6,32 +6,32 @@ namespace :bootstrap do
   desc "Download DB data from AWS"
   task :download_db => :environment do
     require 'net/http'
-    unless File.exists? "#{Rails.root}/circadb.mysql.dmp"
+    unless File.exists? "#{Rails.root}/circa_db.sql"
       puts "DOWNLOADING"
-      uri = URI('http://s3.amazonaws.com/circadb_data/circadb.mysql.dmp.gz')
+      uri = URI('http://s3.amazonaws.com/circadb_data/circa_db.sql.gz')
       Net::HTTP.start(uri.host, uri.port) do |http|
         request = Net::HTTP::Get.new uri.request_uri
 
         http.request request do |response|
-          open "#{Rails.root}/circadb.mysql.dmp.gz", 'wb' do |io|
+          open "#{Rails.root}/circa_db.sql.gz", 'wb' do |io|
             response.read_body do |chunk|
               io.write chunk
             end
           end
         end
       end
-      system("gunzip circadb.mysql.dmp.gz")
+      system("gunzip circa_db.sql.gz")
     end
   end
   desc "insert DB data from downloaded MySQL dump"
   task :insert_data => :environment do
-    unless File.exists? "#{Rails.root}/circadb.mysql.dmp"
+    unless File.exists? "#{Rails.root}/circa_db.sql"
       puts "Need to download data first, use \"rake bootstrap:download_db\" task"
       exit(0)
     end
     cfg = ActiveRecord::Base.configurations[Rails.env]
     system("mysql -u #{cfg["username"]} #{ cfg["password"] ? "-p" + cfg["password"] : "" } " +
-           " #{ "-h " + cfg["host"] if cfg["host"] } #{cfg["database"]} < circadb.mysql.dmp")
+           " #{ "-h " + cfg["host"] if cfg["host"] } #{cfg["database"]} < circa_db.sql")
   end
 
   desc "Build the sphinx index"
