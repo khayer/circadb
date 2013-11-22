@@ -1,6 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
   map.root :controller => "query", :controller => "query", :action => "index", :format => 'html'
   map.query '/query.:format', :controller => "query", :action => "index"
+  map.table '/table.:format', :controller => "table", :action => "write" , :format => 'html'
   map.help '/help', :controller => "query", :action => "help", :format => 'html'
   map.about '/about', :controller => "query", :action => "about", :format => 'html'
   map.advanced_query_help "/help", :anchor => 'querying', :controller => "query", :action => "help", :format => 'html'
