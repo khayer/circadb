@@ -24,6 +24,12 @@
         alert("Probabily cut-off value must between 0 and 1");
         return false;
         }
+      var x=document.forms["myForm"]["number_entries"].value;
+      if (x==null || x=="" || x<0  || isNaN(Number(x)))
+        {
+        alert("Number of entries must be a natural number");
+        return false;
+        }
       var x=document.forms["myForm"]["phase_range"].value;
       var minuspos=x.indexOf("-");
       var n=x.split("-");

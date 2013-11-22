@@ -1,9 +1,10 @@
 class TableController < ApplicationController
+  @@per_page = 50
   def write
     # condition hash
     cnd = {}
     # page to fetch
-    #current_page = params[:page].to_i > 0 ? params[:page].to_i : 1
+    current_page = params[:page].to_i > 0 ? params[:page].to_i : 1
 
     # q_value filter
     params[:filter] ||= "jtk_p_value"
@@ -47,12 +48,12 @@ class TableController < ApplicationController
 
     if params[:query_string]
       @probeset_stats = ProbesetStat.search(params[:query_string],
-        #:page => current_page, #:per_page => @@per_page,
+        :page => current_page, :per_page => params[:number_entries].to_i,
         :with => cnd,
         :order => order, :match_mode => @match_mode,
         :include => [:probeset_data, :probeset, :probeset_stats])
     else
-      @probeset_stats = ProbesetStat.search(#:page => current_page, #:per_page => @@per_page,
+      @probeset_stats = ProbesetStat.search(:page => current_page, :per_page => params[:number_entries].to_i,
         :with => cnd,
         :order => order,
         :include => [:probeset_data, :probeset, :probeset_stats])
