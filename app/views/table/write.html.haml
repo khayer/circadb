@@ -1,8 +1,5 @@
 .form.span-15.last.push-1{:style => "border-left: 2px double #E5ECF9; padding: 10px;" }
   = render :partial => "form"
 .results.span-14.last.push-1
-  -for @probeset_stat in @probeset_stats do
-    - @probeset_data = @probeset_stat.probeset_data
-    - @probeset = @probeset_stat.probeset
-    %br== <b>Experiment       </b> #{Assay.find_by_id(@probeset_stat.assay_id).name}
-
+  .span-15.last
+    = text_area_tag :query_string, @probeset_stats
