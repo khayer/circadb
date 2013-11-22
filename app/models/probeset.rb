@@ -1,8 +1,6 @@
 #require 'open-uri'
 
 class Probeset < ActiveRecord::Base
-  cattr_reader :per_page
-  #@@per_page = 50
   belongs_to :gene_chip
   has_many :probeset_stats
   has_many :probeset_datas
