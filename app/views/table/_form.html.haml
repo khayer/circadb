@@ -1,8 +1,8 @@
-- form_tag table_path(),  {:action => "demo_form.asp", :method => "post", :name => "myForm", :onsubmit => "return validateForm()"} do
+-form_tag table_path(),  {:action => "demo_form.asp", :method => "post", :name => "myForm", :onsubmit => "return validateForm()" } do
   .span-15.last
-    = label_tag :example, "Enter a search"
-    %br
+    = label_tag :example, "Enter a search "
     %span.help
+      <br>
       (Examples
       = link_to("1451371_at 1422470_at gnf1m00037_a_at", table_path(:params => {:query_string => "1451371_at\n1422470_at\ngnf1m00037_a_at", :match_mode => "any"} ))
       or
@@ -10,12 +10,12 @@
       or
       = link_to("kinase inhibitor", table_path(:params => {:query_string =>  "kinase inhibitor", :match_mode => "any"} ))
       )
-  .qbox.span-5.last{:style => "padding-bottom: 1px;"}
+  .qbox.span-5.last
     /= text_area_tag :query_string, params[:query_string]
     = text_area_tag :query_string, params[:query_string]
 
+
   .span-10.last
-    %br
     %b Query syntax mode:
     - @match_mode = params[:match_mode]
     = radio_button_tag(:match_mode, "gene_symbol", (@match_mode == "gene_symbol" ? true : false))
@@ -23,9 +23,6 @@
     /= radio_button_tag(:match_mode, "any", (@match_mode == "any" ? true : false ))
     = radio_button_tag(:match_mode, "any", (@match_mode == "any" ? true : false))
     = label_tag(:match_mode_any, "simple")
-
-
-
     = radio_button_tag(:match_mode, "extended", (@match_mode == "extended" ? true : false ))
     = label_tag(:match_mode_advanced, "advanced")
     = link_to(image_tag('questionmark_orange3.png', :alt=> "Advanced query help page"), advanced_query_help_path())
@@ -33,7 +30,7 @@
     /= params[:query_string]
 
   .span-10.last
-    .span-10{:style => "padding-bottom: 10px;"}
+    .span-10
       = label_tag :filter, "Choose probability filter"
       = select_tag(:filter, options_for_select(ProbesetStat.pval_filters, params[:filter]))
       %br{:style => "padding-bottom: 10px;"}
