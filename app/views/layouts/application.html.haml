@@ -49,10 +49,10 @@
       %h1= link_to( image_tag('CircaDB.png', :alt=> "CIRCA",:name=>"top"), root_path())
       %ul#nav.last
         %span
-        %li=link_to("Home", root_path)
-        %li=link_to("Table", table_path)
-        %li=link_to("Help", help_path)
-        %li=link_to("About", about_path)
+        %li=link_to("Home", root_path, :class => is_active?("index"))
+        %li=link_to("Tables", table_path, :class => is_active?("write"))
+        %li=link_to("Help", help_path, :class => is_active?("help"))
+        %li=link_to("About", about_path, :class => is_active?("about"))
     .news.span-18.last
       %b NEWS (9/27/2013):
       RNA-seq data is now available for all Mouse 1.OST experiments

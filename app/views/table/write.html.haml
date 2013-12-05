@@ -1,5 +1,6 @@
 .form.span-15.last.push-1{:style => "border-left: 2px double #E5ECF9; padding: 10px;" }
   = render :partial => "form"
-.results.span-14.last.push-1
-  .span-15.last
-    = text_area_tag :query_string, @probeset_stats
+-if @probeset_stats.length > 0
+  .qbox2.span-16.last
+    =text_area_tag :query_string, @text
+
