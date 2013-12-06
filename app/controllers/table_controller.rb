@@ -67,11 +67,12 @@ class TableController < ApplicationController
 
     # if you want to log messages, look at the Rails logger functionality
     # puts "@probeset_stats = #{@probeset_stats.length}"
-    @text = "ID\tTime\tValues\tJTKP\tJTKQ\tJTKperiod\tJTKphase\n"
+    @text = "ID\tSymbol\tTime\tValues\tJTKP\tJTKQ\tJTKperiod\tJTKphase\n"
     @probeset_stats.each do |probeset_stat|
       probeset = probeset_stat.probeset
+      next unless probeset
       gene_symbol = probeset.gene_symbol
-      gene_symbol = probeset.probeset_name if gene_symbol == nil
+      id = probeset.probeset_name
       probeset_data = probeset_stat.probeset_data
       time_points = probeset_data.time_points.delete("\"[]")
       data_points = probeset_data.data_points.delete("\"[]")
@@ -79,7 +80,7 @@ class TableController < ApplicationController
       jtkq = probeset_stat.jtk_q_value
       jtkperiod = probeset_stat.jtk_period_length
       jtkphase = probeset_stat.jtk_lag
-      @text = @text + "#{gene_symbol}\t#{time_points}\t#{data_points}\t#{jtkp}\t#{jtkq}\t#{jtkperiod}\t#{jtkphase}\n"
+      @text = @text + "#{id}\t#{gene_symbol}\t#{time_points}\t#{data_points}\t#{jtkp}\t#{jtkq}\t#{jtkperiod}\t#{jtkphase}\n"
     end
 
     respond_to do |format|

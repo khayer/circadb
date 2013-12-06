@@ -25,9 +25,9 @@
         return false;
         }
       var x=document.forms["myForm"]["number_entries"].value;
-      if (x==null || x=="" || x<0  || isNaN(Number(x)))
+      if (x==null || x=="" || x<0  || isNaN(Number(x)) || x>1000)
         {
-        alert("Number of entries must be a natural number");
+        alert("Number of entries must be a natural number and below 1,000");
         return false;
         }
       var x=document.forms["myForm"]["phase_range"].value;
