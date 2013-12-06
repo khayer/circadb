@@ -7,85 +7,157 @@
       = will_paginate @probeset_stats , :class => "apple_pagination", :params => params, :inner_window => 2
     -else
       Total hits #{@probeset_stats.total_entries}
-.results.span-14.last.push-1
-  %table
-    -for @probeset_stat in @probeset_stats do
-      - @probeset_data = @probeset_stat.probeset_data
-      - @probeset = @probeset_stat.probeset
-      %tr
-        %td
-          %table
-            %tr
-              %td{:colspan=>3}
-                -if @probeset_data
-                  =image_tag(@probeset_data.chart_url, :alt => "#{@probeset_data.probeset_name} Data")
-                -else
-                  NO IMAGE
-              %td{:colspan=>2}
-                %br== <b>Experiment       </b> #{Assay.find_by_id(@probeset_stat.assay_id).name}
-                - if @probeset_stat.assay_name == "liver"
-                  %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url}
-                - elsif @probeset_stat.assay_name == "adrenal_gland"
-                  %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_adrenal_gland}
-                - elsif @probeset_stat.assay_name == "aorta"
-                  %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_aorta}
-                - elsif @probeset_stat.assay_name == "brown_adipose"
-                  %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_brown_adipose}
-                - elsif @probeset_stat.assay_name == "brain_stem"
-                  %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_brain_stem}
-                - elsif @probeset_stat.assay_name == "cerebellum"
-                  %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_cerebellum}
-                - elsif @probeset_stat.assay_name == "heart"
-                  %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_heart}
-                - elsif @probeset_stat.assay_name == "hypothalamus"
-                  %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_hypothalamus}
-                - elsif @probeset_stat.assay_name == "kidney"
-                  %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_kidney}
-                - elsif @probeset_stat.assay_name == "mogene_liver"
-                  %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_mogene_liver}
-                - elsif @probeset_stat.assay_name == "lung"
-                  %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_lung}
-                - elsif @probeset_stat.assay_name == "skeletal_muscle"
-                  %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_skeletal_muscle}
-                - elsif @probeset_stat.assay_name == "white_adipose"
-                  %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_white_adipose}
-                %br== <b>Probeset       </b> #{@probeset.probeset_name}
-                %br== <b>Links          </b> #{@probeset.wiki_url}  #{@probeset.homolo_gene_url}
-                %br== <b>Symbol         </b> #{@probeset.gene_symbol_url }
-                %br== <b>Unigene        </b> #{@probeset.unigene_url}
-                %br== <b>RefSeq Protein </b> #{@probeset.refseq_protein_url}
-                %br== <b>RefSeq DNA     </b> #{@probeset.refseq_transcript_url}
-                %br== <b>Description    </b> #{@probeset.gene_title}
-            %tr
-              %td{:style => "text-align:center" }
-                =link_to(image_tag('questionmark_orange3.png', :alt=> "Experiment help page"), results_path())
-              %th p-Value
-              %th q-Value
-              %th period
-              %th phase
-            %tr
-              %th JTK
-              %td= @probeset_stat.jtk_p_value
-              %td= @probeset_stat.jtk_q_value
-              %td= @probeset_stat.jtk_period_length
-              %td= @probeset_stat.jtk_lag
-            %tr
-              %th Lomb Scargle
-              %td= @probeset_stat.cosopt_p_value
-              %td= @probeset_stat.cosopt_q_value
-              %td= @probeset_stat.cosopt_period_length
-              %td= @probeset_stat.cosopt_phase
-            %tr
-              %th DeLichtenberg
-              %td= @probeset_stat.fisherg_p_value
-              %td= @probeset_stat.fisherg_q_value
-              %td= @probeset_stat.fisherg_period_length
-              %td <i>NA</i>
-            %tr
-              %td{:colspan=>5,:style => "text-align:right;"}
-                %a(href="#top")back to the top
+-if @output_mode == "normal"
+  .results.span-14.last.push-1
+    %table
+      -for @probeset_stat in @probeset_stats do
+        - @probeset_data = @probeset_stat.probeset_data
+        - @probeset = @probeset_stat.probeset
+        %tr
+          %td
+            %table
+              %tr
+                %td{:colspan=>3}
+                  -if @probeset_data
+                    =image_tag(@probeset_data.chart_url, :alt => "#{@probeset_data.probeset_name} Data")
+                  -else
+                    NO IMAGE
+                %td{:colspan=>2}
+                  %br== <b>Experiment       </b> #{Assay.find_by_id(@probeset_stat.assay_id).name}
+                  - if @probeset_stat.assay_name == "liver"
+                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url}
+                  - elsif @probeset_stat.assay_name == "adrenal_gland"
+                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_adrenal_gland}
+                  - elsif @probeset_stat.assay_name == "aorta"
+                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_aorta}
+                  - elsif @probeset_stat.assay_name == "brown_adipose"
+                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_brown_adipose}
+                  - elsif @probeset_stat.assay_name == "brain_stem"
+                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_brain_stem}
+                  - elsif @probeset_stat.assay_name == "cerebellum"
+                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_cerebellum}
+                  - elsif @probeset_stat.assay_name == "heart"
+                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_heart}
+                  - elsif @probeset_stat.assay_name == "hypothalamus"
+                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_hypothalamus}
+                  - elsif @probeset_stat.assay_name == "kidney"
+                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_kidney}
+                  - elsif @probeset_stat.assay_name == "mogene_liver"
+                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_mogene_liver}
+                  - elsif @probeset_stat.assay_name == "lung"
+                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_lung}
+                  - elsif @probeset_stat.assay_name == "skeletal_muscle"
+                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_skeletal_muscle}
+                  - elsif @probeset_stat.assay_name == "white_adipose"
+                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_white_adipose}
+                  %br== <b>Probeset       </b> #{@probeset.probeset_name}
+                  %br== <b>Links          </b> #{@probeset.wiki_url}  #{@probeset.homolo_gene_url}
+                  %br== <b>Symbol         </b> #{@probeset.gene_symbol_url }
+                  %br== <b>Unigene        </b> #{@probeset.unigene_url}
+                  %br== <b>RefSeq Protein </b> #{@probeset.refseq_protein_url}
+                  %br== <b>RefSeq DNA     </b> #{@probeset.refseq_transcript_url}
+                  %br== <b>Description    </b> #{@probeset.gene_title}
+              %tr
+                %td{:style => "text-align:center" }
+                  =link_to(image_tag('questionmark_orange3.png', :alt=> "Experiment help page"),  results_path())
+                %th p-Value
+                %th q-Value
+                %th period
+                %th phase
+              %tr
+                %th JTK
+                %td= @probeset_stat.jtk_p_value
+                %td= @probeset_stat.jtk_q_value
+                %td= @probeset_stat.jtk_period_length
+                %td= @probeset_stat.jtk_lag
+              %tr
+                %th Lomb Scargle
+                %td= @probeset_stat.cosopt_p_value
+                %td= @probeset_stat.cosopt_q_value
+                %td= @probeset_stat.cosopt_period_length
+                %td= @probeset_stat.cosopt_phase
+              %tr
+                %th DeLichtenberg
+                %td= @probeset_stat.fisherg_p_value
+                %td= @probeset_stat.fisherg_q_value
+                %td= @probeset_stat.fisherg_period_length
+                %td <i>NA</i>
+              %tr
+                %td{:colspan=>5,:style => "text-align:right;"}
+                  %a(href="#top")back to the top
+-else
+  -for @probeset_stat in @probeset_stats do
+    - @probeset_data = @probeset_stat.probeset_data
+    - @probeset = @probeset_stat.probeset
+    .results.span-20.last
+      .results.span-5.last
+        -if @probeset_data
+          =image_tag(@probeset_data.chart_url(175,100), :alt => "#{@probeset_data.probeset_name} Data")
+        -else
+          NO IMAGE
+      .results.span-15.last
+        %table
+          %tr
+            %td
+              <b>Experiment</b>
+            %td
+              <b>Probeset       </b>
+            %td
+              <b>Symbol </b>
+            %td
+              <b>RefSeq </b>
+            %td{:colspan=>2}
+              <b>Description    </b>
+          %tr
+            %td
+              ==#{Assay.find_by_id(@probeset_stat.assay_id).name}
+            %td
+              ==#{@probeset.probeset_name}
+            %td
+              ==#{@probeset.gene_symbol_url }
+            %td
+              ==#{@probeset.refseq_transcript_url}
+            %td{:colspan=>2}
+              ==#{@probeset.gene_title}
+          /%tr
+          /  %td
+          /    - if @probeset_stat.assay_name == "liver"
+          /      %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url}
+          /    - elsif @probeset_stat.assay_name == "adrenal_gland"
+          /      %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_adrenal_gland}
+          /    - elsif @probeset_stat.assay_name == "aorta"
+          /      %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_aorta}
+          /    - elsif @probeset_stat.assay_name == "brown_adipose"
+          /      %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_brown_adipose}
+          /    - elsif @probeset_stat.assay_name == "brain_stem"
+          /      %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_brain_stem}
+          /    - elsif @probeset_stat.assay_name == "cerebellum"
+          /      %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_cerebellum}
+          /    - elsif @probeset_stat.assay_name == "heart"
+          /      %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_heart}
+          /    - elsif @probeset_stat.assay_name == "hypothalamus"
+          /      %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_hypothalamus}
+          /    - elsif @probeset_stat.assay_name == "kidney"
+          /      %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_kidney}
+          /    - elsif @probeset_stat.assay_name == "mogene_liver"
+          /      %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_mogene_liver}
+          /    - elsif @probeset_stat.assay_name == "lung"
+          /      %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_lung}
+          /    - elsif @probeset_stat.assay_name == "skeletal_muscle"
+          /      %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_skeletal_muscle}
+          /    - elsif @probeset_stat.assay_name == "white_adipose"
+          /      %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_white_adipose}
+          /    %br== <b>Probeset       </b> #{@probeset.probeset_name}
+          /    %br== <b>Links          </b> #{@probeset.wiki_url}  #{@probeset.homolo_gene_url}
+          /    %br== <b>Symbol         </b> #{@probeset.gene_symbol_url }
+          /    %br== <b>Unigene        </b> #{@probeset.unigene_url}
+          /    %br== <b>RefSeq Protein </b> #{@probeset.refseq_protein_url}
+          /    %br== <b>RefSeq DNA     </b> #{@probeset.refseq_transcript_url}
+          /    %br== <b>Description    </b> #{@probeset.gene_title}
+
 .footer.span-15.last.push-1
   .count
   -if @probeset_stats.total_entries != 0
     Total hits #{@probeset_stats.total_entries}
     = will_paginate @probeset_stats, :class => "apple_pagination", :params => params
+

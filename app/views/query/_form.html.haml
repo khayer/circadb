@@ -16,7 +16,6 @@
     = text_area_tag :query_string, params[:query_string]
 
   .span-10.last
-    %br
     %b Query syntax mode:
     - @match_mode = params[:match_mode]
     = radio_button_tag(:match_mode, "gene_symbol", (@match_mode == "gene_symbol" ? true : false))
@@ -24,9 +23,6 @@
     /= radio_button_tag(:match_mode, "any", (@match_mode == "any" ? true : false ))
     = radio_button_tag(:match_mode, "any", (@match_mode == "any" ? true : false))
     = label_tag(:match_mode_any, "simple")
-
-
-
     = radio_button_tag(:match_mode, "extended", (@match_mode == "extended" ? true : false ))
     = label_tag(:match_mode_advanced, "advanced")
     = link_to(image_tag('questionmark_orange3.png', :alt=> "Advanced query help page"), advanced_query_help_path())
@@ -45,6 +41,17 @@
       = label_tag :phase_range, "JTK phase range"
       = text_field_tag :phase_range, (params[:phase_range] || "0-40"),{:size => 5, :name => "phase_range"}
       %span.help ("0-6" or "10.30-11.10")
+  .span-10.last
+    %b Output mode:
+    - @output_mode = params[:output_mode]
+    = radio_button_tag(:output_mode, "normal", (@output_mode == "normal" ? true : false))
+    = label_tag(:output_mode_any, "normal")
+    /= radio_button_tag(:output_mode, "any", (@output_mode == "any" ? true : false ))
+    = radio_button_tag(:output_mode, "slim", (@output_mode == "slim" ? true : false))
+    = label_tag(:output_mode_any, "slim")
+    /= radio_button_tag(:output_mode, "extended", (@output_mode == "extended" ? true : false ))
+    /= label_tag(:output_mode_advanced, "advanced")
+    /= link_to(image_tag('questionmark_orange3.png', :alt=> "Advanced query help page"), advanced_query_help_path())
 
   .span-10.last
     .label

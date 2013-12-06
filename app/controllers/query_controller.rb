@@ -31,7 +31,9 @@ class QueryController < ApplicationController
     pv_upper = pv[1].to_f
     cnd[:jtk_lag] = (pv_lower)..(pv_upper)
 
-
+    # output mode
+    params[:output_mode] ||= 'normal'
+    @output_mode = params[:output_mode].to_sym
 
     # query match mode
     params[:match_mode] ||= 'gene_symbol'
@@ -47,6 +49,8 @@ class QueryController < ApplicationController
         params[:query_string] = @new_query[0..-3]
       end
     end
+
+
 
     if params[:query_string]
       @probeset_stats = ProbesetStat.search(params[:query_string],
