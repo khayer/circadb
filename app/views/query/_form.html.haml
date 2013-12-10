@@ -42,13 +42,17 @@
       = text_field_tag :phase_range, (params[:phase_range] || "0-40"),{:size => 5, :name => "phase_range"}
       %span.help ("0-6" or "10.30-11.10")
   .span-10.last
-    %b Output mode:
+    %b Output mode
     - @output_mode = params[:output_mode]
     = radio_button_tag(:output_mode, "normal", (@output_mode == "normal" ? true : false))
     = label_tag(:output_mode_any, "normal")
     /= radio_button_tag(:output_mode, "any", (@output_mode == "any" ? true : false ))
     = radio_button_tag(:output_mode, "slim", (@output_mode == "slim" ? true : false))
     = label_tag(:output_mode_any, "slim")
+    %br
+    = label_tag :number_entries, "Number of entries to download "
+    = text_field_tag :number_entries, (params[:number_entries] || "0"),{:size => 5, :name => "number_entries"}
+    %span.help ("50" or "100", max: "1000")
     /= radio_button_tag(:output_mode, "extended", (@output_mode == "extended" ? true : false ))
     /= label_tag(:output_mode_advanced, "advanced")
     /= link_to(image_tag('questionmark_orange3.png', :alt=> "Advanced query help page"), advanced_query_help_path())

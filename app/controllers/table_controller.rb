@@ -1,5 +1,8 @@
 class TableController < ApplicationController
+  helper :all # include all helpers, all the time
+  protect_from_forgery
   @@per_page = 50
+
   def write
     # condition hash
     cnd = {}
@@ -92,8 +95,6 @@ class TableController < ApplicationController
       format.js { render :json => @probeset_stats.to_json }
       format.xml { render :xml => @probeset_stats.to_xml }
     end
-
-
   end
 end
 
