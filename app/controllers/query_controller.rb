@@ -2,7 +2,7 @@ class QueryController < ApplicationController
   @per_page = 10
 
   def download(filename)
-    send_data filename, :filename => 'query.csv', :type => 'text/csv',
+    send_data filename, :filename => 'query.csv', :type => 'text/csv'
   end
 
   def index
