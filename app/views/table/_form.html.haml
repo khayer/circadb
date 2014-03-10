@@ -43,7 +43,7 @@
       %span.help ("0-6" or "10.30-11.10")
       %br{:style => "padding-bottom: 10px;"}
       = label_tag :number_entries, "Number of entries to print "
-      = text_field_tag :number_entries, (params[:number_entries] || "50"),{:size => 5, :name => "number_entries"}
+      = text_field_tag :number_entries, (params[:number_entries] || "0"),{:size => 5, :name => "number_entries"}
       %span.help ("50" or "100", max: "1000")
 
   .span-10.last

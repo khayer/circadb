@@ -1,9 +1,4 @@
 .form.span-15.last.push-1{:style => "border-left: 2px double #E5ECF9; padding: 10px;" }
   = render :partial => "form"
--if @probeset_stats.length > 0
-  .span-16.last.push
-    = label_tag :filter, "Copy and Paste into spreadsheet or text file: &nbsp;"
-    %span.help  (Output is tab delimited.)
-  .qbox2.span-16.last
-    =text_area_tag :query_string, @text
+
 
