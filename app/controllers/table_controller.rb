@@ -75,7 +75,7 @@ class TableController < ApplicationController
       # if you want to log messages, look at the Rails logger functionality
       # puts "@probeset_stats = #{@probeset_stats.length}"
       if params[:number_entries].to_i > 0
-        @k = "Probeset_ID,Symbol,Time,Values,JTKP,JTKQ,JTKperiod,JTKphase\n"
+        @k = "Probeset_ID,Symbol,Time,Values,JTKP,JTKQ,JTKperiod,JTKphase,Tissue\n"
         for i in 0...@probeset_stats.length
           probeset_stat = @probeset_stats[i]
           probeset = @probeset_stats[i].probeset
@@ -91,7 +91,8 @@ class TableController < ApplicationController
           jtkq = probeset_stat.jtk_q_value
           jtkperiod = probeset_stat.jtk_period_length
           jtkphase = probeset_stat.jtk_lag
-          @k += "#{id},#{gene_symbol},#{time_points},#{data_points},#{jtkp},#{jtkq},#{jtkperiod},#{jtkphase}\n"
+          tissue = probeset_stat.assay_name
+          @k += "#{id},#{gene_symbol},#{time_points},#{data_points},#{jtkp},#{jtkq},#{jtkperiod},#{jtkphase},#{tissue}\n"
         end
       end
 
