@@ -7,6 +7,7 @@ class TableController < ApplicationController
   end
 
   def write
+    params[:match_mode] ||= 'gene_symbol'
     if params[:number_entries].to_i > 0
       # condition hash
       cnd = {}
@@ -40,6 +41,7 @@ class TableController < ApplicationController
 
       # query match mode
       params[:match_mode] ||= 'gene_symbol'
+      params[:match_mode] = 'gene_symbol' if params[:match_mode] =~ /\W/
       @match_mode = params[:match_mode].to_sym
 
       if params[:match_mode] == 'gene_symbol' && params[:query_string]

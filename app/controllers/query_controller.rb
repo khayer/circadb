@@ -42,6 +42,7 @@ class QueryController < ApplicationController
 
     # query match mode
     params[:match_mode] ||= 'gene_symbol'
+
     @match_mode = params[:match_mode].to_sym
 
     if params[:match_mode] == 'gene_symbol' && params[:query_string]
