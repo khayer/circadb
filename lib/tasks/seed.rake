@@ -283,6 +283,9 @@ namespace :seed do
         data_points = line[2].split(",").map {|element| element}
         cubase = line[3]
         psid = probesets[line[0]]
+        if (!psid)
+          next
+        end
         buffer << [a.id(), a.slug, psid, line[0], time_points.to_json, data_points.to_json,cubase]
 
         if count % 1000 == 0
@@ -568,6 +571,9 @@ namespace :seed do
         count += 1
         aslug, psname = 0,row[0].to_i
         psid = probesets[row[0]]
+        if (!psid)
+          next
+        end
         buffer << [a.id, a.slug,psid, psid, psname] + row[1..-1].to_a
         if count % 1000 == 0
           ProbesetStat.import(fields,buffer)
@@ -722,6 +728,8 @@ namespace :seed do
       ProbesetStat.import(fields,buffer)
       puts "=== Stat Data mogene #{etype} end (count = #{count}) ==="
     end
+
+
 
     %w{ scn_2014 macrophages}.each do |etype|
       count = 0
