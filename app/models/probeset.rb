@@ -1,8 +1,6 @@
 #require 'open-uri'
 
 class Probeset < ActiveRecord::Base
-  cattr_reader :per_page
-  @@per_page = 50
   belongs_to :gene_chip
   has_many :probeset_stats
   has_many :probeset_datas
@@ -46,6 +44,186 @@ class Probeset < ActiveRecord::Base
     return '<i>None</i>' if (refseq_transcript_id == '---' || refseq_transcript_id.nil? || entrez_gene == '-')
     template = "<a href='ACC'>RNAseq_NUM</a>"
     template2 = "http://genome.ucsc.edu/cgi-bin/hgTracks?hgS_doOtherUser=submit&hgS_otherUserName=Lahens&hgS_otherUserSessionName=Norm%20RUM%20-%20AWS&singleSearch=refGeneAcc&position="
+    links = []
+    refseq_transcript_id.split(/\s+\/\/\/\s+/).each do |a|
+      link = template2+a
+      #source = open(search_page){|f|f.read}
+      frame = template.gsub('NUM',a)
+      links <<  frame.gsub('ACC',link)
+    end
+    links.join(" &nbsp; ")
+  end
+
+  def uscs_rna_url_adrenal_gland
+    # could be multiple
+    return '<i>None</i>' if (refseq_transcript_id == '---' || refseq_transcript_id.nil? || entrez_gene == '-')
+    template = "<a href='ACC'>RNAseq_NUM</a>"
+    template2 = "http://genome.ucsc.edu/cgi-bin/hgTracks?hgS_doOtherUser=submit&hgS_otherUserName=hogenesch_lab&hgS_otherUserSessionName=bhtc_adr_unique&singleSearch=refGeneAcc&position="
+    links = []
+    refseq_transcript_id.split(/\s+\/\/\/\s+/).each do |a|
+      link = template2+a
+      #source = open(search_page){|f|f.read}
+      frame = template.gsub('NUM',a)
+      links <<  frame.gsub('ACC',link)
+    end
+    links.join(" &nbsp; ")
+  end
+
+  def uscs_rna_url_aorta
+    # could be multiple
+    return '<i>None</i>' if (refseq_transcript_id == '---' || refseq_transcript_id.nil? || entrez_gene == '-')
+    template = "<a href='ACC'>RNAseq_NUM</a>"
+    template2 = "http://genome.ucsc.edu/cgi-bin/hgTracks?hgS_doOtherUser=submit&hgS_otherUserName=hogenesch_lab&hgS_otherUserSessionName=bhtc_aor_unique&singleSearch=refGeneAcc&position="
+    links = []
+    refseq_transcript_id.split(/\s+\/\/\/\s+/).each do |a|
+      link = template2+a
+      #source = open(search_page){|f|f.read}
+      frame = template.gsub('NUM',a)
+      links <<  frame.gsub('ACC',link)
+    end
+    links.join(" &nbsp; ")
+  end
+
+  def uscs_rna_url_brown_adipose
+    # could be multiple
+    return '<i>None</i>' if (refseq_transcript_id == '---' || refseq_transcript_id.nil? || entrez_gene == '-')
+    template = "<a href='ACC'>RNAseq_NUM</a>"
+    template2 = "http://genome.ucsc.edu/cgi-bin/hgTracks?hgS_doOtherUser=submit&hgS_otherUserName=hogenesch_lab&hgS_otherUserSessionName=bhtc_bfat_unique&singleSearch=refGeneAcc&position="
+    links = []
+    refseq_transcript_id.split(/\s+\/\/\/\s+/).each do |a|
+      link = template2+a
+      #source = open(search_page){|f|f.read}
+      frame = template.gsub('NUM',a)
+      links <<  frame.gsub('ACC',link)
+    end
+    links.join(" &nbsp; ")
+  end
+
+  def uscs_rna_url_brain_stem
+    # could be multiple
+    return '<i>None</i>' if (refseq_transcript_id == '---' || refseq_transcript_id.nil? || entrez_gene == '-')
+    template = "<a href='ACC'>RNAseq_NUM</a>"
+    template2 = "http://genome.ucsc.edu/cgi-bin/hgTracks?hgS_doOtherUser=submit&hgS_otherUserName=hogenesch_lab&hgS_otherUserSessionName=bhtc_bstm_unique&singleSearch=refGeneAcc&position="
+    links = []
+    refseq_transcript_id.split(/\s+\/\/\/\s+/).each do |a|
+      link = template2+a
+      #source = open(search_page){|f|f.read}
+      frame = template.gsub('NUM',a)
+      links <<  frame.gsub('ACC',link)
+    end
+    links.join(" &nbsp; ")
+  end
+
+  def uscs_rna_url_cerebellum
+    # could be multiple
+    return '<i>None</i>' if (refseq_transcript_id == '---' || refseq_transcript_id.nil? || entrez_gene == '-')
+    template = "<a href='ACC'>RNAseq_NUM</a>"
+    template2 = "http://genome.ucsc.edu/cgi-bin/hgTracks?hgS_doOtherUser=submit&hgS_otherUserName=hogenesch_lab&hgS_otherUserSessionName=bhtc_cer_unique&singleSearch=refGeneAcc&position="
+    links = []
+    refseq_transcript_id.split(/\s+\/\/\/\s+/).each do |a|
+      link = template2+a
+      #source = open(search_page){|f|f.read}
+      frame = template.gsub('NUM',a)
+      links <<  frame.gsub('ACC',link)
+    end
+    links.join(" &nbsp; ")
+  end
+
+  def uscs_rna_url_heart
+    # could be multiple
+    return '<i>None</i>' if (refseq_transcript_id == '---' || refseq_transcript_id.nil? || entrez_gene == '-')
+    template = "<a href='ACC'>RNAseq_NUM</a>"
+    template2 = "http://genome.ucsc.edu/cgi-bin/hgTracks?hgS_doOtherUser=submit&hgS_otherUserName=hogenesch_lab&hgS_otherUserSessionName=bhtc_hrt_unique&singleSearch=refGeneAcc&position="
+    links = []
+    refseq_transcript_id.split(/\s+\/\/\/\s+/).each do |a|
+      link = template2+a
+      #source = open(search_page){|f|f.read}
+      frame = template.gsub('NUM',a)
+      links <<  frame.gsub('ACC',link)
+    end
+    links.join(" &nbsp; ")
+  end
+
+  def uscs_rna_url_hypothalamus
+    # could be multiple
+    return '<i>None</i>' if (refseq_transcript_id == '---' || refseq_transcript_id.nil? || entrez_gene == '-')
+    template = "<a href='ACC'>RNAseq_NUM</a>"
+    template2 = "http://genome.ucsc.edu/cgi-bin/hgTracks?hgS_doOtherUser=submit&hgS_otherUserName=hogenesch_lab&hgS_otherUserSessionName=bhtc_hyp_unique&singleSearch=refGeneAcc&position="
+    links = []
+    refseq_transcript_id.split(/\s+\/\/\/\s+/).each do |a|
+      link = template2+a
+      #source = open(search_page){|f|f.read}
+      frame = template.gsub('NUM',a)
+      links <<  frame.gsub('ACC',link)
+    end
+    links.join(" &nbsp; ")
+  end
+
+  def uscs_rna_url_kidney
+    # could be multiple
+    return '<i>None</i>' if (refseq_transcript_id == '---' || refseq_transcript_id.nil? || entrez_gene == '-')
+    template = "<a href='ACC'>RNAseq_NUM</a>"
+    template2 = "http://genome.ucsc.edu/cgi-bin/hgTracks?hgS_doOtherUser=submit&hgS_otherUserName=hogenesch_lab&hgS_otherUserSessionName=bhtc_kid_unique&singleSearch=refGeneAcc&position="
+    links = []
+    refseq_transcript_id.split(/\s+\/\/\/\s+/).each do |a|
+      link = template2+a
+      #source = open(search_page){|f|f.read}
+      frame = template.gsub('NUM',a)
+      links <<  frame.gsub('ACC',link)
+    end
+    links.join(" &nbsp; ")
+  end
+
+  def uscs_rna_url_mogene_liver
+    # could be multiple
+    return '<i>None</i>' if (refseq_transcript_id == '---' || refseq_transcript_id.nil? || entrez_gene == '-')
+    template = "<a href='ACC'>RNAseq_NUM</a>"
+    template2 = "http://genome.ucsc.edu/cgi-bin/hgTracks?hgS_doOtherUser=submit&hgS_otherUserName=hogenesch_lab&hgS_otherUserSessionName=bhtc_liv_unique&singleSearch=refGeneAcc&position="
+    links = []
+    refseq_transcript_id.split(/\s+\/\/\/\s+/).each do |a|
+      link = template2+a
+      #source = open(search_page){|f|f.read}
+      frame = template.gsub('NUM',a)
+      links <<  frame.gsub('ACC',link)
+    end
+    links.join(" &nbsp; ")
+  end
+
+  def uscs_rna_url_lung
+    # could be multiple
+    return '<i>None</i>' if (refseq_transcript_id == '---' || refseq_transcript_id.nil? || entrez_gene == '-')
+    template = "<a href='ACC'>RNAseq_NUM</a>"
+    template2 = "http://genome.ucsc.edu/cgi-bin/hgTracks?hgS_doOtherUser=submit&hgS_otherUserName=hogenesch_lab&hgS_otherUserSessionName=bhtc_lun_unique&singleSearch=refGeneAcc&position="
+    links = []
+    refseq_transcript_id.split(/\s+\/\/\/\s+/).each do |a|
+      link = template2+a
+      #source = open(search_page){|f|f.read}
+      frame = template.gsub('NUM',a)
+      links <<  frame.gsub('ACC',link)
+    end
+    links.join(" &nbsp; ")
+  end
+
+  def uscs_rna_url_skeletal_muscle
+    # could be multiple
+    return '<i>None</i>' if (refseq_transcript_id == '---' || refseq_transcript_id.nil? || entrez_gene == '-')
+    template = "<a href='ACC'>RNAseq_NUM</a>"
+    template2 = "http://genome.ucsc.edu/cgi-bin/hgTracks?hgS_doOtherUser=submit&hgS_otherUserName=hogenesch_lab&hgS_otherUserSessionName=bhtc_mus_unique&singleSearch=refGeneAcc&position="
+    links = []
+    refseq_transcript_id.split(/\s+\/\/\/\s+/).each do |a|
+      link = template2+a
+      #source = open(search_page){|f|f.read}
+      frame = template.gsub('NUM',a)
+      links <<  frame.gsub('ACC',link)
+    end
+    links.join(" &nbsp; ")
+  end
+
+  def uscs_rna_url_white_adipose
+    # could be multiple
+    return '<i>None</i>' if (refseq_transcript_id == '---' || refseq_transcript_id.nil? || entrez_gene == '-')
+    template = "<a href='ACC'>RNAseq_NUM</a>"
+    template2 = "http://genome.ucsc.edu/cgi-bin/hgTracks?hgS_doOtherUser=submit&hgS_otherUserName=hogenesch_lab&hgS_otherUserSessionName=bhtc_wfat_unique&singleSearch=refGeneAcc&position="
     links = []
     refseq_transcript_id.split(/\s+\/\/\/\s+/).each do |a|
       link = template2+a

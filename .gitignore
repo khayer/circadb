@@ -1,6 +1,7 @@
 *.sql
 .DS_Store
 .Thumbs
+.ruby-version
 log/*
 tmp/*
 *~
@@ -22,3 +23,4 @@ source_data/*
 config.ru
 \#*
 tmtags*
+nohup*

@@ -24,6 +24,12 @@
         alert("Probabily cut-off value must between 0 and 1");
         return false;
         }
+      var x=document.forms["myForm"]["number_entries"].value;
+      if (x==null || x=="" || x<0  || isNaN(Number(x)) || x>1000)
+        {
+        alert("Number of entries must be a natural number and below 1,000");
+        return false;
+        }
       var x=document.forms["myForm"]["phase_range"].value;
       var minuspos=x.indexOf("-");
       var n=x.split("-");
@@ -43,12 +49,13 @@
       %h1= link_to( image_tag('CircaDB.png', :alt=> "CIRCA",:name=>"top"), root_path())
       %ul#nav.last
         %span
-        %li=link_to("Home", root_path)
-        %li=link_to("Help", help_path)
-        %li=link_to("About", about_path)
+        %li=link_to("Home", root_path, :class => is_active?("index"))
+        / %li=link_to("Tables", table_path, :class => is_active?("write"))
+        %li=link_to("Help", help_path, :class => is_active?("help"))
+        %li=link_to("About", about_path, :class => is_active?("about"))
     .news.span-18.last
-      %b NEWS (5/16/2013):
-      Mouse Distal Colon data sets added to CircaDB.
+      %b NEWS (6/9/2014):
+      We added two new datasets: "Mouse Macrophages" and "Mouse Heart LD"
     .content.span-18.last
       = yield
     .footer.span-18.last

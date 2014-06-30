@@ -1,19 +1,20 @@
 .params.span-14.last
-- form_tag query_path(),  {:action => "demo_form.asp", :method => "post", :name => "myForm", :onsubmit => "return validateForm()"} do
+-form_tag table_path(),  {:action => "demo_form.asp", :method => "post", :name => "myForm", :onsubmit => "return validateForm()" } do
   .span-15.last
-    = label_tag :example, "Enter a search"
-    %br
+    = label_tag :example, "Enter a search "
     %span.help
+      <br>
       (Examples
-      = link_to("1451371_at 1422470_at gnf1m00037_a_at", query_path(:params => {:query_string => "1451371_at\n1422470_at\ngnf1m00037_a_at", :match_mode => "any"} ))
+      = link_to("1451371_at 1422470_at gnf1m00037_a_at", table_path(:params => {:query_string => "1451371_at\n1422470_at\ngnf1m00037_a_at", :match_mode => "any"} ))
       or
-      = link_to("Arntl", query_path(:params => {:query_string => "Arntl"} ))
+      = link_to("Arntl", table_path(:params => {:query_string => "Arntl"} ))
       or
-      = link_to("kinase inhibitor", query_path(:params => {:query_string =>  "kinase inhibitor", :match_mode => "any"} ))
+      = link_to("kinase inhibitor", table_path(:params => {:query_string =>  "kinase inhibitor", :match_mode => "any"} ))
       )
-  .qbox.span-5.last{:style => "padding-bottom: 1px;"}
+  .qbox.span-5.last
     /= text_area_tag :query_string, params[:query_string]
     = text_area_tag :query_string, params[:query_string]
+
 
   .span-10.last
     %b Query syntax mode:
@@ -30,7 +31,7 @@
     /= params[:query_string]
 
   .span-10.last
-    .span-10{:style => "padding-bottom: 10px;"}
+    .span-10
       = label_tag :filter, "Choose probability filter"
       = select_tag(:filter, options_for_select(ProbesetStat.pval_filters, params[:filter]))
       %br{:style => "padding-bottom: 10px;"}
@@ -41,21 +42,10 @@
       = label_tag :phase_range, "JTK phase range"
       = text_field_tag :phase_range, (params[:phase_range] || "0-40"),{:size => 5, :name => "phase_range"}
       %span.help ("0-6" or "10.30-11.10")
-  .span-10.last
-    %b Output mode
-    - @output_mode = params[:output_mode]
-    = radio_button_tag(:output_mode, "normal", (@output_mode == "normal" ? true : false))
-    = label_tag(:output_mode_any, "normal")
-    /= radio_button_tag(:output_mode, "any", (@output_mode == "any" ? true : false ))
-    = radio_button_tag(:output_mode, "slim", (@output_mode == "slim" ? true : false))
-    = label_tag(:output_mode_any, "slim")
-    %br
-    = label_tag :number_entries, "Number of entries to download "
-    = text_field_tag :number_entries, (params[:number_entries] || "0"),{:size => 5, :name => "number_entries"}
-    %span.help ("50" or "100", max: "1000")
-    /= radio_button_tag(:output_mode, "extended", (@output_mode == "extended" ? true : false ))
-    /= label_tag(:output_mode_advanced, "advanced")
-    /= link_to(image_tag('questionmark_orange3.png', :alt=> "Advanced query help page"), advanced_query_help_path())
+      %br{:style => "padding-bottom: 10px;"}
+      = label_tag :number_entries, "Number of entries to print "
+      = text_field_tag :number_entries, (params[:number_entries] || "0"),{:size => 5, :name => "number_entries"}
+      %span.help ("50" or "100", max: "1000")
 
   .span-10.last
     .label
@@ -64,4 +54,4 @@
       %br
       %span.help (If nothing is selected, CIRCA will search all experiments.)
       = select_tag(:assays, options_for_select(Assay.all.collect {|e| [e.name ,  e.id.to_s] }, params[:assays]), {:multiple => true,  :style => "height: 200px;"})
-    .span-15.hov= submit_tag "Search"
+    .span-15.hov= submit_tag "Write"

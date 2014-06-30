@@ -1,7 +1,13 @@
 
 .qbox textarea {
-  height: 36px;
-  width: 550px;
+  height: 400px;
+  width: 150px;
+  border: 2px groove #333333;
+}
+
+.qbox2 textarea {
+  height: 400px;
+  width: 690px;
   border: 2px groove #333333;
 }
 
@@ -25,6 +31,11 @@
 .footer {
   margin-bottom: 30px;
   text-align: center ;
+  background:#F1F1F1;
+}
+
+.table1 {
+  margin-bottom: 30px;
   background:#F1F1F1;
 }
 
@@ -52,6 +63,9 @@
   display:inline;
   text-decoration:none;
 }
+
+
+
 #nav a{
   text-decoration:none;
   display:inline-block;
@@ -65,10 +79,11 @@
 
 }
 
-
 #nav a:focus, #nav a:hover {color:#111;}
 
-
+#nav a.active_link{
+  color:#F93;
+}
 
 #link{
 
@@ -93,3 +108,6 @@ code {
   color:#F93;
   font-weight: bold;
 }
+
+
+
