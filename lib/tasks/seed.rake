@@ -218,7 +218,7 @@ namespace :seed do
          ["aorta_2004","Mouse Aorta Rudic 2004 (Affymetrix)", u74av1_id],
          ["kidney_2004","Mouse Kidney Rudic 2004 (Affymetrix)", u74av1_id],
          ["distal_colon","Mouse Distal Colon 2008 (Affymetrix)",  affy_id],
-         ["scn_2014","Mouse 1.OST SCN 2014 (Affymetrix)", mogene_id],
+         #["scn_2014","Mouse 1.OST SCN 2014 (Affymetrix)", mogene_id],
          ["macrophages","Mouse Macrophages DD 2010 (Affymetrix)", mogene_id],
          ["heart_LD","Mouse Heart LD (Affymetrix)",affy_id]]
 
@@ -455,7 +455,8 @@ namespace :seed do
       puts "=== Raw Data MoGene #{etype} end (count= #{count}) ==="
     end
 
-    %w{ scn_2014 macrophages }.each do |etype|
+    #%w{ scn_2014 macrophages }.each do |etype|
+    %w{ macrophages }.each do |etype|
       count = 0
       buffer = []
       a = Assay.find(:first, :conditions => ["slug = ?", etype])
@@ -731,7 +732,8 @@ namespace :seed do
 
 
 
-    %w{ scn_2014 macrophages}.each do |etype|
+    #%w{ scn_2014 macrophages}.each do |etype|
+    %w{ macrophages}.each do |etype|
       count = 0
       buffer = []
       a = Assay.find(:first, :conditions => ["slug = ?", etype])
