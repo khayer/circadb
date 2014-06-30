@@ -50,12 +50,12 @@
       %ul#nav.last
         %span
         %li=link_to("Home", root_path, :class => is_active?("index"))
-        %li=link_to("Tables", table_path, :class => is_active?("write"))
+        / %li=link_to("Tables", table_path, :class => is_active?("write"))
         %li=link_to("Help", help_path, :class => is_active?("help"))
         %li=link_to("About", about_path, :class => is_active?("about"))
     .news.span-18.last
       %b NEWS (6/9/2014):
-      We added three new datasets: "Mouse Macrophages", "Mouse 1.OST SCN" and "Mouse Heart LD"
+      We added two new datasets: "Mouse Macrophages" and "Mouse Heart LD"
     .content.span-18.last
       = yield
     .footer.span-18.last
