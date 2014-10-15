@@ -4,8 +4,8 @@ class ProbesetStat < ActiveRecord::Base
   cattr_reader :pval_filters
   @@pval_filters = []
   ["jtk", "JTK", "cosopt", "Lomb Scargle", "fisherg", "DeLichtenberg" ].each_slice(2) do |id,txt|
-    @@pval_filters += [["#{txt} P-value","#{id}_p_value"],
-                       ["#{txt} Q-value","#{id}_q_value"] ]
+    @@pval_filters += [ ["#{txt} Q-value","#{id}_q_value"],
+                        ["#{txt} P-value","#{id}_p_value"]]
   end
 
   belongs_to :assay
@@ -21,6 +21,7 @@ class ProbesetStat < ActiveRecord::Base
       gene_symbol
       gene_title
       entrez_gene
+      ensembl
       swissprot
       refseq_protein_id
       refseq_transcript_id

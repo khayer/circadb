@@ -205,6 +205,8 @@ namespace :seed do
          ["lung","Mouse 1.OST Lung (Affymetrix)", mogene_id],
          ["skeletal_muscle","Mouse 1.OST Skeletal Muscle (Affymetrix)", mogene_id],
          ["white_adipose","Mouse 1.OST White Adipose (Affymetrix)", mogene_id],
+         ["scn_2014","Mouse 1.OST SCN 2014 (Affymetrix)", mogene_id],
+         ["spleen","Mouse 1.OST Spleen 2014 (Affymetrix)", mogene_id],
          ["liver","Mouse Liver 48 hour Hughes 2009 (Affymetrix)", affy_id],
          ["pituitary","Mouse Pituitary 48 hour Hughes 2009 (Affymetrix)",affy_id],
          ["NIH3T3","Mouse NIH 3T3 Immortilized Cell Line 48 hour Hughes 2009 (Affymetrix)",affy_id],
@@ -430,7 +432,7 @@ namespace :seed do
       probesets[p.probeset_name]= p.id
     end
 
-    %w{ adrenal_gland aorta brown_adipose brain_stem cerebellum heart hypothalamus kidney mogene_liver lung skeletal_muscle white_adipose }.each do |etype|
+    %w{ adrenal_gland aorta brown_adipose brain_stem cerebellum heart hypothalamus kidney mogene_liver lung skeletal_muscle white_adipose scn_2014 spleen }.each do |etype|
       count = 0
       buffer = []
       a = Assay.find(:first, :conditions => ["slug = ?", etype])
@@ -709,7 +711,7 @@ namespace :seed do
       probesets[p.probeset_name]= p.id
     end
 
-    %w{ adrenal_gland aorta brown_adipose brain_stem cerebellum heart hypothalamus kidney mogene_liver lung skeletal_muscle white_adipose }.each do |etype|
+    %w{ adrenal_gland aorta brown_adipose brain_stem cerebellum heart hypothalamus kidney mogene_liver lung skeletal_muscle white_adipose scn_2014 spleen }.each do |etype|
       count = 0
       buffer = []
       a = Assay.find(:first, :conditions => ["slug = ?", etype])

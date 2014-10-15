@@ -14,11 +14,11 @@ class QueryController < ApplicationController
 
 
     # q_value filter
-    params[:filter] ||= "jtk_p_value"
+    params[:filter] ||= "jtk_q_value"
     if ProbesetStat.pval_filters.flatten.include?(params[:filter])
       order = "#{params[:filter]} ASC"
     else
-      order = "jtk_p_value ASC"
+      order = "jtk_q_value ASC"
     end
     fv = params[:filter_value].to_f > 0.0 ? params[:filter_value].to_f : 0.05
     cnd[params[:filter].to_sym] = (0.0)..(fv)

@@ -41,7 +41,7 @@ class Probeset < ActiveRecord::Base
 
   def uscs_rna_url
     # could be multiple
-    return '<i>None</i>' if (refseq_transcript_id == '---' || refseq_transcript_id.nil? || entrez_gene == '-')
+    return '<i>None</i>' if (refseq_transcript_id == '---' || refseq_transcript_id.nil? || entrez_gene == '-' || ensembl == '-')
     template = "<a href='ACC'>RNAseq_NUM</a>"
     template2 = "http://genome.ucsc.edu/cgi-bin/hgTracks?hgS_doOtherUser=submit&hgS_otherUserName=Lahens&hgS_otherUserSessionName=Norm%20RUM%20-%20AWS&singleSearch=refGeneAcc&position="
     links = []
