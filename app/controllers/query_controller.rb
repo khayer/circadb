@@ -1,5 +1,5 @@
 class QueryController < ApplicationController
-  @per_page = 10
+  @per_page = 50
   @k ||= nil
 
   def download
@@ -69,6 +69,10 @@ class QueryController < ApplicationController
     end
 
     if params[:number_entries].to_i > 0
+      probeset_stats = ProbesetStat.search(
+        :per_page => params[:number_entries].to_i, :with => cnd,
+        :order => order,
+        :include => [:probeset_data, :probeset, :probeset_stats])
       #filename = "#{RAILS_ROOT}/test.nina.txt"
       #logger.debug "Person attributes hash: #{@person.attributes.inspect}"
      #logger.info "Filename: #{filename}"
@@ -88,9 +92,9 @@ class QueryController < ApplicationController
       #end
       @k = "Probeset_ID,Symbol,Time,Values,JTKP,JTKQ,JTKperiod,JTKphase\n"
       for i in 0...params[:number_entries].to_i
-        probeset_stat = @probeset_stats[i]
+        probeset_stat = probeset_stats[i]
         break unless probeset_stat
-        probeset = @probeset_stats[i].probeset
+        probeset = probeset_stats[i].probeset
         next unless probeset
         gene_symbol = probeset.gene_symbol
         id = probeset.probeset_name
