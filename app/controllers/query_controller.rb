@@ -69,10 +69,18 @@ class QueryController < ApplicationController
     end
 
     if params[:number_entries].to_i > 0
-      probeset_stats = ProbesetStat.search(
-        :per_page => params[:number_entries].to_i, :with => cnd,
-        :order => order,
+      if params[:query_string]
+        probeset_stats = ProbesetStat.search(params[:query_string],
+        :page => current_page, :per_page => params[:number_entries].to_i,
+        :with => cnd,
+        :order => order, :match_mode => @match_mode,
         :include => [:probeset_data, :probeset, :probeset_stats])
+      else
+        probeset_stats = ProbesetStat.search(:page => current_page,
+          :per_page => params[:number_entries].to_i, :with => cnd,
+          :order => order,
+          :include => [:probeset_data, :probeset, :probeset_stats])
+      end
       #filename = "#{RAILS_ROOT}/test.nina.txt"
       #logger.debug "Person attributes hash: #{@person.attributes.inspect}"
      #logger.info "Filename: #{filename}"
