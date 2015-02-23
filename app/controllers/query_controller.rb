@@ -98,7 +98,7 @@ class QueryController < ApplicationController
       #    :order => order,
       #    :include => [:probeset_data, :probeset, :probeset_stats])
       #end
-      @k = "Probeset_ID,Symbol,Time,Values,JTKP,JTKQ,JTKperiod,JTKphase\n"
+      @k = "Probeset_ID,Symbol,Time,Values,JTKP,JTKQ,JTKperiod,JTKphase,Tissue\n"
       for i in 0...params[:number_entries].to_i
         probeset_stat = probeset_stats[i]
         break unless probeset_stat
@@ -115,7 +115,8 @@ class QueryController < ApplicationController
         jtkq = probeset_stat.jtk_q_value
         jtkperiod = probeset_stat.jtk_period_length
         jtkphase = probeset_stat.jtk_lag
-        @k += "#{id},#{gene_symbol},#{time_points},#{data_points},#{jtkp},#{jtkq},#{jtkperiod},#{jtkphase}\n"
+        tissue = probeset_stat.assay_name
+        @k += "#{id},#{gene_symbol},#{time_points},#{data_points},#{jtkp},#{jtkq},#{jtkperiod},#{jtkphase},#{tissue}\n"
       end
 
 
