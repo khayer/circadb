@@ -50,7 +50,7 @@ end
 
 desc "Seed database using raw data"
 namespace :seed do
-  require "ar-extensions"
+  #require "ar-extensions"
   require "csv"
 
   task :genechips => :environment do

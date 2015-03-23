@@ -25,7 +25,7 @@
     = label_tag(:match_mode_any, "simple")
     = radio_button_tag(:match_mode, "extended", (@match_mode == "extended" ? true : false ))
     = label_tag(:match_mode_advanced, "advanced")
-    = link_to(image_tag('questionmark_orange3.png', :alt=> "Advanced query help page"), advanced_query_help_path())
+    = link_to(image_tag('questionmark_orange3.png', :alt=> "Query help page"), help_path())
     / For develop purposes
     /= params[:query_string]
 

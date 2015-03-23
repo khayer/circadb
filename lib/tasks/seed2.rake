@@ -50,8 +50,8 @@ end
 
 desc "Seed database using raw data"
 namespace :seed2 do
-  require "ar-extensions"
-  require "fastercsv"
+  #require "ar-extensions"
+  #require "fastercsv"
 
   task :genechips => :environment do
     c = ActiveRecord::Base.connection
