@@ -18,13 +18,14 @@ class Probeset < ActiveRecord::Base
   def gene_symbol_url
     return '<i>None</i>' if (entrez_gene == '---' || entrez_gene.nil? || entrez_gene == '-')
     # grabs the entrez_gene for the ID and gene-symbol for the link text
-    template = "<a href='http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&cmd=Retrieve&list_uids=%d&dopt=full_report'>%s</a>"
+    template = "a{:href =>\"http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&cmd=Retrieve&list_uids=%d&dopt=full_report\"}%s"
     links = []
     e = entrez_gene.split(/\s+\/\/\/\s+/)
     g = gene_symbol.split(/\s+\/\/\/\s+/)
     e.each_index do |i|
       links <<  sprintf(template,e[i],g[i])
     end
+    links = links.map { |e| e.sub(/^a/,"%a") }
     links.join(" &nbsp; ")
   end
 

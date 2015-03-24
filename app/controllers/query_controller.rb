@@ -127,7 +127,7 @@ class QueryController < ApplicationController
 
     if params[:query_string] && params[:match_mode] == 'gene_symbol'
       fields = params[:query_string].split("@gene_symbol")
-      params[:query_string] = fields.join("\n").delete(" | ")
+      params[:query_string] = fields[1..-1].join("\n").delete(" | ")
     end
 
     #download(k) if k

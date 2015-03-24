@@ -1,5 +1,5 @@
 class ProbesetData < ActiveRecord::Base
-
+  self.table_name = "probeset_datas"
   belongs_to :assay
   belongs_to :probeset
   has_one :probeset_stat

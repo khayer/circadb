@@ -1,0 +1,21 @@
+# config/sphinx.yml
+development:
+  #max_matches: 10000
+  mysql41: 9312
+  bin_path: /usr/local/bin
+  indices_location: "app/indices"
+  #enable_star: 1
+  #min_infix_len: 3
+  searchd_file_path: "db/sphinx"
+  #ignore_chars: "., -, U+002E"
+test:
+  port: 9312
+  searchd_file_path: "db/sphinx"
+  ignore_chars: "., U+002E"
+production:
+  max_matches: 10000
+  port: 9312
+  enable_star: 1
+  min_infix_len: 3
+  searchd_file_path: "db/sphinx"
+  ignore_chars: "., -, U+002E"

@@ -1,5 +1,5 @@
 .form.span-15.last.push-1{:style => "border-left: 2px double #E5ECF9; padding: 10px;" }
-  = render :partial => "form"
+  = render 'form'
 .footer.span-15.last.push-1
   .count
     -if @probeset_stats.total_entries != 0
@@ -52,14 +52,17 @@
                     %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_white_adipose}
                   %br== <b>Probeset       </b> #{@probeset.probeset_name}
                   %br== <b>Links          </b> #{@probeset.wiki_url}  #{@probeset.homolo_gene_url}
-                  %br== <b>Symbol         </b> #{@probeset.gene_symbol_url }
+                  %br
+                    %b Symbol
+                    /%a{:href =>"http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&cmd=Retrieve&list_uids=55990&dopt=full_report"} Fmo2
+                    %render==#{@probeset.gene_symbol_url}
                   %br== <b>Unigene        </b> #{@probeset.unigene_url}
                   %br== <b>RefSeq Protein </b> #{@probeset.refseq_protein_url}
                   %br== <b>RefSeq DNA     </b> #{@probeset.refseq_transcript_url}
                   %br== <b>Description    </b> #{@probeset.gene_title}
               %tr
                 %td{:style => "text-align:center" }
-                  =link_to(image_tag('questionmark_orange3.png', :alt=> "Experiment help page"),  results_path())
+                  =link_to(image_tag('questionmark_orange3.png', :alt=> "Experiment help page"),  results_path(:anchor => "results"))
                 %th p-Value
                 %th q-Value
                 %th period
@@ -114,7 +117,7 @@
             %td
               ==#{@probeset.probeset_name}
             %td
-              ==#{@probeset.gene_symbol_url }
+              ==#{@probeset.gene_symbol_url}
             %td
               ==#{@probeset.refseq_transcript_url}
             %td{:colspan=>2}

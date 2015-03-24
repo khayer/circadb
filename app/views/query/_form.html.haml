@@ -1,67 +1,69 @@
-.params.span-14.last
-- form_tag query_path(),  {:action => "demo_form.asp", :method => "post", :name => "myForm", :onsubmit => "return validateForm()"} do
-  .span-15.last
-    = label_tag :example, "Enter a search"
-    %br
-    %span.help
-      (Examples
-      = link_to("1451371_at 1422470_at gnf1m00037_a_at", query_path(:params => {:query_string => "1451371_at\n1422470_at\ngnf1m00037_a_at", :match_mode => "any"} ))
-      or
-      = link_to("Arntl", query_path(:params => {:query_string => "Arntl"} ))
-      or
-      = link_to("kinase inhibitor", query_path(:params => {:query_string =>  "kinase inhibitor", :match_mode => "any"} ))
-      )
-  .qbox.span-5.last{:style => "padding-bottom: 1px;"}
-    /= text_area_tag :query_string, params[:query_string]
-    = text_area_tag :query_string, params[:query_string]
-
-  .span-10.last
-    %b Query syntax mode:
-    - @match_mode = params[:match_mode]
-    = radio_button_tag(:match_mode, "gene_symbol", (@match_mode == "gene_symbol" ? true : false))
-    = label_tag(:match_mode_any, "by gene symbol")
-    /= radio_button_tag(:match_mode, "any", (@match_mode == "any" ? true : false ))
-    = radio_button_tag(:match_mode, "any", (@match_mode == "any" ? true : false))
-    = label_tag(:match_mode_any, "simple")
-    = radio_button_tag(:match_mode, "extended", (@match_mode == "extended" ? true : false ))
-    = label_tag(:match_mode_advanced, "advanced")
-    = link_to(image_tag('questionmark_orange3.png', :alt=> "Query help page"), help_path())
-    / For develop purposes
-    /= params[:query_string]
-
-  .span-10.last
-    .span-10{:style => "padding-bottom: 10px;"}
-      = label_tag :filter, "Choose probability filter"
-      = select_tag(:filter, options_for_select(ProbesetStat.pval_filters, params[:filter]))
-      %br{:style => "padding-bottom: 10px;"}
-      = label_tag :filter_value, "Probabily cut-off value"
-      = text_field_tag :filter_value, (params[:filter_value] || "0.05"),{:size => 5, :name => "filter_value"}
-      %span.help ("0.5" or "2e-10")
-      %br{:style => "padding-bottom: 10px;"}
-      = label_tag :phase_range, "JTK phase range"
-      = text_field_tag :phase_range, (params[:phase_range] || "0-40"),{:size => 5, :name => "phase_range"}
-      %span.help ("0-6" or "10.30-11.10")
-  .span-10.last
-    %b Output mode
-    - @output_mode = params[:output_mode]
-    = radio_button_tag(:output_mode, "normal", (@output_mode == "normal" ? true : false))
-    = label_tag(:output_mode_any, "normal")
-    /= radio_button_tag(:output_mode, "any", (@output_mode == "any" ? true : false ))
-    = radio_button_tag(:output_mode, "slim", (@output_mode == "slim" ? true : false))
-    = label_tag(:output_mode_any, "slim")
-    %br
-    = label_tag :number_entries, "Number of entries to download "
-    = text_field_tag :number_entries, (params[:number_entries] || "0"),{:size => 5, :name => "number_entries"}
-    %span.help ("50" or "100", max: "1000")
-    /= radio_button_tag(:output_mode, "extended", (@output_mode == "extended" ? true : false ))
-    /= label_tag(:output_mode_advanced, "advanced")
-    /= link_to(image_tag('questionmark_orange3.png', :alt=> "Advanced query help page"), advanced_query_help_path())
-
-  .span-10.last
-    .label
-      = label_tag :assays, "Select one or more experiments to view"
-      = link_to(image_tag('questionmark_orange3.png', :alt=> "Experiment help page"), select_more_than_one_path())
+= form_for(:query) do |f|
+  .params.span-14.last
+    .span-15.last
+      = f.label :example, "Enter a search"
       %br
-      %span.help (If nothing is selected, CIRCA will search all experiments.)
-      = select_tag(:assays, options_for_select(Assay.all.collect {|e| [e.name ,  e.id.to_s] }, params[:assays]), {:multiple => true,  :style => "height: 200px;"})
-    .span-15.hov= submit_tag "Search"
+      %span.help
+        (Examples
+        = link_to("1451371_at 1422470_at gnf1m00037_a_at", query_path(:params => {:query_string => "1451371_at\n  1422470_at\ngnf1m00037_a_at", :match_mode => "any"} ))
+        or
+        = link_to("Arntl", query_path(:params => {:query_string => "Arntl"} ))
+        or
+        = link_to("kinase inhibitor", query_path(:params => {:query_string =>  "kinase inhibitor", :match_mode => " any"} ))
+        )
+      .qbox.span-5.last{:style => "padding-bottom: 1px;"}
+        = text_area_tag :query_string, params[:query_string]
+        /= f.text_area :query_string, :value => params[:query_string]
+
+      .span-10.last
+        %b Query syntax mode:
+        - @match_mode = params[:match_mode]
+        = radio_button_tag(:match_mode, "gene_symbol" ,(@match_mode == "gene_symbol" ? true : false))
+        = f.label :match_mode_any, "by gene symbol"
+        /= radio_button_tag(:match_mode, "any", (@match_mode == "any" ? true : false ))
+        = radio_button_tag(:match_mode, "any", (@match_mode == "any" ? true : false))
+        = f.label :match_mode_any, "simple"
+        = radio_button_tag(:match_mode, "extended", (@match_mode == "extended" ? true : false ))
+        = f.label(:match_mode_advanced, "advanced")
+        = link_to(image_tag('questionmark_orange3.png', :alt=> "Query help page"), help_path())
+        / For develop purposes
+        /= params[:query_string]
+
+
+      .span-10.last
+        .span-10{:style => "padding-bottom: 10px;"}
+          = f.label :filter, "Choose probability filter"
+          = f.select :filter, options_for_select(ProbesetStat.pval_filters, params[:filter])
+          %br{:style => "padding-bottom: 10px;"}
+          = f.label :filter_value, "Probabily cut-off value"
+          = f.text_field :filter_value, :value => (params[:filter_value] || "0.05") ,:size => 5, :name => "filter_value"
+          %span.help ("0.5" or "2e-10")
+          %br{:style => "padding-bottom: 10px;"}
+          = f.label :phase_range, "JTK phase range"
+          = f.text_field :phase_range, :value => (params[:phase_range] || "0-40"), :size => 5, :name => "phase_range"
+          %span.help ("0-6" or "10.30-11.10")
+
+      .span-10.last
+        %b Output mode
+        - @output_mode = params[:output_mode]
+        = radio_button_tag(:output_mode, "normal",(@output_mode == "normal" ? true : false))
+        = f.label :output_mode_any, "normal"
+        /= radio_button_tag(:output_mode, "any", (@output_mode == "any" ? true : false ))
+        = radio_button_tag(:output_mode, "slim",(@output_mode == "slim" ? true : false))
+        = f.label :output_mode_any, "slim"
+        %br
+        = f.label :number_entries, "Number of entries to download "
+        = f.text_field :number_entries, :value => (params[:number_entries] || "0"),:size => 5, :name => "number_entries"
+        %span.help ("50" or "100", max: "1000")
+        /= radio_button_tag(:output_mode, "extended", (@output_mode == "extended" ? true : false ))
+        /= label_tag(:output_mode_advanced, "advanced")
+        /= link_to(image_tag('questionmark_orange3.png', :alt=> "Advanced query help page"), advanced_query_help_path(    ))
+
+      .span-10.last
+        .label
+          = f.label :assays, "Select one or more experiments to view"
+          = link_to(image_tag('questionmark_orange3.png', :alt=> "Experiment help page"), select_more_than_one_path(:anchor => 'faq'))
+          %br
+          %span.help (If nothing is selected, CIRCA will search all experiments.)
+          = select_tag(:assays, options_for_select(Assay.all.collect {|e| [e.name ,  e.id.to_s] }, params[:assays]), {    :multiple => true,  :style => "height: 200px;"})
+        .span-15.hov=f.submit "Search"

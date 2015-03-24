@@ -1,13 +1,15 @@
 
 Rails.application.routes.draw do
 #ActionController::Routing::Routes.draw do |map|
-  root 'query#index'
+  root 'query#index#form',:format => 'html', :action => "index", :controller => "query"
   #map.root :controller => "query", :controller => "query", :action => "index", :format => 'html'
-  get '/query' => 'query#format'
+  get '/query' => 'query#index#form', :format => 'html'
+  post '/query' => 'query#index#form', :format => 'html', :action => "index", :controller => "query"
   get '/about' => 'query#about', :format => 'html'
   get '/help' => 'query#help', :format => 'html'
   #get '/help' => 'query#help', :format => 'html'
-  get '/select_more_than_one' => 'query#help', :format => 'html', :anchor => 'faq'
+  get '/select_more_than_one' => 'query#help', :format => 'html'#, :anchor => 'faq'
+  match '/results', to: 'query#help', :format => 'html', via: :get
   #map.query '/query.:format', :controller => "query", :action => "index"
   ##map.table '/table.:format', :controller => "table", :action => "write" , :format => 'html'
   #map.help '/help', :controller => "query", :action => "help", :format => 'html'
