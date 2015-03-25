@@ -55,7 +55,12 @@
                   %br
                     %b Symbol
                     /%a{:href =>"http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&cmd=Retrieve&list_uids=55990&dopt=full_report"} Fmo2
-                    %render==#{@probeset.gene_symbol_url}
+                    /==#{@probeset.gene_symbol_url}
+                    - if (@probeset.entrez_gene == '---' || @probeset.entrez_gene.nil? || @probeset.entrez_gene == '-')
+                      %i none
+                    - else
+                      =link_to "#{@probeset.gene_symbol.split(/\s+\/\/\/\s+/)[0]}", "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&cmd=Retrieve&list_uids=#{@probeset.entrez_gene.split(/\s+\/\/\/\s+/)[0]}&dopt=full_report"
+                    /#{@probeset.entrez_gene.split(/\s+\/\/\/\s+/)[0]
                   %br== <b>Unigene        </b> #{@probeset.unigene_url}
                   %br== <b>RefSeq Protein </b> #{@probeset.refseq_protein_url}
                   %br== <b>RefSeq DNA     </b> #{@probeset.refseq_transcript_url}

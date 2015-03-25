@@ -18,15 +18,17 @@ class Probeset < ActiveRecord::Base
   def gene_symbol_url
     return '<i>None</i>' if (entrez_gene == '---' || entrez_gene.nil? || entrez_gene == '-')
     # grabs the entrez_gene for the ID and gene-symbol for the link text
-    template = "a{:href =>\"http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&cmd=Retrieve&list_uids=%d&dopt=full_report\"}%s"
+    #template = 'a{:href =>\"http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&cmd=Retrieve&list_uids=%d&dopt=full_report\"}%s'
+    template = 'a{:href =>"http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&cmd=Retrieve&list_uids=%d&dopt=full_report"}%s'
+
     links = []
     e = entrez_gene.split(/\s+\/\/\/\s+/)
     g = gene_symbol.split(/\s+\/\/\/\s+/)
     e.each_index do |i|
       links <<  sprintf(template,e[i],g[i])
     end
-    links = links.map { |e| e.sub(/^a/,"%a") }
-    links.join(" &nbsp; ")
+    links = links.map { |e| e.sub(/^a/,'%a') }
+    links.join(' &nbsp; ')
   end
 
   def refseq_transcript_url
@@ -59,7 +61,7 @@ class Probeset < ActiveRecord::Base
     # could be multiple
     return '<i>None</i>' if (refseq_transcript_id == '---' || refseq_transcript_id.nil? || entrez_gene == '-')
     template = "<a href='ACC'>RNAseq_NUM</a>"
-    template2 = "http://genome.ucsc.edu/cgi-bin/hgTracks?hgS_doOtherUser=submit&hgS_otherUserName=hogenesch_lab&hgS_otherUserSessionName=bhtc_adr_unique&singleSearch=refGeneAcc&position="
+    template2 = 'http://genome.ucsc.edu/cgi-bin/hgTracks?hgS_doOtherUser=submit&hgS_otherUserName=hogenesch_lab&hgS_otherUserSessionName=bhtc_adr_unique&singleSearch=refGeneAcc&position='
     links = []
     refseq_transcript_id.split(/\s+\/\/\/\s+/).each do |a|
       link = template2+a
@@ -67,7 +69,7 @@ class Probeset < ActiveRecord::Base
       frame = template.gsub('NUM',a)
       links <<  frame.gsub('ACC',link)
     end
-    links.join(" &nbsp; ")
+    links.join(' &nbsp; ')
   end
 
   def uscs_rna_url_aorta

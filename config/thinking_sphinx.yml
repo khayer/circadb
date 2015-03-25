@@ -3,7 +3,7 @@ development:
   #max_matches: 10000
   mysql41: 9312
   bin_path: /usr/local/bin
-  indices_location: "app/indices"
+  #indices_location: "app/indices"
   #enable_star: 1
   #min_infix_len: 3
   searchd_file_path: "db/sphinx"
