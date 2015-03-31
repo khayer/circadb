@@ -13,6 +13,7 @@
       -for @probeset_stat in @probeset_stats do
         - @probeset_data = @probeset_stat.probeset_data
         - @probeset = @probeset_stat.probeset
+        - @assay = @probeset_stat.assay
         %tr
           %td
             %table
@@ -77,13 +78,13 @@
                 %td= @probeset_stat.jtk_p_value
                 %td= @probeset_stat.jtk_q_value
                 %td= @probeset_stat.jtk_period_length
-                %td= @probeset_stat.jtk_lag
+                %td= (@probeset_stat.jtk_lag+@assay.start) % 24
               %tr
                 %th Lomb Scargle
                 %td= @probeset_stat.cosopt_p_value
                 %td= @probeset_stat.cosopt_q_value
                 %td= @probeset_stat.cosopt_period_length
-                %td= @probeset_stat.cosopt_phase
+                %td= (@probeset_stat.cosopt_phase % 24.0).round(2)
               %tr
                 %th DeLichtenberg
                 %td= @probeset_stat.fisherg_p_value

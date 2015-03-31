@@ -192,7 +192,7 @@ namespace :nina do
   task :assays => :environment do
     c = ActiveRecord::Base.connection
     c.execute "delete from assays"
-    f = %w{ slug name description start}
+    f = %w{ slug name start gene_chip_id}
     #affy_id = GeneChip.find(:first,:conditions => ["slug like ?","Mouse430_2"]).id
     #gnf_id = GeneChip.find(:first, :conditions => ["slug like ?","GNF1M"]).id
     #u74av1_id = GeneChip.find(:first, :conditions => ["slug like ?","U74Av1"]).id
@@ -731,7 +731,8 @@ namespace :nina do
         count += 1
         aslug, psname = 0,row[0].to_i
         psid = probesets[row[0]]
-        buffer << [a.id, a.slug,psid, psid, psname] + row[1..-1].to_a
+        psid_data_id = (ProbesetData.find_by probeset_name: psname, assay_name: etype).id
+        buffer << [a.id, a.slug,psid, psid_data_id, psname] + row[1..-1].to_a
         if count % 1000 == 0
           ProbesetStat.import(fields,buffer)
           buffer = []

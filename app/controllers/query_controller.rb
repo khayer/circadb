@@ -136,14 +136,13 @@ class QueryController < ApplicationController
     # if you want to log messages, look at the Rails logger functionality
     # puts "@probeset_stats = #{@probeset_stats.length}"
     respond_to do |format|
-
-      format.html
+      format.html {render_to_string}
       format.bgps do
         @unigene_id = params[:query_string]
-        render :action => "index", :layout => "biogps"
+        render_to_string :action => "index", :layout => "biogps"
       end
-      format.js { render  :json => @probeset_stats.to_json }
-      format.xml { render  :xml => @probeset_stats.to_xml }
+      format.js { render_to_string  :json => @probeset_stats.to_json }
+      format.xml { render_to_string  :xml => @probeset_stats.to_xml }
     end
 
     send_data @k, :filename => 'query.csv', :type => 'text/csv' if @k

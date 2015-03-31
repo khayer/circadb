@@ -2,7 +2,6 @@
   %table
     -for @probeset_stat in @probeset_stats do
       - @probeset_data = @probeset_stat.probeset_data
-      - @probeset = @probeset_stat.probeset
       %tr
         %td
           %table{:style => "border: 1px solid #FFF; margin: 2px;"}
@@ -52,7 +51,8 @@
                   %td= @probeset_stat.jtk_q_value
                   %td= @probeset_stat.jtk_p_value
                   %td= @probeset_stat.jtk_period_length
-                  %td= (@probeset_stat.jtk_lag-@assay.start) % 24
+                  /%td= (@probeset_stat.jtk_lag+24-@assay.start) % 24
+                  %td= @assay.name
                 %tr
                   %th Lomb Scargle
                   %td= @probeset_stat.cosopt_p_value
