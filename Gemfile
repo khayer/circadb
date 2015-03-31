@@ -5,6 +5,8 @@ gem "rails"#, "2.3.18"
 gem 'will_paginate'#, "2.3.11"
 #gem 'will_paginate', :require=>'will_paginate/data_mapper'
 gem 'haml'
+#gem 'haml-rails'
+#gem 'html'
 gem 'jquery-rails'
 #gem "jrails"
 #gem 'jQuery'

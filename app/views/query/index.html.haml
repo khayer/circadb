@@ -26,45 +26,48 @@
                 %td{:colspan=>2}
                   %br== <b>Experiment       </b> #{Assay.find_by_id(@probeset_stat.assay_id).name}
                   - if @probeset_stat.assay_name == "liver"
-                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url}
+                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url.html_safe}
                   - elsif @probeset_stat.assay_name == "adrenal_gland"
-                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_adrenal_gland}
+                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_adrenal_gland.html_safe}
                   - elsif @probeset_stat.assay_name == "aorta"
-                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_aorta}
+                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_aorta.html_safe}
                   - elsif @probeset_stat.assay_name == "brown_adipose"
-                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_brown_adipose}
+                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_brown_adipose.html_safe}
                   - elsif @probeset_stat.assay_name == "brain_stem"
-                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_brain_stem}
+                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_brain_stem.html_safe}
                   - elsif @probeset_stat.assay_name == "cerebellum"
-                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_cerebellum}
+                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_cerebellum.html_safe}
                   - elsif @probeset_stat.assay_name == "heart"
-                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_heart}
+                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_heart.html_safe}
                   - elsif @probeset_stat.assay_name == "hypothalamus"
-                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_hypothalamus}
+                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_hypothalamus.html_safe}
                   - elsif @probeset_stat.assay_name == "kidney"
-                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_kidney}
+                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_kidney.html_safe}
                   - elsif @probeset_stat.assay_name == "mogene_liver"
-                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_mogene_liver}
+                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_mogene_liver.html_safe}
                   - elsif @probeset_stat.assay_name == "lung"
-                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_lung}
+                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_lung.html_safe}
                   - elsif @probeset_stat.assay_name == "skeletal_muscle"
-                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_skeletal_muscle}
+                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_skeletal_muscle.html_safe}
                   - elsif @probeset_stat.assay_name == "white_adipose"
-                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_white_adipose}
+                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_white_adipose.html_safe}
                   %br== <b>Probeset       </b> #{@probeset.probeset_name}
-                  %br== <b>Links          </b> #{@probeset.wiki_url}  #{@probeset.homolo_gene_url}
+                  %br
+                    %b Links
+                    = @probeset.wiki_url.html_safe
+                    = @probeset.homolo_gene_url.html_safe
                   %br
                     %b Symbol
-                    /%a{:href =>"http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&cmd=Retrieve&list_uids=55990&dopt=full_report"} Fmo2
-                    /==#{@probeset.gene_symbol_url}
-                    - if (@probeset.entrez_gene == '---' || @probeset.entrez_gene.nil? || @probeset.entrez_gene == '-')
-                      %i none
-                    - else
-                      =link_to "#{@probeset.gene_symbol.split(/\s+\/\/\/\s+/)[0]}", "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&cmd=Retrieve&list_uids=#{@probeset.entrez_gene.split(/\s+\/\/\/\s+/)[0]}&dopt=full_report"
-                    /#{@probeset.entrez_gene.split(/\s+\/\/\/\s+/)[0]
-                  %br== <b>Unigene        </b> #{@probeset.unigene_url}
-                  %br== <b>RefSeq Protein </b> #{@probeset.refseq_protein_url}
-                  %br== <b>RefSeq DNA     </b> #{@probeset.refseq_transcript_url}
+                    = render html:@probeset.gene_symbol_url.html_safe
+                  %br
+                    %b Unigene
+                    = render html: @probeset.unigene_url.html_safe
+                  %br
+                    %b RefSeq Protein
+                    = render html: @probeset.refseq_protein_url.html_safe
+                  %br
+                    %b RefSeq DNA
+                    = render html: @probeset.refseq_transcript_url.html_safe
                   %br== <b>Description    </b> #{@probeset.gene_title}
               %tr
                 %td{:style => "text-align:center" }

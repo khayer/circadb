@@ -18,17 +18,14 @@ class Probeset < ActiveRecord::Base
   def gene_symbol_url
     return '<i>None</i>' if (entrez_gene == '---' || entrez_gene.nil? || entrez_gene == '-')
     # grabs the entrez_gene for the ID and gene-symbol for the link text
-    #template = 'a{:href =>\"http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&cmd=Retrieve&list_uids=%d&dopt=full_report\"}%s'
-    template = 'a{:href =>"http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&cmd=Retrieve&list_uids=%d&dopt=full_report"}%s'
-
+    template = "<a href='http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&cmd=Retrieve&list_uids=%d&dopt=full_report'>%s</a>"
     links = []
     e = entrez_gene.split(/\s+\/\/\/\s+/)
     g = gene_symbol.split(/\s+\/\/\/\s+/)
     e.each_index do |i|
       links <<  sprintf(template,e[i],g[i])
     end
-    links = links.map { |e| e.sub(/^a/,'%a') }
-    links.join(' &nbsp; ')
+    links.join(" <br> ")
   end
 
   def refseq_transcript_url
@@ -39,7 +36,7 @@ class Probeset < ActiveRecord::Base
     refseq_transcript_id.split(/\s+\/\/\/\s+/).each do |a|
       links <<  template.gsub('ACC',a)
     end
-    links.join(" &nbsp; ")
+    links.join("<br>")
   end
 
   def uscs_rna_url
@@ -54,7 +51,7 @@ class Probeset < ActiveRecord::Base
       frame = template.gsub('NUM',a)
       links <<  frame.gsub('ACC',link)
     end
-    links.join(" &nbsp; ")
+    links.join(" <br> ")
   end
 
   def uscs_rna_url_adrenal_gland
@@ -69,7 +66,7 @@ class Probeset < ActiveRecord::Base
       frame = template.gsub('NUM',a)
       links <<  frame.gsub('ACC',link)
     end
-    links.join(' &nbsp; ')
+    links.join(' <br> ')
   end
 
   def uscs_rna_url_aorta
@@ -84,7 +81,7 @@ class Probeset < ActiveRecord::Base
       frame = template.gsub('NUM',a)
       links <<  frame.gsub('ACC',link)
     end
-    links.join(" &nbsp; ")
+    links.join(" <br> ")
   end
 
   def uscs_rna_url_brown_adipose
@@ -99,7 +96,7 @@ class Probeset < ActiveRecord::Base
       frame = template.gsub('NUM',a)
       links <<  frame.gsub('ACC',link)
     end
-    links.join(" &nbsp; ")
+    links.join(" <br> ")
   end
 
   def uscs_rna_url_brain_stem
@@ -114,7 +111,7 @@ class Probeset < ActiveRecord::Base
       frame = template.gsub('NUM',a)
       links <<  frame.gsub('ACC',link)
     end
-    links.join(" &nbsp; ")
+    links.join(" <br> ")
   end
 
   def uscs_rna_url_cerebellum
