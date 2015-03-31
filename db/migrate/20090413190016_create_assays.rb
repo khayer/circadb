@@ -4,6 +4,7 @@ class CreateAssays < ActiveRecord::Migration
       t.string :slug
       t.string :name
       t.string :description
+      t.integer :start
     end
     add_index :assays, :slug, :unique => true
   end

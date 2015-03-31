@@ -192,7 +192,7 @@ namespace :nina do
   task :assays => :environment do
     c = ActiveRecord::Base.connection
     c.execute "delete from assays"
-    f = %w{ slug name description }
+    f = %w{ slug name description start}
     #affy_id = GeneChip.find(:first,:conditions => ["slug like ?","Mouse430_2"]).id
     #gnf_id = GeneChip.find(:first, :conditions => ["slug like ?","GNF1M"]).id
     #u74av1_id = GeneChip.find(:first, :conditions => ["slug like ?","U74Av1"]).id
@@ -200,8 +200,8 @@ namespace :nina do
     #mogene_id = GeneChip.find(:first, :conditions => ["slug like ?","Mouse_1.OST"]).id
     mogene_id =  (GeneChip.find_by slug: "Mouse_1.OST").id
 
-    v = [["adrenal_gland","Mouse 1.OST Adrenal Gland (Affymetrix)", mogene_id],
-         ["aorta","Mouse 1.OST Aorta (Affymetrix)", mogene_id]]
+    v = [["adrenal_gland","Mouse 1.OST Adrenal Gland (Affymetrix)", 18,mogene_id],
+         ["aorta","Mouse 1.OST Aorta (Affymetrix)", 18,mogene_id]]
          #["brown_adipose","Mouse 1.OST Brown Adipose (Affymetrix)", mogene_id],
          #["brain_stem","Mouse 1.OST Brain Stem (Affymetrix)", mogene_id],
          #["cerebellum","Mouse 1.OST Cerebellum (Affymetrix)", mogene_id],
@@ -234,7 +234,7 @@ namespace :nina do
     #Adr Aorta BFAT BS Heart Kidney Mus WFAT
     #v = []
     Assay.import(f,v)
-    puts "=== 18 Assay inserted ==="
+    puts "=== #{v.length} Assay inserted ==="
 
   end
 
@@ -441,6 +441,8 @@ namespace :nina do
       buffer = []
       #a = Assay.find(:first, :conditions => ["slug = ?", etype])
       a = Assay.find_by slug: etype
+      puts a.id
+      puts a.slug
       puts "=== Raw Data #{etype} insert starting ==="
 
       File.open("#{RAILS_ROOT}/seed_data/mogene_#{etype}_data","r" ).each do |line|
@@ -721,6 +723,8 @@ namespace :nina do
       buffer = []
       #a = Assay.find(:first, :conditions => ["slug = ?", etype])
       a = Assay.find_by slug: etype
+      puts a.id
+      puts a.slug
       puts "=== Stat Data mogene #{etype} start ==="
 
       CSV.foreach("#{RAILS_ROOT}/seed_data/mogene_#{etype}_stats") do |row|
@@ -840,9 +844,14 @@ namespace :nina do
   task :build_sphinx => ["ts:stop", "ts:configure", "ts:rebuild", "ts:start"]
 
   desc "Fill database from scratch"
-  task :fill => [:delete_from_all, :genechips,
+  task :fill_OLD => [:delete_from_all, :genechips,
     :mouse430_probesets, :u74av1_probesets, :gnf1m_probesets, :hugene_probesets,
     :mogene_probesets, :assays, :datas, :stats, :refbackfill, :build_sphinx]
+
+  desc "Fill database from scratch"
+  task :fill => [:delete_from_all, :genechips,
+    :mouse430_probesets, :u74av1_probesets, :gnf1m_probesets, :hugene_probesets,
+    :mogene_probesets, :assays, :datas, :stats, :build_sphinx]
 
   desc "Refill Probesets"
   task :refill_probesets => [:delete_from_probesets, :mouse430_probesets,

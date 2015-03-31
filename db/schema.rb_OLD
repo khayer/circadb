@@ -17,7 +17,6 @@ ActiveRecord::Schema.define(version: 20101111205706) do
     t.string  "slug",         limit: 255
     t.string  "name",         limit: 255
     t.string  "description",  limit: 255
-    t.integer "start",        limit: 4
     t.integer "gene_chip_id", limit: 4
   end
 

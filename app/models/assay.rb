@@ -12,5 +12,6 @@ end
 #  slug        :string(255)
 #  name        :string(255)
 #  description :string(255)
+#  start       :integer(4)
 #
 
