@@ -58,16 +58,16 @@
                     = @probeset.homolo_gene_url.html_safe
                   %br
                     %b Symbol
-                    = render html:@probeset.gene_symbol_url.html_safe
+                    = @probeset.gene_symbol_url.html_safe
                   %br
                     %b Unigene
-                    = render html: @probeset.unigene_url.html_safe
+                    = @probeset.unigene_url.html_safe
                   %br
                     %b RefSeq Protein
-                    = render html: @probeset.refseq_protein_url.html_safe
+                    = @probeset.refseq_protein_url.html_safe
                   %br
                     %b RefSeq DNA
-                    = render html: @probeset.refseq_transcript_url.html_safe
+                    = @probeset.refseq_transcript_url.html_safe
                   %br== <b>Description    </b> #{@probeset.gene_title}
               %tr
                 %td{:style => "text-align:center" }

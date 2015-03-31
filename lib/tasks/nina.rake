@@ -59,109 +59,104 @@ namespace :nina do
 
     g = GeneChip.new(:slug => "Mouse_1.OST", :name => "Affymetrix for GeneChip MoGene-1_0-st-v1.na32.mm9 transcript (Affymetrix)")
     g.save
-    #puts g.slug
-    #puts g.id
-    #puts g.name
-    #puts
-    #exit
-    #g  = GeneChip.new(:slug => "Mouse430_2", :name => "Mouse Genome 430 2.0 (Affymetrix)")
-    #g.save
-    #g  = GeneChip.new(:slug => "GNF1M", :name => "Mouse GNF1M (GNF)")
-    #g.save
-    #g  = GeneChip.new(:slug => "U74Av1", :name => "Affymetrix GeneChip Mouse Genome U74A-B-C_2 (Affymetrix)")
-    #g.save
-    #g  = GeneChip.new(:slug => "HuGene1_0", :name => "Affymetrix for GeneChip HuGene-1_0 transcript (Affymetrix)")
-    #g.save
+    g  = GeneChip.new(:slug => "Mouse430_2", :name => "Mouse Genome 430 2.0 (Affymetrix)")
+    g.save
+    g  = GeneChip.new(:slug => "GNF1M", :name => "Mouse GNF1M (GNF)")
+    g.save
+    g  = GeneChip.new(:slug => "U74Av1", :name => "Affymetrix GeneChip Mouse Genome U74A-B-C_2 (Affymetrix)")
+    g.save
+    g  = GeneChip.new(:slug => "HuGene1_0", :name => "Affymetrix for GeneChip HuGene-1_0 transcript (Affymetrix)")
+    g.save
     puts "Gene Chip done!"
   end
 
   desc "Seed probeset annotations"
   task :u74av1_probesets => :environment do
-   # # probes
-   # fields = %w{ gene_chip_id probeset_name genechip_name species annotation_date sequence_type sequence_source transcript_id target_description representative_public_id archival_unigene_cluster unigene_id genome_version alignments gene_title gene_symbol chromosomal_location unigene_cluster_type ensembl entrez_gene swissprot ec omim refseq_protein_id refseq_transcript_id flybase agi wormbase mgi_name rgd_name sgd_accession_number go_biological_process go_cellular_component go_molecular_function pathway interpro trans_membrane qtl annotation_description annotation_transcript_cluster transcript_assignments annotation_notes }
-   # g  = GeneChip.find(:first, :conditions => ["slug like ?","U74Av1"])
-   # count = 0
-   # buffer = []
-   # puts "=== Begin u74av1 Probeset insert ==="
-   # CSV.foreach("#{RAILS_ROOT}/seed_data/prepared_MG_U74Av2.na31.annot.csv", :headers=> true ) do |ps|
-   #   count += 1
-   #   buffer << [g.id] + ps.values_at
-   #   if count % 1000 == 0
-   #     Probeset.import(fields,buffer)
-   #     buffer = []
-   #     puts count
-   #   end
-   # end
-   # Probeset.import(fields,buffer)
-   # puts count
-   # puts "=== End u74av1 Probeset insert ==="
+    # probes
+    fields = %w{ gene_chip_id probeset_name genechip_name species annotation_date sequence_type sequence_source transcript_id target_description representative_public_id archival_unigene_cluster unigene_id genome_version alignments gene_title gene_symbol chromosomal_location unigene_cluster_type ensembl entrez_gene swissprot ec omim refseq_protein_id refseq_transcript_id flybase agi wormbase mgi_name rgd_name sgd_accession_number go_biological_process go_cellular_component go_molecular_function pathway interpro trans_membrane qtl annotation_description annotation_transcript_cluster transcript_assignments annotation_notes }
+    g = GeneChip.find_by slug: "U74Av1"
+    count = 0
+    buffer = []
+    puts "=== Begin u74av1 Probeset insert ==="
+    CSV.foreach("#{RAILS_ROOT}/seed_data/prepared_MG_U74Av2.na31.annot.csv", :headers=> true ) do |ps|
+      count += 1
+      buffer << [g.id] + ps.values_at
+      if count % 1000 == 0
+        Probeset.import(fields,buffer)
+        buffer = []
+        puts count
+      end
+    end
+    Probeset.import(fields,buffer)
+    puts count
+    puts "=== End u74av1 Probeset insert ==="
   end
 
 
   desc "Seed probeset annotations"
   task :mouse430_probesets => :environment do
-   # # probes
-   # fields = %w{ gene_chip_id probeset_name genechip_name species annotation_date sequence_type sequence_source transcript_id target_description representative_public_id archival_unigene_cluster unigene_id genome_version alignments gene_title gene_symbol chromosomal_location unigene_cluster_type ensembl entrez_gene swissprot ec omim refseq_protein_id refseq_transcript_id flybase agi wormbase mgi_name rgd_name sgd_accession_number go_biological_process go_cellular_component go_molecular_function pathway interpro trans_membrane qtl annotation_description annotation_transcript_cluster transcript_assignments annotation_notes }
-   # g  = GeneChip.find(:first, :conditions => ["slug like ?","Mouse430_2"])
-   # count = 0
-   # buffer = []
-   # puts "=== Begin Mouse430_2 Probeset insert ==="
-   # CSV.foreach("#{RAILS_ROOT}/seed_data/prepared_Mouse430_2.na28.annot.csv" ) do |ps|
-   #   count += 1
-   #   buffer << [g.id] + ps[0..-1]
-   #   if count % 1000 == 0
-   #     Probeset.import(fields,buffer)
-   #     buffer = []
-   #     puts count
-   #   end
-   # end
-   # Probeset.import(fields,buffer)
-   # puts count
-   # puts "=== End Mouse430_2 Probeset insert ==="
+    # probes
+    fields = %w{ gene_chip_id probeset_name genechip_name species annotation_date sequence_type sequence_source transcript_id target_description representative_public_id archival_unigene_cluster unigene_id genome_version alignments gene_title gene_symbol chromosomal_location unigene_cluster_type ensembl entrez_gene swissprot ec omim refseq_protein_id refseq_transcript_id flybase agi wormbase mgi_name rgd_name sgd_accession_number go_biological_process go_cellular_component go_molecular_function pathway interpro trans_membrane qtl annotation_description annotation_transcript_cluster transcript_assignments annotation_notes }
+    g = GeneChip.find_by slug: "Mouse430_2"
+    count = 0
+    buffer = []
+    puts "=== Begin Mouse430_2 Probeset insert ==="
+    CSV.foreach("#{RAILS_ROOT}/seed_data/prepared_Mouse430_2.na28.annot.csv" ) do |ps|
+      count += 1
+      buffer << [g.id] + ps[0..-1]
+      if count % 1000 == 0
+        Probeset.import(fields,buffer)
+        buffer = []
+        puts count
+      end
+    end
+    Probeset.import(fields,buffer)
+    puts count
+    puts "=== End Mouse430_2 Probeset insert ==="
   end
 
   desc "Seed gnf annotations"
   task :gnf1m_probesets => :environment do
-   # # probes
-   # fields = %w{ gene_chip_id probeset_name genechip_name species annotation_date sequence_type sequence_source transcript_id target_description representative_public_id archival_unigene_cluster unigene_id genome_version alignments gene_title gene_symbol chromosomal_location unigene_cluster_type ensembl entrez_gene swissprot ec omim refseq_protein_id refseq_transcript_id flybase agi wormbase mgi_name rgd_name sgd_accession_number go_biological_process go_cellular_component go_molecular_function pathway interpro trans_membrane qtl annotation_description annotation_transcript_cluster transcript_assignments annotation_notes }
-   # g  = GeneChip.find(:first, :conditions => ["slug like ?", "GNF1M"])
-   # count = 0
-   # buffer = []
-   # puts "=== Begin GNF1M Probeset insert ==="
-   # CSV.foreach("#{RAILS_ROOT}/seed_data/prepared_gnf1m.annot2007.csv", :headers=> true ) do |ps|
-   #   count += 1
-   #   buffer << [g.id] + ps.values_at
-   #   if count % 1000 == 0
-   #     Probeset.import(fields,buffer)
-   #     buffer = []
-   #     puts count
-   #   end
-   # end
-   # Probeset.import(fields,buffer)
-   # puts count
-   # puts "=== End GNF1M Probeset insert ==="
+    # probes
+    fields = %w{ gene_chip_id probeset_name genechip_name species annotation_date sequence_type sequence_source transcript_id target_description representative_public_id archival_unigene_cluster unigene_id genome_version alignments gene_title gene_symbol chromosomal_location unigene_cluster_type ensembl entrez_gene swissprot ec omim refseq_protein_id refseq_transcript_id flybase agi wormbase mgi_name rgd_name sgd_accession_number go_biological_process go_cellular_component go_molecular_function pathway interpro trans_membrane qtl annotation_description annotation_transcript_cluster transcript_assignments annotation_notes }
+    g = GeneChip.find_by slug: "GNF1M"
+    count = 0
+    buffer = []
+    puts "=== Begin GNF1M Probeset insert ==="
+    CSV.foreach("#{RAILS_ROOT}/seed_data/prepared_gnf1m.annot2007.csv", :headers=> true ) do |ps|
+      count += 1
+      buffer << [g.id] + ps.values_at
+      if count % 1000 == 0
+        Probeset.import(fields,buffer)
+        buffer = []
+        puts count
+      end
+    end
+    Probeset.import(fields,buffer)
+    puts count
+    puts "=== End GNF1M Probeset insert ==="
   end
 
   desc "Seed HuGene annotations"
   task :hugene_probesets => :environment do
-   ## probes
-   #fields = %w{ gene_chip_id probeset_name genechip_name species annotation_date sequence_type sequence_source transcript_id target_description representative_public_id archival_unigene_cluster unigene_id genome_version alignments gene_title gene_symbol chromosomal_location unigene_cluster_type ensembl entrez_gene swissprot ec omim refseq_protein_id refseq_transcript_id flybase agi wormbase mgi_name rgd_name sgd_accession_number go_biological_process go_cellular_component go_molecular_function pathway interpro trans_membrane qtl annotation_description annotation_transcript_cluster transcript_assignments annotation_notes }
-   #g  = GeneChip.find(:first, :conditions => ["slug like ?", "HuGene1_0"])
-   #count = 0
-   #buffer = []
-   #puts "=== Begin HuGene1_0 Probeset insert ==="
-   #CSV.foreach("#{RAILS_ROOT}/seed_data/prepared_HuGene-1_0-st-v1.na32.hg19.transcript.csv", :headers=> true ) do |ps|
-   #  count += 1
-   #  buffer << [g.id] + ps.values_at
-   #  if count % 1000 == 0
-   #    Probeset.import(fields,buffer)
-   #    buffer = []
-   #    puts count
-   #  end
-   #end
-   #Probeset.import(fields,buffer)
-   #puts count
-   #puts "=== End HuGene1_0 Probeset insert ==="
+    # probes
+    fields = %w{ gene_chip_id probeset_name genechip_name species annotation_date sequence_type sequence_source transcript_id target_description representative_public_id archival_unigene_cluster unigene_id genome_version alignments gene_title gene_symbol chromosomal_location unigene_cluster_type ensembl entrez_gene swissprot ec omim refseq_protein_id refseq_transcript_id flybase agi wormbase mgi_name rgd_name sgd_accession_number go_biological_process go_cellular_component go_molecular_function pathway interpro trans_membrane qtl annotation_description annotation_transcript_cluster transcript_assignments annotation_notes }
+    g = GeneChip.find_by slug: "HuGene1_0"
+    count = 0
+    buffer = []
+    puts "=== Begin HuGene1_0 Probeset insert ==="
+    CSV.foreach("#{RAILS_ROOT}/seed_data/prepared_HuGene-1_0-st-v1.na32.hg19.transcript.csv", :headers=> true ) do |ps|
+      count += 1
+      buffer << [g.id] + ps.values_at
+      if count % 1000 == 0
+        Probeset.import(fields,buffer)
+        buffer = []
+        puts count
+      end
+    end
+    Probeset.import(fields,buffer)
+    puts count
+    puts "=== End HuGene1_0 Probeset insert ==="
   end
 
   desc "Seed MoGene annotations"
@@ -193,41 +188,41 @@ namespace :nina do
     c = ActiveRecord::Base.connection
     c.execute "delete from assays"
     f = %w{ slug name start gene_chip_id}
-    #affy_id = GeneChip.find(:first,:conditions => ["slug like ?","Mouse430_2"]).id
-    #gnf_id = GeneChip.find(:first, :conditions => ["slug like ?","GNF1M"]).id
-    #u74av1_id = GeneChip.find(:first, :conditions => ["slug like ?","U74Av1"]).id
-    #hugene_id = GeneChip.find(:first, :conditions => ["slug like ?","HuGene1_0"]).id
-    #mogene_id = GeneChip.find(:first, :conditions => ["slug like ?","Mouse_1.OST"]).id
+    affy_id = (GeneChip.find_by slug: "Mouse430_2").id
+    gnf_id = (GeneChip.find_by slug: "GNF1M").id
+    u74av1_id = (GeneChip.find_by slug: "U74Av1").id
+    hugene_id = (GeneChip.find_by slug: "HuGene1_0").id
+    mogene_id = (GeneChip.find_by slug: "Mouse_1.OST"]).id
     mogene_id =  (GeneChip.find_by slug: "Mouse_1.OST").id
 
     v = [["adrenal_gland","Mouse 1.OST Adrenal Gland (Affymetrix)", 18,mogene_id],
-         ["aorta","Mouse 1.OST Aorta (Affymetrix)", 18,mogene_id]]
-         #["brown_adipose","Mouse 1.OST Brown Adipose (Affymetrix)", mogene_id],
-         #["brain_stem","Mouse 1.OST Brain Stem (Affymetrix)", mogene_id],
-         #["cerebellum","Mouse 1.OST Cerebellum (Affymetrix)", mogene_id],
-         #["heart","Mouse 1.OST Heart (Affymetrix)", mogene_id],
-         #["hypothalamus","Mouse 1.OST Hypothalamus (Affymetrix)", mogene_id],
-         #["kidney","Mouse 1.OST Kidney (Affymetrix)", mogene_id],
-         #["mogene_liver","Mouse 1.OST Liver (Affymetrix)", mogene_id],
-         #["lung","Mouse 1.OST Lung (Affymetrix)", mogene_id],
-         #["skeletal_muscle","Mouse 1.OST Skeletal Muscle (Affymetrix)", mogene_id],
-         #["white_adipose","Mouse 1.OST White Adipose (Affymetrix)", mogene_id],
-         #["liver","Mouse Liver 48 hour Hughes 2009 (Affymetrix)", affy_id],
-         #["pituitary","Mouse Pituitary 48 hour Hughes 2009 (Affymetrix)",affy_id],
-         #["NIH3T3","Mouse NIH 3T3 Immortilized Cell Line 48 hour Hughes 2009 (Affymetrix)",affy_id],
-         #["U2OS","Human U2 OS Hughes 2009 (Affymetrix)", hugene_id],
-         #["WT_liver","Mouse Wild Type Liver (GNF microarray)", gnf_id],
-         #["WT_muscle","Mouse Wild Type Muscle (GNF microarray)",gnf_id],
-         #["WT_SCN","Mouse Wild Type SCN (GNF microarray)", gnf_id],
-         #["panda_liver","Mouse Liver Panda 2002 (Affymetrix)",u74av1_id],
-         #["panda_SCN_MAS4","Mouse SCN MAS4 Panda 2002 (Affymetrix)", u74av1_id],
-         #["panda_SCN_gcrma","Mouse SCN gcrma Panda 2002 (Affymetrix)", u74av1_id],
-         #["aorta_2004","Mouse Aorta Rudic 2004 (Affymetrix)", u74av1_id],
-         #["kidney_2004","Mouse Kidney Rudic 2004 (Affymetrix)", u74av1_id],
-         #["distal_colon","Mouse Distal Colon 2008 (Affymetrix)",  affy_id],
-         ##["scn_2014","Mouse 1.OST SCN 2014 (Affymetrix)", mogene_id],
-         #["macrophages","Mouse Macrophages DD 2010 (Affymetrix)", mogene_id],
-         #["heart_LD","Mouse Heart LD (Affymetrix)",affy_id]]
+         ["aorta","Mouse 1.OST Aorta (Affymetrix)", 18,mogene_id],
+         ["brown_adipose","Mouse 1.OST Brown Adipose (Affymetrix)",18, mogene_id],
+         ["brain_stem","Mouse 1.OST Brain Stem (Affymetrix)",18, mogene_id],
+         ["cerebellum","Mouse 1.OST Cerebellum (Affymetrix)",18, mogene_id],
+         ["heart","Mouse 1.OST Heart (Affymetrix)",18, mogene_id],
+         ["hypothalamus","Mouse 1.OST Hypothalamus (Affymetrix)",18, mogene_id],
+         ["kidney","Mouse 1.OST Kidney (Affymetrix)",18, mogene_id],
+         ["mogene_liver","Mouse 1.OST Liver (Affymetrix)",18, mogene_id],
+         ["lung","Mouse 1.OST Lung (Affymetrix)",18, mogene_id],
+         ["skeletal_muscle","Mouse 1.OST Skeletal Muscle (Affymetrix)",18, mogene_id],
+         ["white_adipose","Mouse 1.OST White Adipose (Affymetrix)",18, mogene_id],
+         ["liver","Mouse Liver 48 hour Hughes 2009 (Affymetrix)",18, affy_id],
+         ["pituitary","Mouse Pituitary 48 hour Hughes 2009 (Affymetrix)",18,affy_id],
+         ["NIH3T3","Mouse NIH 3T3 Immortilized Cell Line 48 hour Hughes 2009 (Affymetrix)",20,affy_id],
+         ["U2OS","Human U2 OS Hughes 2009 (Affymetrix)",24, hugene_id],
+         ["WT_liver","Mouse Wild Type Liver (GNF microarray)", gnf_id],
+         ["WT_muscle","Mouse Wild Type Muscle (GNF microarray)",gnf_id],
+         ["WT_SCN","Mouse Wild Type SCN (GNF microarray)", gnf_id],
+         ["panda_liver","Mouse Liver Panda 2002 (Affymetrix)",18,u74av1_id],
+         ["panda_SCN_MAS4","Mouse SCN MAS4 Panda 2002 (Affymetrix)",18, u74av1_id],
+         ["panda_SCN_gcrma","Mouse SCN gcrma Panda 2002 (Affymetrix)",18, u74av1_id],
+         ["aorta_2004","Mouse Aorta Rudic 2004 (Affymetrix)", u74av1_id],
+         ["kidney_2004","Mouse Kidney Rudic 2004 (Affymetrix)", u74av1_id],
+         ["distal_colon","Mouse Distal Colon 2008 (Affymetrix)",  affy_id],
+         #["scn_2014","Mouse 1.OST SCN 2014 (Affymetrix)", mogene_id],
+         ["macrophages","Mouse Macrophages DD 2010 (Affymetrix)", mogene_id],
+         ["heart_LD","Mouse Heart LD (Affymetrix)",affy_id]]
 
          # adrenal_gland aorta brown_adipose brain_stem cerebellum heart hypothalamus kidney mogene_liver lung skeletal_muscle white_adipose
 
