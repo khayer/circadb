@@ -39,16 +39,23 @@ CSV.foreach(ARGV[0],  {:headers => :first_row}) do |row|
   number_c = []
   number_max = []
   number_min = []
+  numbers_all = []
 
-  %w{8 12 16 20 24 28 }.each do |i|
+  %w{8 12 16 20 24 4 }.each do |i|
+
     number = (row["dc_ct#{i}_rep_a"].to_f + row["dc_ct#{i}_rep_b"].to_f +
       row["dc_ct#{i}_rep_c"].to_f) / 3
+    numbers_all << row["dc_ct#{i}_rep_a"].to_f
+    numbers_all << row["dc_ct#{i}_rep_b"].to_f
+    numbers_all << row["dc_ct#{i}_rep_c"].to_f
     numbers << number
     number_a << row["dc_ct#{i}_rep_a"].to_f
     number_b << row["dc_ct#{i}_rep_b"].to_f
     number_c << row["dc_ct#{i}_rep_c"].to_f
     number_max << R.max(row["dc_ct#{i}_rep_a"].to_f, row["dc_ct#{i}_rep_b"].to_f,row["dc_ct#{i}_rep_c"].to_f  )
     number_min << R.min(row["dc_ct#{i}_rep_a"].to_f, row["dc_ct#{i}_rep_b"].to_f,row["dc_ct#{i}_rep_c"].to_f  )
+    time_points << i
+    time_points << i
     time_points << i
   end
   all = [number_a, number_b, number_c].flatten
@@ -61,7 +68,7 @@ CSV.foreach(ARGV[0],  {:headers => :first_row}) do |row|
   scaled_max = scaled_all[6..11]
   scaled_min = scaled_all[12..17]
   #cubase = "http://chart.apis.google.com/chart?chs=%sx%s&cht=lc&chxt=x,y&chxl=0:|8||||||12||||||16||||||20||||||24||||||28|1:|#{min}|#{mid}|#{max}|&chxp=1,2,50,97&chxr=0,18,66&chls=0,0,0|0,0,0|2,1,0|0,0,0&chf=c,ls,0,CCCCCC,0.125,FFFFFF,0.25,CCCCCC,0.25,FFFFFF,0.25,CCCCCC,0.125&chd=t:#{scaled_min.join(",")}|#{scaled_max.join(",")}|#{scaled.join(",")}&chco=3164A6,FDB33A&chm=a,555555,0,-1,5|o,555555,2,-1,5|o,555555,3,-1,5|E,111111,0,-1,1:20|E,111111,0,1,1:20|E,111111,0,2,1:20|E,111111,0,3,1:20|E,111111,0,4,1:20|E,111111,0,5,1:20"
-  cubase = "http://chart.apis.google.com/chart?chs=%sx%s&cht=lc&chxt=x,y&chxl=0:|8||||||12||||||16||||||20||||||24||||||28|1:|#{min}|#{mid}|#{max}|&chxp=1,2,50,97&chxr=0,18,66&chls=0,0,0|0,0,0|2,1,0|0,0,0&chf=c,ls,0,CCCCCC,0.125,FFFFFF,0.25,CCCCCC,0.25,FFFFFF,0.25,CCCCCC,0.125&chd=t:#{scaled_min.join(",")}|#{scaled_max.join(",")}|#{scaled.join(",")}&chco=3164A6,3164A6,FDB33A&chm=E,111111,0,-1,1:20"
-  out.puts row["row_names"] +"@"+time_points.join(",")+"@"+numbers.join(",")+"@"+cubase
+  cubase = "http://chart.apis.google.com/chart?chs=%sx%s&cht=lc&chxt=x,y&chxl=0:|1||||||7||||||13||||||19||||||25||||||31|1:|#{min}|#{mid}|#{max}|&chxp=1,2,50,97&chxr=0,18,66&chls=0,0,0|0,0,0|2,1,0|0,0,0&chf=c,ls,0,FFFFFF,0.37,CCCCCC,0.41,FFFFFF,0.25,FFFFFF,0.25,FFFFFF,0.25,CCCCCC,0.125&chd=t:#{scaled_min.join(",")}|#{scaled_max.join(",")}|#{scaled.join(",")}&chco=3164A6,3164A6,FDB33A&chm=E,111111,0,-1,1:20"
+  out.puts row["row_names"] +"@"+time_points.join(",")+"@"+numbers_all.join(",")+"@"+cubase
 
 end

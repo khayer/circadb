@@ -81,13 +81,13 @@
                 %td= @probeset_stat.jtk_p_value
                 %td= @probeset_stat.jtk_q_value
                 %td= @probeset_stat.jtk_period_length
-                %td= (@probeset_stat.jtk_lag+@assay.start) % 24
+                %td= @probeset_stat.jtk_lag
               %tr
                 %th Lomb Scargle
                 %td= @probeset_stat.cosopt_p_value
                 %td= @probeset_stat.cosopt_q_value
                 %td= @probeset_stat.cosopt_period_length
-                %td= (@probeset_stat.cosopt_phase % 24.0).round(2)
+                %td= @probeset_stat.cosopt_phase
               %tr
                 %th DeLichtenberg
                 %td= @probeset_stat.fisherg_p_value
@@ -126,9 +126,9 @@
             %td
               ==#{@probeset.probeset_name}
             %td
-              ==#{@probeset.gene_symbol_url}
+              = @probeset.gene_symbol_url.html_safe
             %td
-              ==#{@probeset.refseq_transcript_url}
+              = @probeset.refseq_transcript_url.html_safe
             %td{:colspan=>2}
               ==#{@probeset.gene_title}
           /%tr

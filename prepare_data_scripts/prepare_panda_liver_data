@@ -19,6 +19,11 @@ R.eval_R("scaleData <- function(x) {
   k/100 * 90 + 5
 }")
 
+R.eval_R("scaleData2 <- function(x,min,max) {
+  k = (x-min)/(max-min)*100
+  k/100 * 90 + 5
+}")
+
 R.eval_R("avgData <- function(d) {
   dd <- filter(d,rep(0.33,3))
   dd[1] <- d[1]
@@ -32,21 +37,42 @@ out = File.new(ARGV[1],"w")
 CSV.foreach(ARGV[0],  {:headers => :first_row}) do |row|
   numbers = []
   time_points = []
+  numbers_all = []
+  time_points2 = []
+  k=1
+  a_series = []
+  b_series = []
+  time_points_all =[]
 
   %w{30 34 38 42 46 50 54 58 62 66 70 74}.each do |i|
     number = (row["CT#{i}A"].to_f + row["CT#{i}B"].to_f) / 2
+    numbers_all << row["CT#{i}A"].to_f
+    numbers_all << row["CT#{i}A"].to_f
     numbers << number
-    time_points << i
+    a_series << row["CT#{i}A"].to_f
+    b_series << row["CT#{i}B"].to_f
+    #numbers << row["CT#{i}A"].to_f
+    #numbers << row["CT#{i}B"].to_f
+    time_points << i.to_i - 12
+    time_points_all << i.to_i - 12
+    time_points_all << i.to_i - 12
+    time_points2 << k.to_f
+    k += 1
   end
 
-  max = R.max(numbers).to_i
-  min = R.min(numbers).to_i
-  mid = R.mean(numbers).to_i
+  max = numbers_all.max
+  min = numbers_all.min
+  mid = R.mean(numbers_all)
+  scaled_a = R.scaleData2(a_series,min,max).map {|e| e.to_i }
+  scaled_b = R.scaleData2(b_series,min,max).map {|e| e.to_i }
 
-  scaled = R.scaleData(numbers).map {|e| e.to_i }
+  scaled = R.scaleData2(numbers,min,max).map {|e| e.to_i }
   averaged = R.avgData(scaled).map {|e| e.to_i }
+  scaled_time = R.scaleData(time_points2).map {|e| e.to_i }
+  #https://chart.googleapis.com/chart?cht=s&chd=t:5,23,41,59,77,95,5,23,41,59,77,95,5,23,41,59,77,95,5,23,41,59,77,95|95,55,15,11,14,36,78,50,15,9,18,42,68,56,15,17,5,31,80,49,26,12,19,36&chxt=x,y&chs=450x300&chm=o,0000FF,0,-1,0,0|o,000000,0,0:17:,5,0.1|D,FDB33A,1,18:,1,1&chxl=0:|23|03|07|11|15|19|1:|36.22|51.67|81.94|&chxp=0,5,23,41,59,77,95|1,2,50,97&chf=c,ls,0,CCCCCC,0.092,FFFFFF,0.541,CCCCCC,0.541
+  #cubase = "http://chart.apis.google.com/chart?chs=%sx%s&cht=lc&chxt=x,y&chxl=0:|18||||||24||||||30||||||36||||||42||||||48||||||54||||||60|||1:|#{min}|#{mid}|#{max}|&chxp=1,2,50,97&chxr=0,18,66&chls=0,0,0|2,1,0&chf=c,ls,0,CCCCCC,0.125,FFFFFF,0.25,CCCCCC,0.25,FFFFFF,0.25,CCCCCC,0.125&chd=t:#{scaled.join(",")}|#{averaged.join(",")}&chco=3164A6,FDB33A&chm=o,555555,0,-1,5"
+  cubase = "https://chart.googleapis.com/chart?cht=s&chd=t:#{scaled_time.join(",")},#{scaled_time.join(",")},#{scaled_time.join(",")}|#{scaled_a.join(",")},#{scaled_b.join(",")},#{averaged.join(",")}&chxt=x,y&chs=%sx%s&chm=o,0000FF,0,-1,0,0|o,000000,0,0:#{2*time_points.length-1}:,5,0.1|D,FDB33A,1,#{2*time_points.length}:,1,1&chxl=0:|#{time_points.join("|")}|1:|#{min.round(2)}|#{mid.round(2)}|#{max.round(2)}|&chxp=0,#{scaled_time.join(',')}|1,2,50,97&chf=c,ls,0,CCCCCC,0.17,FFFFFF,0.245,CCCCCC,0.245,FFFFFF,0.245"
 
-  cubase = "http://chart.apis.google.com/chart?chs=%sx%s&cht=lc&chxt=x,y&chxl=0:|30||||||36||||||42||||||48||||||54||||||60||||||66||||||72|||1:|#{min}|#{mid}|#{max}|&chxp=1,2,50,97&chxr=0,18,66&chls=0,0,0|2,1,0&chf=c,ls,0,CCCCCC,0.125,FFFFFF,0.25,CCCCCC,0.25,FFFFFF,0.25,CCCCCC,0.125&chd=t:#{scaled.join(",")}|#{averaged.join(",")}&chco=3164A6,FDB33A&chm=o,555555,0,-1,5"
-  out.puts row["Affy ID"] +"@"+time_points.join(",")+"@"+numbers.join(",")+"@"+cubase
+  out.puts row["Affy ID"] +"@"+time_points_all.join(",")+"@"+numbers_all.join(",")+"@"+cubase
 
 end
