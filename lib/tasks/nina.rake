@@ -207,6 +207,8 @@ namespace :nina do
          ["lung","Mouse 1.OST Lung (Affymetrix)",18, mogene_id],
          ["skeletal_muscle","Mouse 1.OST Skeletal Muscle (Affymetrix)",18, mogene_id],
          ["white_adipose","Mouse 1.OST White Adipose (Affymetrix)",18, mogene_id],
+         ["scn_2014","Mouse 1.OST SCN 2014 (Affymetrix)",18, mogene_id],
+         ["spleen","Mouse 1.OST Spleen 2014 (Affymetrix)",18, mogene_id],
          ["liver","Mouse Liver 48 hour Hughes 2009 (Affymetrix)",18, affy_id],
          ["pituitary","Mouse Pituitary 48 hour Hughes 2009 (Affymetrix)",18,affy_id],
          ["NIH3T3","Mouse NIH 3T3 Immortilized Cell Line 48 hour Hughes 2009 (Affymetrix)",20,affy_id],
@@ -431,7 +433,7 @@ namespace :nina do
       probesets[p.probeset_name]= p.id
     end
 
-    %w{ adrenal_gland aorta}.each do |etype|# brown_adipose brain_stem cerebellum heart hypothalamus kidney mogene_liver lung skeletal_muscle white_adipose }.each do |etype|
+    %w{ adrenal_gland aorta brown_adipose brain_stem cerebellum heart hypothalamus kidney mogene_liver lung skeletal_muscle white_adipose scn_2014 spleen}.each do |etype|# brown_adipose brain_stem cerebellum heart hypothalamus kidney mogene_liver lung skeletal_muscle white_adipose }.each do |etype|
       count = 0
       buffer = []
       #a = Assay.find(:first, :conditions => ["slug = ?", etype])
@@ -460,7 +462,7 @@ namespace :nina do
     end
 
     #%w{ scn_2014 macrophages }.each do |etype|
-    %w{ macrophages }.each do |etype|
+    %w{macrophages }.each do |etype|
       count = 0
       buffer = []
       a = Assay.find_by slug: etype
@@ -656,12 +658,13 @@ namespace :nina do
       puts "=== Stat Data #{etype} start ==="
 
       CSV.foreach("#{RAILS_ROOT}/seed_data/#{etype}_stats") do |row|
-        count += 1
+
         aslug, psname = 0,row[0]
         psid = probesets[row[0]]
         if (!psid)
           next
         end
+        count += 1
         row[-2] = (row[-2].to_f + a.start)%24
         row[4] = row[4].to_f%24
         psid_data_id = (ProbesetData.find_by probeset_name: psname ,assay_name: etype).id
@@ -744,7 +747,7 @@ namespace :nina do
       probesets[p.probeset_name]= p.id
     end
 
-    %w{ adrenal_gland aorta}.each do |etype| #brown_adipose brain_stem cerebellum heart hypothalamus kidney mogene_liver lung skeletal_muscle white_adipose }.each do |etype|
+    %w{ adrenal_gland aorta brown_adipose brain_stem cerebellum heart hypothalamus kidney mogene_liver lung skeletal_muscle white_adipose scn_2014  spleen}.each do |etype| # }.each do |etype|
       count = 0
       buffer = []
       #a = Assay.find(:first, :conditions => ["slug = ?", etype])
@@ -775,7 +778,7 @@ namespace :nina do
 
 
     #%w{ scn_2014 macrophages}.each do |etype|
-    %w{ macrophages}.each do |etype|
+    %w{  macrophages}.each do |etype|
       count = 0
       buffer = []
       a = Assay.find_by slug: etype
