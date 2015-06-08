@@ -5,7 +5,8 @@ development:
   bin_path: /usr/local/bin
   #indices_location: "app/indices"
   #enable_star: 1
-  #min_infix_len: 3
+  min_infix_len: 3
+  #min_prefix_len: 3
   searchd_file_path: "db/sphinx"
   #ignore_chars: "., -, U+002E"
 test:
