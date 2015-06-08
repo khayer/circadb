@@ -12,9 +12,13 @@ class QueryController < ApplicationController
     # page to fetch
     current_page = params[:page].to_i > 0 ? params[:page].to_i : 1
 
-
     # q_value filter
-    params[:filter] ||= "jtk_p_value"
+    params[:filter] ||= "jtk_q_value"
+    if params[:query]
+      params[:filter] = params[:query][:filter]
+    end
+    #params[:filter]
+
     if ProbesetStat.pval_filters.flatten.include?(params[:filter])
       order = "#{params[:filter]} ASC"
     else
@@ -98,26 +102,50 @@ class QueryController < ApplicationController
       #    :order => order,
       #    :include => [:probeset_data, :probeset, :probeset_stats])
       #end
-      @k = "Probeset_ID,Symbol,Time,Values,JTKP,JTKQ,JTKperiod,JTKphase,Tissue\n"
-      for i in 0...params[:number_entries].to_i
-        probeset_stat = probeset_stats[i]
-        break unless probeset_stat
-        probeset = probeset_stats[i].probeset
-        next unless probeset
-        gene_symbol = probeset.gene_symbol
-        id = probeset.probeset_name
-        probeset_data = probeset_stat.probeset_data
-        time_points = probeset_data.time_points.delete("\"[]").gsub(/,/,';')
-        data_points = probeset_data.data_points.delete("\"[]").split(",")
-        data_points = data_points.map { |e| (e.to_f*100).round/100.to_f}
-        data_points = data_points.join(";")
-        jtkp = probeset_stat.jtk_p_value
-        jtkq = probeset_stat.jtk_q_value
-        jtkperiod = probeset_stat.jtk_period_length
-        jtkphase = probeset_stat.jtk_lag
-        tissue = probeset_stat.assay_name
-        @k += "#{id},#{gene_symbol},#{time_points},#{data_points},#{jtkp},#{jtkq},#{jtkperiod},#{jtkphase},#{tissue}\n"
+      if params[:filter] =~ /^jtk/
+        @k = "Probeset_ID,Symbol,Time,Values,JTKP,JTKQ,JTKperiod,JTKphase,Tissue\n"
+        for i in 0...params[:number_entries].to_i
+          probeset_stat = probeset_stats[i]
+          break unless probeset_stat
+          probeset = probeset_stats[i].probeset
+          next unless probeset
+          gene_symbol = probeset.gene_symbol
+          id = probeset.probeset_name
+          probeset_data = probeset_stat.probeset_data
+          time_points = probeset_data.time_points.delete("\"[]").gsub(/,/,';')
+          data_points = probeset_data.data_points.delete("\"[]").split(",")
+          data_points = data_points.map { |e| (e.to_f*100).round/100.to_f}
+          data_points = data_points.join(";")
+          jtkp = probeset_stat.jtk_p_value
+          jtkq = probeset_stat.jtk_q_value
+          jtkperiod = probeset_stat.jtk_period_length
+          jtkphase = probeset_stat.jtk_lag
+          tissue = probeset_stat.assay_name
+          @k += "#{id},#{gene_symbol},#{time_points},#{data_points},#{jtkp},#{jtkq},#{jtkperiod},#{jtkphase},#{tissue}\n"
+        end
+      elsif params[:filter] =~ /^cosopt/
+        @k = "Probeset_ID,Symbol,Time,Values,LombScargle_P,LombScargle_Q,LombScargle_period,LombScargle_phase,Tissue\n"
+        for i in 0...params[:number_entries].to_i
+          probeset_stat = probeset_stats[i]
+          break unless probeset_stat
+          probeset = probeset_stats[i].probeset
+          next unless probeset
+          gene_symbol = probeset.gene_symbol
+          id = probeset.probeset_name
+          probeset_data = probeset_stat.probeset_data
+          time_points = probeset_data.time_points.delete("\"[]").gsub(/,/,';')
+          data_points = probeset_data.data_points.delete("\"[]").split(",")
+          data_points = data_points.map { |e| (e.to_f*100).round/100.to_f}
+          data_points = data_points.join(";")
+          jtkp = probeset_stat.cosopt_p_value
+          jtkq = probeset_stat.cosopt_q_value
+          jtkperiod = probeset_stat.cosopt_period_length
+          jtkphase = probeset_stat.cosopt_phase
+          tissue = probeset_stat.assay_name
+          @k += "#{id},#{gene_symbol},#{time_points},#{data_points},#{jtkp},#{jtkq},#{jtkperiod},#{jtkphase},#{tissue}\n"
+        end
       end
+
 
 
       #File.delete(filename)

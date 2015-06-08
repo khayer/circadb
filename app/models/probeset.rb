@@ -234,6 +234,21 @@ class Probeset < ActiveRecord::Base
     links.join(" &nbsp; ")
   end
 
+  def uscs_rna_url_scn_2014
+    # could be multiple
+    return '<i>None</i>' if (refseq_transcript_id == '---' || refseq_transcript_id.nil? || entrez_gene == '-')
+    template = "<a href='ACC'>RNAseq_NUM</a>"
+    template2 = "http://genome.ucsc.edu/cgi-bin/hgTracks?hgS_doOtherUser=submit&hgS_otherUserName=hogenesch_lab&hgS_otherUserSessionName=scn_unique&singleSearch=refGeneAcc&position="
+    links = []
+    refseq_transcript_id.split(/\s+\/\/\/\s+/).each do |a|
+      link = template2+a
+      #source = open(search_page){|f|f.read}
+      frame = template.gsub('NUM',a)
+      links <<  frame.gsub('ACC',link)
+    end
+    links.join(" &nbsp; ")
+  end
+
   def refseq_protein_url
     return '<i>None</i>' if (refseq_protein_id == '---' || refseq_protein_id.nil? || entrez_gene == '-')
     # could be multiple

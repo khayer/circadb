@@ -51,6 +51,8 @@
                     %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_skeletal_muscle.html_safe}
                   - elsif @probeset_stat.assay_name == "white_adipose"
                     %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_white_adipose.html_safe}
+                  - elsif @probeset_stat.assay_name == "scn_2014"
+                    %br== <b>UCSC RNAseq    </b> #{@probeset.uscs_rna_url_scn_2014.html_safe}
                   %br== <b>Probeset       </b> #{@probeset.probeset_name}
                   %br
                     %b Links

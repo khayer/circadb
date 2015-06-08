@@ -33,7 +33,7 @@
       .span-10.last
         .span-10{:style => "padding-bottom: 10px;"}
           = f.label :filter, "Choose probability filter"
-          = f.select :filter, options_for_select(ProbesetStat.pval_filters, params[:filter])
+          = f.select :filter, options_for_select(ProbesetStat.pval_filters, :selected => params[:filter])#, params[:filter] || "cosopt_q_value"), :name => "filter"
           %br{:style => "padding-bottom: 10px;"}
           = f.label :filter_value, "Probabily cut-off value"
           = f.text_field :filter_value, :value => (params[:filter_value] || "0.05") ,:size => 5, :name => "filter_value"
