@@ -1,4 +1,4 @@
-= form_for(:query) do |f|
+= form_for(:query,:html=>{:name=>"myForm",:onsubmit=>"return validateForm(this)",:onclick => "return validateForm(this)"}) do |f|
   .params.span-14.last
     .span-15.last
       = f.label :example, "Enter a search"

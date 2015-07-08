@@ -8,8 +8,8 @@ gem 'haml'
 #gem 'haml-rails'
 #gem 'html'
 gem 'jquery-rails'
-#gem "jrails"
-#gem 'jQuery'
+gem "jrails"
+gem 'jquery'
 gem "mysql"
 #gem "riddle"
 #gem "thinking-sphinx"#, :require => "thinking_sphinx"
