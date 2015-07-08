@@ -88,7 +88,7 @@ class QueryController < ApplicationController
         else
           pp = counter
         end
-        logger.info("Katharina #{k} and PP #{pp}")
+        #logger.info("Katharina #{k} and PP #{pp}")
         if params[:query_string]
           probeset_stats = ProbesetStat.search(params[:query_string],
           :page => k, :per_page => pp,
@@ -120,10 +120,10 @@ class QueryController < ApplicationController
         #    :include => [:probeset_data, :probeset, :probeset_stats])
         #end
         if params[:filter] =~ /^jtk/
-          logger.info("HURRRY #{params[:number_entries].to_i}")
-          logger.info("HURRRY length #{probeset_stats.length}")
+          #logger.info("HURRRY #{params[:number_entries].to_i}")
+          #logger.info("HURRRY length #{probeset_stats.length}")
           for i in 0...pp
-            logger.info("This is were DIE #{i}")
+            #logger.info("This is were DIE #{i}")
             probeset_stat = probeset_stats[i]
             break unless probeset_stat
             probeset = probeset_stats[i].probeset
