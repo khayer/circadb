@@ -187,8 +187,10 @@ class QueryController < ApplicationController
       format.html {render_to_string}
       format.bgps do
         @unigene_id = params[:query_string]
-        render_to_string :action => "index", :layout => "biogps"
+        render :action => "index", :layout => '/layouts/bgps.html.haml'
       end
+      #format.bgps {render :layout => '/layouts/bgps.html.haml',:action => "index"} #:action => "index",
+      #end
       format.js { render_to_string  :json => @probeset_stats.to_json }
       format.xml { render_to_string  :xml => @probeset_stats.to_xml }
     end

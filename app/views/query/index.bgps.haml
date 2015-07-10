@@ -2,6 +2,8 @@
   %table
     -for @probeset_stat in @probeset_stats do
       - @probeset_data = @probeset_stat.probeset_data
+      - @probeset = @probeset_stat.probeset
+      - @assay = @probeset_stat.assay
       %tr
         %td
           %table{:style => "border: 1px solid #FFF; margin: 2px;"}
@@ -18,25 +20,28 @@
                     %td=@probeset.probeset_name
                   %tr
                     %th Symbol
-                    %td=@probeset.gene_symbol_url
+                    %td=@probeset.gene_symbol_url.html_safe
                   %tr
                     %th Unigene
-                    %td=@probeset.unigene_url
+                    %td=@probeset.unigene_url.html_safe
                   %tr
                     %th RefSeq Protein
-                    %td=@probeset.refseq_protein_url
+                    %td=@probeset.refseq_protein_url.html_safe
                   %tr
                     %th RefSeq DNA
-                    %td=@probeset.refseq_transcript_url
+                    %td=@probeset.refseq_transcript_url.html_safe
                   %tr
                     %th Description
                     %td=@probeset.gene_title
                   %tr
                     %th Links
-                    %td=@probeset.wiki_url
+                    %td=@probeset.wiki_url.html_safe
                   %tr
                     %th
-                    %td=@probeset.homolo_gene_url
+                    %td=@probeset.homolo_gene_url.html_safe
+                  %tr
+                    %th Assay Name
+                    %td= @assay.name
             %tr
               %td{:colspan=>2}
               %table
@@ -52,7 +57,7 @@
                   %td= @probeset_stat.jtk_p_value
                   %td= @probeset_stat.jtk_period_length
                   /%td= (@probeset_stat.jtk_lag+24-@assay.start) % 24
-                  %td= @assay.name
+
                 %tr
                   %th Lomb Scargle
                   %td= @probeset_stat.cosopt_p_value
