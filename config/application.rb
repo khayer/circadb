@@ -25,7 +25,7 @@ module TestRails
 
 
     config.action_dispatch.default_headers = {
-        'X-Frame-Options' => 'ALLOW-FROM http://www.w3schools.com/'
+        'X-Frame-Options' => 'ALLOW-FROM http://biogps.org'
     }
   end
 end
