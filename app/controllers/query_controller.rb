@@ -1,8 +1,8 @@
 class QueryController < ApplicationController
-  def iframe_action
-    response.headers["X-FRAME-OPTIONS"] = "ALLOW-FROM http://www.w3schools.com/"
-    render_something
-  end
+  #def iframe_action
+  #  response.headers["X-FRAME-OPTIONS"] = "ALLOW-FROM http://www.w3schools.com/"
+  #  render_something
+  #end
 
   @per_page = 50
   @k ||= nil
