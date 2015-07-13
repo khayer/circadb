@@ -1,7 +1,7 @@
 class QueryController < ApplicationController
-  after_action :allow_iframe, only: :embed
-
-  def embed
+  def iframe_action
+    response.headers["X-FRAME-OPTIONS"] = "ALLOW-FROM http://www.w3schools.com/"
+    render_something
   end
 
   @per_page = 50
@@ -203,12 +203,6 @@ class QueryController < ApplicationController
     send_data @k, :filename => 'query.csv', :type => 'text/csv' if @k
   end
 
-private
-
-  def allow_iframe
-    response.headers["X-FRAME-OPTIONS"] = "ALLOW-FROM http://www.w3schools.com"
-    render_something
-  end
 
 end
 
