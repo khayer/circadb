@@ -8,7 +8,7 @@ gem 'haml'
 #gem 'haml-rails'
 #gem 'html'
 gem 'jquery-rails'
-gem "jrails"
+#gem "jrails"
 gem 'jquery'
 gem "mysql"
 #gem "riddle"
