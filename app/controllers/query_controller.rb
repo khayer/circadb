@@ -2,6 +2,11 @@ class QueryController < ApplicationController
   @per_page = 50
   @k ||= nil
 
+  def iframe_action
+    response.headers.delete "X-Frame-Options"
+    render_something
+  end
+
   def download
     send_data @k, :filename => 'query.csv', :type => 'text/csv'
   end
