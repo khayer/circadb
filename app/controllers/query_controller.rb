@@ -1,11 +1,11 @@
 class QueryController < ApplicationController
+  after_action :allow_iframe, only: :embed
+
+  def embed
+  end
+
   @per_page = 50
   @k ||= nil
-
-  def iframe_action
-    response.headers.delete "X-Frame-Options"
-    render_something
-  end
 
   def download
     send_data @k, :filename => 'query.csv', :type => 'text/csv'
@@ -201,6 +201,12 @@ class QueryController < ApplicationController
     end
 
     send_data @k, :filename => 'query.csv', :type => 'text/csv' if @k
+  end
+
+private
+
+  def allow_iframe
+    response.headers.except! 'X-Frame-Options'
   end
 
 end
