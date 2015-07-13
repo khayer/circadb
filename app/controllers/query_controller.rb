@@ -1,8 +1,8 @@
 class QueryController < ApplicationController
-  after_action :allow_iframe, only: :embed
-
-  def embed
-  end
+  #after_action :allow_iframe, only: :embed
+#
+  #def embed
+  #end
 
   @per_page = 50
   @k ||= nil
@@ -205,9 +205,9 @@ class QueryController < ApplicationController
 
 private
 
-  def allow_iframe
-    response.headers.except! 'X-Frame-Options'
-  end
+  #def allow_iframe
+  #  response.headers.except! 'X-Frame-Options'
+  #end
 
 end
 
