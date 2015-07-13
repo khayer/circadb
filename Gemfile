@@ -41,7 +41,7 @@ gem 'thinking-sphinx', '~> 3.1.3'#,:require => 'thinking_sphinx/sinatra'
 
 # These gems are needed for bootstrapping a site
 #  gem "curb" # replaced with Net::HTTP due to curb gem compile errors
-gem "ar-extensions"
+#gem "ar-extensions"
 #gem 'rails_admin' #, github: 'sferik/rails_admin'
 #gem "csv"
 
