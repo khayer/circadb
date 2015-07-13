@@ -206,7 +206,8 @@ class QueryController < ApplicationController
 private
 
   def allow_iframe
-    response.headers.except! 'X-Frame-Options'
+    response.headers["X-FRAME-OPTIONS"] = "ALLOW-FROM http://www.w3schools.com"
+    render_something
   end
 
 end
