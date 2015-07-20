@@ -65,9 +65,31 @@ class QueryController < ApplicationController
       end
     end
 
+    if params[:match_mode] == 'unigene_id' && params[:query_string]
+      @new_query = ""
+      if params[:query_string]
+        @match_mode = "extended".to_sym
+        params[:query_string].split(" ").each do |word|
+          @new_query += "@unigene_id #{word} | "
+        end
+        #params[:query_string] = @new_query[0..-3]
+      end
+    end
+
+    if params[:match_mode] == 'entrez_gene' && params[:query_string]
+      @new_query = ""
+      if params[:query_string]
+        @match_mode = "extended".to_sym
+        params[:query_string].split(" ").each do |word|
+          @new_query += "@entrez_gene #{word} | "
+        end
+        #params[:query_string] = @new_query[0..-3]
+      end
+    end
+
 
     if params[:query_string]
-      @probeset_stats = ProbesetStat.search(params[:query_string],
+      @probeset_stats = ProbesetStat.search(@new_query[0..-3],
         :page => current_page, :per_page => @per_page, :with => cnd,
         :order => order, :match_mode => @match_mode,
         :include => [:probeset_data, :probeset, :probeset_stats])
