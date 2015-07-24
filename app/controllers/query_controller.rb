@@ -72,7 +72,7 @@ class QueryController < ApplicationController
         params[:query_string].split(" ").each do |word|
           @new_query += "@unigene_id #{word} | "
         end
-        #params[:query_string] = @new_query[0..-3]
+        params[:query_string] = @new_query[0..-3]
       end
     end
 
@@ -83,13 +83,13 @@ class QueryController < ApplicationController
         params[:query_string].split(" ").each do |word|
           @new_query += "@entrez_gene #{word} | "
         end
-        #params[:query_string] = @new_query[0..-3]
+        params[:query_string] = @new_query[0..-3]
       end
     end
 
-
     if params[:query_string]
-      @probeset_stats = ProbesetStat.search(@new_query[0..-3],
+      #if match_mode
+      @probeset_stats = ProbesetStat.search(params[:query_string],
         :page => current_page, :per_page => @per_page, :with => cnd,
         :order => order, :match_mode => @match_mode,
         :include => [:probeset_data, :probeset, :probeset_stats])
