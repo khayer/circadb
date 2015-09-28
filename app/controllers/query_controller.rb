@@ -89,6 +89,12 @@ class QueryController < ApplicationController
 
     if params[:query_string]
       #if match_mode
+      @new_query = ""
+      @match_mode = "extended".to_sym
+      params[:query_string].split("\n").each do |word|
+        @new_query += "#{word} |"
+      end
+      params[:query_string] = @new_query[0..-3]
       @probeset_stats = ProbesetStat.search(params[:query_string],
         :page => current_page, :per_page => @per_page, :with => cnd,
         :order => order, :match_mode => @match_mode,
@@ -203,6 +209,11 @@ class QueryController < ApplicationController
     if params[:query_string] && params[:match_mode] == 'gene_symbol'
       fields = params[:query_string].split("@gene_symbol")
       params[:query_string] = fields[1..-1].join("\n").delete(" | ")
+    end
+
+    if params[:query_string] && params[:match_mode] != 'gene_symbol'
+      fields = params[:query_string].split("|")
+      params[:query_string] = fields.join("\n")
     end
 
     #download(k) if k

@@ -5,11 +5,11 @@
       %br
       %span.help
         (Examples
-        = link_to("1451371_at 1422470_at gnf1m00037_a_at", query_path(:params => {:query_string => "1451371_at\n  1422470_at\ngnf1m00037_a_at", :match_mode => "any"} ))
+        = link_to("1451371_at 1422470_at gnf1m00037_a_at", query_path(:params => {:query_string => "1451371_at\n1422470_at\ngnf1m00037_a_at", :match_mode => "any"} ))
         or
         = link_to("Arntl", query_path(:params => {:query_string => "Arntl"} ))
         or
-        = link_to("kinase inhibitor", query_path(:params => {:query_string =>  "kinase inhibitor", :match_mode => " any"} ))
+        = link_to("kinase inhibitor", query_path(:params => {:query_string =>  "kinase inhibitor", :match_mode => "extended"} ))
         )
       .qbox.span-5.last{:style => "padding-bottom: 1px;"}
         = text_area_tag :query_string, params[:query_string]

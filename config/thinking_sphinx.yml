@@ -8,7 +8,7 @@ development:
   min_infix_len: 3
   #min_prefix_len: 3
   searchd_file_path: "db/sphinx"
-  #ignore_chars: "., -, U+002E"
+  ignore_chars: "., -, U+002E, U+AD, |"
 test:
   port: 9312
   searchd_file_path: "db/sphinx"
